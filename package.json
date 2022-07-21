@@ -27,7 +27,6 @@
   },
   "homepage": "https://github.com/niyak93rus/frontend-project-lvl4#readme",
   "dependencies": {
-    "@hexlet/chat-server": "^1.1.5",
-    "react-router-dom": "^5.3.0"
+    "@hexlet/chat-server": "^1.1.5"
   }
 }

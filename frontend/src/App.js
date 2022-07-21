@@ -14,7 +14,7 @@ function App() {
         <Switch>
           <Route exact path="/login" component={Login} />
           <Route exact path="/">
-            <Redirect to="/login" component={Login} />
+            <Redirect to="/login" />
           </Route>
           <Route component={NoMatch} />
         </Switch>
