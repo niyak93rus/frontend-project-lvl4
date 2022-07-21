@@ -1,24 +1,24 @@
-import logo from './logo.svg';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+import NoMatch from "./pages/NoMatch";
+import Login from "./pages/Login";
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Hello, World!
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+        <Switch>
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/">
+            <Redirect to="/login" component={Login} />
+          </Route>
+          <Route component={NoMatch} />
+        </Switch>
+    </Router>
   );
 }
 
