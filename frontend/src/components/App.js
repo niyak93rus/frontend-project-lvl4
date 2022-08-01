@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -16,8 +16,15 @@ import useAuth from '../hooks/index.jsx';
 import '../App.css';
 import MainPage from './MainPage';
 
+const checkAuthorization = () => {
+  if (localStorage.getItem('userId')) {
+    return true;
+  }
+  return false;
+}
+
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(checkAuthorization());
 
   const logIn = () => setLoggedIn(true);
   const logOut = () => {

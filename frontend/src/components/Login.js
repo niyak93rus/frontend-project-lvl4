@@ -8,7 +8,7 @@ import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 
 const LoginForm = () => {
-  const [authState, setAuthState] = useState(null);
+  const [authFailed, setAuthFailed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const auth = useAuth();
@@ -19,21 +19,22 @@ const LoginForm = () => {
   }, []);
 
   const authorizeUser = async (userData) => {
+    setAuthFailed(false);
     const getPath = routes.loginPath();
     try {
       const request = await axios.post(getPath, userData);
       const token = request.data;
-      window.localStorage.setItem('userId', JSON.stringify(token));
-      setAuthState('successful');
-      if (!location.state) {
-        navigate('/');
-      } else {
-        auth.logIn();
-        navigate(location.state.from.pathname);
+      localStorage.setItem('userId', JSON.stringify(token));
+      auth.logIn();
+      const { from } = location.state || { from: { pathname: '/' } };
+      navigate(from);
+    } catch (err) {
+      if (err.isAxiosError && err.response.status === 401) {
+        setAuthFailed(true);
+        inputRef.current.select();
+        return;
       }
-    } catch (error) {
-      setAuthState('failed');
-      throw new Error(`Error: ${error.message}`);
+      throw err;
     }
   };
 
@@ -69,7 +70,7 @@ const LoginForm = () => {
           data-testid="input-username"
           name="username"
           ref={inputRef}
-          isInvalid={f.errors.username || authState === 'failed'}
+          isInvalid={f.errors.username || authFailed}
           required
         />
         {f.touched.username && f.errors.username && (
@@ -87,13 +88,13 @@ const LoginForm = () => {
           onChange={f.handleChange}
           data-testid="input-password"
           name="password"
-          isInvalid={f.errors.password || authState === 'failed'}
+          isInvalid={f.errors.password || authFailed}
           required
         />
         {f.touched.password && f.errors.password && (
             <p className='text-danger'>{f.errors.password}</p>
           )}
-        {authState === 'failed' ? <div className="invalid-feedback d-block">Введен неверный логин или пароль</div> : null}
+        {authFailed ? <div className="invalid-feedback d-block">Введен неверный логин или пароль</div> : null}
       </Form.Group>
       <Button variant="primary" type="submit">
         Войти
