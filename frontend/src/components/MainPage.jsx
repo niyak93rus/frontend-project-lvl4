@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { normalize, schema } from 'normalizr';
 import axios from 'axios';
 
 import routes from '../routes.js';
@@ -24,21 +25,41 @@ const getAuthHeader = () => {
 const MainPage = () => {
   const dispatch = useDispatch();
 
+  const getNormalized = (data) => {
+    console.log(data);
+
+    const currentChannelId = new schema.Entity('currentChannelIds');
+    const messageSchema = new schema.Entity('messages');
+    const channelSchema = new schema.Entity('channels');
+
+    const fetchResult = new schema.Entity('fetchResult', {
+        messages: messageSchema,
+        channels: [channelSchema],
+        currentChannelId
+      },
+    );
+
+    const normalizedData = normalize(data, fetchResult);
+    console.log(normalizedData)
+
+    return normalizedData;
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(routes.usersPath(), { headers: getAuthHeader() });
-      debugger
       console.log(data);
-      // const normalizedData = getNormalized(data);
+      const normalizedData = getNormalized(data);
       const {
         channels,
         messages,
-        currentChannelId,
-      } = data;
+      } = normalizedData.entities;
 
-      dispatch(channelsActions.setChannels(channels));
-      // dispatch(channelsActions.setCurrentChannelId(currentChannelId));
-      // dispatch(messagesActions.setMessage(messages));
+      const { currentChannelId } = data;
+
+      dispatch(channelsActions.setChannels({ entities: channels, ids: Object.keys(channels) }));
+      dispatch(channelsActions.setCurrentChannelId(currentChannelId));
+      // dispatch setMessages
     };
 
     fetchData();

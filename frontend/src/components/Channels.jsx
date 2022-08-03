@@ -4,7 +4,10 @@ import { useSelector } from 'react-redux';
 // import { selectors } from '../slices/channelsSlice.js';
 
 const Channels = () => {
-  const { channels } = useSelector((state) => state.channelsReducer);
+  const channels = useSelector((state) => {
+    return Object.values(state.channelsReducer.entities);
+  });
+  console.log(channels);
 
   return (
       <nav className="navbar w-25">
@@ -12,7 +15,7 @@ const Channels = () => {
           <ul className="list-group">
             {channels.map((channel) => (
               <li key={channel.id} className="list-group-item">
-                <h3>{channel.name}</h3>
+                <h3 key={channel.id}>{channel.name}</h3>
               </li>
             ))}
           </ul>

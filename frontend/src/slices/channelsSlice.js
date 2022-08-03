@@ -4,8 +4,9 @@ import { createSlice } from '@reduxjs/toolkit';
 // console.log(channelsAdapter);
 
 const initialState = {
-  channels: [],
-}
+  ids: [],
+  entities: {},
+};
 console.log(initialState)
 
 const channelsSlice = createSlice({
@@ -13,7 +14,15 @@ const channelsSlice = createSlice({
   initialState,
   reducers: {
     setChannels(state, { payload }) {
-      state.channels = payload;
+      console.log(payload);
+      const { entities, ids } = payload;
+      state.entities = entities;
+      state.ids = ids;
+    },
+    setCurrentChannelId(state, { payload }) {
+      const currentChannelId = payload;
+      state.currentChannelId = currentChannelId;
+      console.log(state.currentChannelId);
     },
   },
 });
