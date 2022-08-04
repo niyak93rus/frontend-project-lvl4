@@ -1,12 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-// import { selectors } from '../slices/channelsSlice.js';
+import { selectors } from '../slices/channelsSlice.js';
 
 const Channels = () => {
-  const channels = useSelector((state) => {
-    return Object.values(state.channelsReducer.entities);
-  });
+  const channels = useSelector(selectors.selectAll);
   console.log(channels);
 
   return (

@@ -5,8 +5,8 @@ import usersReducer from './usersSlice.js';
 
 export default configureStore({
   reducer: {
-    messagesReducer,
-    channelsReducer,
-    usersReducer,
+    messages: messagesReducer,
+    channels: channelsReducer,
+    users: usersReducer,
   },
 });

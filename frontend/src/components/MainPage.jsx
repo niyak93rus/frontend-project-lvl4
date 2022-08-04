@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import routes from '../routes.js';
 
-import { actions as usersActions } from '../slices/usersSlice.js';
+// import { actions as usersActions } from '../slices/usersSlice.js';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
 import Channels from './Channels.jsx';
@@ -26,21 +26,11 @@ const MainPage = () => {
   const dispatch = useDispatch();
 
   const getNormalized = (data) => {
-    console.log(data);
+    const message = new schema.Entity('messages');
+    const channel = new schema.Entity('channels');
 
-    const currentChannelId = new schema.Entity('currentChannelIds');
-    const messageSchema = new schema.Entity('messages');
-    const channelSchema = new schema.Entity('channels');
-
-    const fetchResult = new schema.Entity('fetchResult', {
-        messages: messageSchema,
-        channels: [channelSchema],
-        currentChannelId
-      },
-    );
-
-    const normalizedData = normalize(data, fetchResult);
-    console.log(normalizedData)
+    const mySchema = { channels: [channel], messages: [message] };
+    const normalizedData = normalize(data, mySchema );
 
     return normalizedData;
   };
@@ -48,7 +38,6 @@ const MainPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(routes.usersPath(), { headers: getAuthHeader() });
-      console.log(data);
       const normalizedData = getNormalized(data);
       const {
         channels,
@@ -57,9 +46,14 @@ const MainPage = () => {
 
       const { currentChannelId } = data;
 
-      dispatch(channelsActions.setChannels({ entities: channels, ids: Object.keys(channels) }));
-      dispatch(channelsActions.setCurrentChannelId(currentChannelId));
-      // dispatch setMessages
+      try {
+        dispatch(channelsActions.setChannels({ entities: channels, ids: Object.keys(channels) }));
+        dispatch(channelsActions.setCurrentChannelId(currentChannelId));
+        if (!messages) return;
+        dispatch(messagesActions.allMessages({ entities: messages, ids: Object.keys(messages) }));
+      } catch (err) {
+        console.error(err);
+      }      
     };
 
     fetchData();
@@ -71,7 +65,9 @@ const MainPage = () => {
         <div className='col-sm'>
           <Channels />
         </div>
-        <div className='col'>
+        <div className='col-lg'>
+          <Messages />
+          <MessageForm />
         </div>
       </div>
     </div>
