@@ -1,6 +1,6 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 
-const messagesAdapter = createEntityAdapter({ selectId: (message) => message.id });
+const messagesAdapter = createEntityAdapter();
 
 const messagesSlice = createSlice({
   name: 'messages',

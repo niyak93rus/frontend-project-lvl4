@@ -10,6 +10,8 @@ import _ from 'lodash';
 // import { selectors } from '../slices/usersSlice.js';
 import { actions } from '../slices/messagesSlice.js';
 
+import { socket } from '../index.js';
+
 const MessageForm = () => {
   // const users = useSelector(selectors.selectAll);
   const dispatch = useDispatch();
@@ -23,14 +25,21 @@ const MessageForm = () => {
   const onSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
+    const username = JSON.parse(localStorage.getItem('userId')).username;
     const message = {
       body: data.get('body'),
-      author: data.get('author'),
+      username,
       id: _.uniqueId(),
       comments: [],
     };
 
-    setText('');
+    if (message.body) {
+      socket.connected ? socket.emit('newMessage', message) : console.log('Socket not connected!');
+      
+      setText('');
+    }
+
+    console.log(message);
     dispatch(actions.addMessage(message));
   };
 

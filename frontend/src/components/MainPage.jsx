@@ -5,12 +5,12 @@ import axios from 'axios';
 
 import routes from '../routes.js';
 
-// import { actions as usersActions } from '../slices/usersSlice.js';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
 import MessageForm from './MessageForm.jsx';
+import { socket } from '../index.js';
 
 const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -30,8 +30,7 @@ const MainPage = () => {
     const channel = new schema.Entity('channels');
 
     const mySchema = { channels: [channel], messages: [message] };
-    const normalizedData = normalize(data, mySchema );
-
+    const normalizedData = normalize(data, mySchema);
     return normalizedData;
   };
 
@@ -50,14 +49,20 @@ const MainPage = () => {
         dispatch(channelsActions.setChannels({ entities: channels, ids: Object.keys(channels) }));
         dispatch(channelsActions.setCurrentChannelId(currentChannelId));
         if (!messages) return;
-        dispatch(messagesActions.allMessages({ entities: messages, ids: Object.keys(messages) }));
+        dispatch(messagesActions.allMessages(messages));
       } catch (err) {
         console.error(err);
-      }      
+      }
     };
 
     fetchData();
   });
+
+  useEffect(() => {
+    socket.on('newMessage', (payload) => {
+      console.log(payload);
+    });
+  })
 
   return (
     <div className="container p-0">

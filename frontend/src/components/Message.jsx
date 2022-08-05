@@ -1,12 +1,12 @@
-// import React from 'react';
-// import { useSelector } from 'react-redux';
-// import { selectors } from '../slices/usersSlice.js';
+import React from 'react';
 
 const Message = ({ message }) => {
+  const username = message.username || 'anon';
+
   return (
     <div className="card">
       <div className="card-header">
-        {`${message.body}`}
+        {`${username}: ${message.body}`}
       </div>
     </div>
   );

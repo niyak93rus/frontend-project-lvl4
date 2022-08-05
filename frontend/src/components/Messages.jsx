@@ -8,8 +8,6 @@ import { selectors } from '../slices/messagesSlice.js';
 const Messages = () => {
   const messages = useSelector(selectors.selectAll);
 
-  console.log(messages)
-
   return messages.length > 0 
     ? (<div className="mt-3">
     <ul className="list-group">

@@ -5,7 +5,6 @@ import { selectors } from '../slices/channelsSlice.js';
 
 const Channels = () => {
   const channels = useSelector(selectors.selectAll);
-  console.log(channels);
 
   return (
       <nav className="navbar w-25">
