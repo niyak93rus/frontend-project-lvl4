@@ -64,15 +64,15 @@ const App = () => {
     <AuthProvider>
       <Router>
         <Navbar bg="light" expand="lg">
-          <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/">My Chat</Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Link as={Link} to="/">Главная</Nav.Link>
           </Nav>
           <AuthButton />
         </Navbar>
 
-        <div className="container p-3">
-          <h1 className="text-center mt-5 mb-4">Hexlet Chat</h1>
+        <div className="container p-3 h-100 w-100">
+          <h1 className="text-center mt-5 mb-4">My Chat</h1>
           <Routes>
             <Route
               path="/"

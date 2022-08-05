@@ -12,7 +12,8 @@ import { actions } from '../slices/messagesSlice.js';
 
 import { socket } from '../index.js';
 
-const MessageForm = () => {
+const MessageForm = (props) => {
+  const { currentChannelId } = props;
   // const users = useSelector(selectors.selectAll);
   const dispatch = useDispatch();
   const [text, setText] = useState('');
@@ -31,16 +32,18 @@ const MessageForm = () => {
       username,
       id: _.uniqueId(),
       comments: [],
+      channelId: currentChannelId,
     };
 
     if (message.body) {
-      socket.connected ? socket.emit('newMessage', message) : console.log('Socket not connected!');
-      
+      socket.connected
+        ? socket.emit('newMessage', message, (response) => {
+          response.status === 'ok' ? dispatch(actions.addMessage(message)) : console.log('Something went wrong');
+        })
+        : console.log('Socket not connected');
+
       setText('');
     }
-
-    console.log(message);
-    dispatch(actions.addMessage(message));
   };
 
   const handleChange = (e) => {
@@ -51,8 +54,15 @@ const MessageForm = () => {
     <div className="m-3">
       <Form onSubmit={onSubmit}>
         <Form.Group as={Row}>
-          <Form.Label htmlFor="body">Текст</Form.Label>
-          <Form.Control name="body" id="body" as="textarea" value={text} onChange={(e) => handleChange(e)} ref={inputRef} rows={3} />
+          <Form.Control
+            name="body"
+            id="body" 
+            as="textarea" 
+            value={text} 
+            onChange={(e) => handleChange(e)}
+            placeholder='Введите сообщение'
+            ref={inputRef} 
+            rows={1} />
         </Form.Group>
 
         <Form.Group className="mt-3" as={Row}>

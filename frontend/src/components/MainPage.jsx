@@ -1,16 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { normalize, schema } from 'normalizr';
-import axios from 'axios';
 
-import routes from '../routes.js';
+import axios from 'axios';
 
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
+
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
 import MessageForm from './MessageForm.jsx';
+
 import { socket } from '../index.js';
+import routes from '../routes.js';
 
 const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -24,6 +26,7 @@ const getAuthHeader = () => {
 
 const MainPage = () => {
   const dispatch = useDispatch();
+  const [currentChannelId, setCurrentChannel] = useState(1);
 
   const getNormalized = (data) => {
     const message = new schema.Entity('messages');
@@ -43,11 +46,8 @@ const MainPage = () => {
         messages,
       } = normalizedData.entities;
 
-      const { currentChannelId } = data;
-
       try {
         dispatch(channelsActions.setChannels({ entities: channels, ids: Object.keys(channels) }));
-        dispatch(channelsActions.setCurrentChannelId(currentChannelId));
         if (!messages) return;
         dispatch(messagesActions.allMessages(messages));
       } catch (err) {
@@ -62,20 +62,27 @@ const MainPage = () => {
     socket.on('newMessage', (payload) => {
       console.log(payload);
     });
+
+    socket.on('newChannel', (payload) => {
+      console.log(payload) // { id: 6, name: "new channel", removable: true }
+    });
   })
 
+  const changeChannel = (channelId='1') => {
+    setCurrentChannel(channelId);
+    dispatch(channelsActions.setCurrentChannelId(channelId));
+  };
+
   return (
-    <div className="container p-0">
-      <div className='row row-cols-2'>
-        <div className='col-sm'>
-          <Channels />
-        </div>
-        <div className='col-lg'>
-          <Messages />
-          <MessageForm />
-        </div>
+    <>
+    <div className="container row p-0 m-0 w-100">
+      <Channels currentChannelId={currentChannelId} changeChannel={changeChannel} />
+      <div className='col p-0'>
+        <Messages currentChannelId={currentChannelId} />
+        <MessageForm currentChannelId={currentChannelId} />
       </div>
     </div>
+    </>
   );
 }
 
