@@ -64,7 +64,7 @@ const MainPage = () => {
     });
 
     socket.on('newChannel', (payload) => {
-      console.log(payload) // { id: 6, name: "new channel", removable: true }
+      console.log(payload);
     });
   })
 

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { io } from "socket.io-client";
 
-import App from './components/App.js';
+import App from './components/App.jsx';
 import store from './slices/index.js';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
