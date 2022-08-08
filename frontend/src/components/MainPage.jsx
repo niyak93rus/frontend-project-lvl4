@@ -27,6 +27,7 @@ const getAuthHeader = () => {
 const MainPage = () => {
   const dispatch = useDispatch();
   const [currentChannelId, setCurrentChannel] = useState(1);
+  const [appError, setAppError] = useState('');
 
   const getNormalized = (data) => {
     const message = new schema.Entity('messages');
@@ -39,24 +40,25 @@ const MainPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get(routes.usersPath(), { headers: getAuthHeader() });
-      const normalizedData = getNormalized(data);
-      const {
-        channels,
-        messages,
-      } = normalizedData.entities;
-
       try {
-        dispatch(channelsActions.setChannels({ entities: channels, ids: Object.keys(channels) }));
-        if (!messages) return;
-        dispatch(messagesActions.allMessages(messages));
+        const { data } = await axios.get(routes.usersPath(), { headers: getAuthHeader() });
+        const normalizedData = getNormalized(data);
+        const {
+          channels,
+          messages,
+        } = normalizedData.entities;
+  
+          dispatch(channelsActions.setChannels({ entities: channels, ids: Object.keys(channels) }));
+          if (!messages) return;
+          dispatch(messagesActions.allMessages(messages));
       } catch (err) {
-        console.error(err);
+        console.error(err.message);
+        err.name === 'AxiosError' ? setAppError('Не удается связаться с сервером') : setAppError('Что-то пошло не так');
       }
     };
 
     fetchData();
-  });
+  }, [dispatch]);
 
   useEffect(() => {
     socket.on('newMessage', (payload) => {
@@ -68,18 +70,19 @@ const MainPage = () => {
     });
   })
 
-  const changeChannel = (channelId='1') => {
+  const changeChannel = (channelId=1) => {
     setCurrentChannel(channelId);
     dispatch(channelsActions.setCurrentChannelId(channelId));
   };
 
   return (
     <>
-    <div className="container row p-0 m-0 w-100">
+    <div className="container row m-3 w-100">
       <Channels currentChannelId={currentChannelId} changeChannel={changeChannel} />
-      <div className='col p-0'>
+      <div className='col m-3'>
         <Messages currentChannelId={currentChannelId} />
         <MessageForm currentChannelId={currentChannelId} />
+        {appError && <div className='text-danger'>{appError}</div>}
       </div>
     </div>
     </>

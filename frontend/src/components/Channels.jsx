@@ -25,17 +25,43 @@ const Channels = (props) => {
 
   return (
     <>
-      <div className="col-md-2 align-items-start float-left" style={{ width: "150px" }}>
-        <span className='text-center d-flex justify-content-between'>
+      <div className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
+        <span className='text-center'>
           Каналы
           <Button className='btn sm-5' onClick={() => showModal('adding')} data-testid="item-add">+</Button>
         </span>
-        <nav className="navbar">
+        <nav className="navbar w-100">
           <div className="mt-3">
             <ul className="list-group">
               {channels.map((channel) => (
                 <li key={channel.id} onClick={() => changeChannel(channel.id)} className="list-group-item">
-                  <Button className='btn chnl btn-block' variant={(channel.id === currentChannelId) ? 'secondary' : 'light'} key={channel.id}># {channel.name}</Button>
+                  {<div className="btn-group d-flex">
+                    <Button className='btn btn-block' variant={(channel.id === currentChannelId) ? 'secondary' : 'light'} key={channel.id}># {channel.name}</Button>
+                    <Button
+                      type="button"
+                      className="btn dropdown-toggle dropdown-toggle-split"
+                      data-bs-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      variant={(channel.id === currentChannelId) ? 'secondary' : 'light'}>
+                      <span className="sr-only"></span>
+                    </Button>
+                    <div className="dropdown-menu">
+                      <Button
+                        className="dropdown-item"
+                        onClick={() => showModal('renaming', channel)}
+                        data-testid="item-rename">
+                        Rename
+                      </Button>
+                      <Button
+                        className="dropdown-item"
+                        onClick={() => showModal('removing', channel)}
+                        data-testid="item-remove">
+                        Remove
+                      </Button>
+                    </div>
+                  </div>
+                  }
                 </li>
               ))}
             </ul>

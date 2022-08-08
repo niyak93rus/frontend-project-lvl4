@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
 export const socket = io.connect();
+window.socket = socket;
 socket.on('connect', () => {
   console.log("Connected to WS server");
 });

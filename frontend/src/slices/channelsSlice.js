@@ -7,6 +7,8 @@ const channelsSlice = createSlice({
   initialState: channelsAdapter.getInitialState(),
   reducers: {
     addChannel: channelsAdapter.addOne,
+    removeChannel: channelsAdapter.removeOne,
+    renameChannel: channelsAdapter.updateOne,
     setChannels(state, { payload }) {
       const { entities, ids } = payload;
       state.entities = entities;

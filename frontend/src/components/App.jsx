@@ -1,3 +1,4 @@
+import 'bootstrap';
 import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
@@ -9,12 +10,14 @@ import {
 } from 'react-router-dom';
 import { Button, Navbar, Nav } from 'react-bootstrap';
 
-import NoMatch from "./NoMatch";
-import LoginPage from "./Login";
 import AuthContext from '../contexts/index.jsx';
 import useAuth from '../hooks/index.jsx';
 import '../App.css';
+
+import NoMatch from './NoMatch';
+import LoginPage from './Login.jsx';
 import MainPage from './MainPage';
+import SignupPage from './Signup.jsx';
 
 const checkAuthorization = () => {
   if (localStorage.getItem('userId')) {
@@ -64,15 +67,15 @@ const App = () => {
     <AuthProvider>
       <Router>
         <Navbar bg="light" expand="lg">
-          <Navbar.Brand as={Link} to="/">My Chat</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Link as={Link} to="/">Главная</Nav.Link>
+            <Nav.Link as={Link} to="/signup">Регистрация</Nav.Link>
           </Nav>
           <AuthButton />
         </Navbar>
 
         <div className="container p-3 h-100 w-100">
-          <h1 className="text-center mt-5 mb-4">My Chat</h1>
           <Routes>
             <Route
               path="/"
@@ -83,6 +86,7 @@ const App = () => {
               )}
             />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
             <Route path="*" element={<NoMatch />} />
 
           </Routes>

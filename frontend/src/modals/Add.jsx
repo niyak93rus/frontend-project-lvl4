@@ -8,7 +8,7 @@ import { socket } from '../index.js';
 import { selectors } from '../slices/channelsSlice.js';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 
-const generateOnSubmit = ({ onHide, modalInfo }, channels, dispatch) => (values) => {
+const generateOnSubmit = ({ onHide, modalInfo }, dispatch) => (values) => {
   const newChannelName = values.channelName;
   const { changeChannel } = modalInfo;
 
@@ -22,13 +22,12 @@ const generateOnSubmit = ({ onHide, modalInfo }, channels, dispatch) => (values)
 };
 
 const Add = (props) => {
-  console.log(props);
   const dispatch = useDispatch();
   const channels = useSelector(selectors.selectAll);
   const channelNames = channels.map((channel) => channel.name);
   const { onHide } = props;
   const f = useFormik({ 
-    onSubmit: generateOnSubmit(props, channels, dispatch), 
+    onSubmit: generateOnSubmit(props, dispatch), 
     initialValues: { channelName: '' },
     validationSchema: Yup.object({
       channelName: Yup.string()

@@ -7,6 +7,7 @@
     "node": "16.x"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.5",
     "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
@@ -15,7 +16,9 @@
     "bootstrap": "^5.2.0",
     "formik": "^2.2.9",
     "immer": "^9.0.15",
+    "jquery": "^3.6.0",
     "normalizr": "^3.6.2",
+    "popper.js": "^1.16.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.4.0",
     "react-dom": "^18.2.0",
