@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom';
 import { Button, Navbar, Nav } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { ToastContainer } from 'react-toastify';
 
 import AuthContext from '../contexts/index.jsx';
 import useAuth from '../hooks/index.jsx';
@@ -97,6 +98,7 @@ const App = () => {
 
           </Routes>
         </div>
+        <ToastContainer />
 
       </Router>
     </AuthProvider>

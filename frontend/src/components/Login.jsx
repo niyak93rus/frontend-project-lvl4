@@ -5,11 +5,13 @@ import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
+import 'react-toastify/dist/ReactToastify.css';
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 
-export const authorizeUser = async (userData, setAuthFailed, auth, navigate) => {
+export const authorizeUser = async (userData, setAuthFailed, auth, navigate, notify) => {
   setAuthFailed(false);
   const getPath = routes.loginPath();
   try {
@@ -21,12 +23,14 @@ export const authorizeUser = async (userData, setAuthFailed, auth, navigate) => 
   } catch (err) {
     if (err.isAxiosError && err.response.status === 401) {
       setAuthFailed(true);
+      notify(err.message);
     }
     throw err;
   }
 };
 
 const LoginForm = () => {
+  const notify = (text) => toast(text);
   const [authFailed, setAuthFailed] = useState(false);
   const navigate = useNavigate();
   const auth = useAuth();
@@ -52,7 +56,7 @@ const LoginForm = () => {
         .max(20, t('errors.password.length'))
         .required(t('errors.password.required')),
     }),
-    onSubmit: (values) => authorizeUser(values, setAuthFailed, auth, navigate),
+    onSubmit: (values) => authorizeUser(values, setAuthFailed, auth, navigate, notify),
   });
 
   return (
