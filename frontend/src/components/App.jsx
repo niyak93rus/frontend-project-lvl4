@@ -19,7 +19,7 @@ import LoginPage from './Login.jsx';
 import MainPage from './MainPage';
 import SignupPage from './Signup.jsx';
 
-const checkAuthorization = () => {
+export const checkAuthorization = () => {
   if (localStorage.getItem('userId')) {
     return true;
   }
@@ -27,16 +27,18 @@ const checkAuthorization = () => {
 }
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(checkAuthorization());
+  const [userData, setUserData] = useState({});
 
-  const logIn = () => setLoggedIn(true);
+  const logIn = ({username, password}) => {
+    setUserData({username, password});
+  }
   const logOut = () => {
     localStorage.removeItem('userId');
-    setLoggedIn(false);
+    setUserData(null);
   };
 
   return (
-    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
+    <AuthContext.Provider value={{ userData, logIn, logOut }}>
       {children}
     </AuthContext.Provider>
   );
@@ -47,7 +49,7 @@ const MainRoute = ({ children }) => {
   const location = useLocation();
 
   return (
-    auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
+    auth.userData ? children : <Navigate to="/login" state={{ from: location }} />
   );
 };
 
@@ -56,7 +58,7 @@ const AuthButton = () => {
   const location = useLocation();
 
   return (
-    auth.loggedIn
+    auth.userData
       ? <Button onClick={auth.logOut}>Выйти</Button>
       : <Button as={Link} to="/login" state={{ from: location }}>Войти</Button>
   );

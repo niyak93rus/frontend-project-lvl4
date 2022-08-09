@@ -6,13 +6,15 @@ import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 import useAuth from '../hooks/index.jsx';
+import { authorizeUser } from './Login.jsx';
 
 const SignupForm = () => {
   const [signupError, setSignupError] = useState('');
+  const [authFailed, setAuthFailed] = useState(false);
   const navigate = useNavigate();
   const auth = useAuth();
   const inputRef = useRef();
-
+  
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -21,11 +23,8 @@ const SignupForm = () => {
     const { username, password } = userData;
     console.log(username, password);
     axios.post('/api/v1/signup', { username, password }).then((response) => {
-      console.log(response.data); // => { token: ..., username: 'newuser' }
-      const { token } = response.data;
-      localStorage.setItem('userId', JSON.stringify(token));
-      auth.logIn();
-      navigate('/');
+      console.log(response.data);
+      authorizeUser(userData, setAuthFailed, auth, navigate);
     }).catch((err) => {
       console.error(err);
       err.request.status === 409
@@ -117,6 +116,7 @@ const SignupForm = () => {
             )}
             {f.errors.passwordConfirmation && <div className="invalid-feedback d-block">Введен неверный логин или пароль</div>}
             {signupError && <div className="invalid-feedback d-block">{signupError}</div>}
+            {authFailed && <div className="invalid-feedback d-block">Не удалось авторизоваться</div>}
           </Form.Group>
           <Button variant="primary" type="submit">
             Зарегистрироваться
@@ -125,7 +125,6 @@ const SignupForm = () => {
       </div>
     </>
   );
-  // END
 };
 
 export default SignupForm;

@@ -3,39 +3,36 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
+
+export const authorizeUser = async (userData, setAuthFailed, auth, navigate) => {
+  setAuthFailed(false);
+  const getPath = routes.loginPath();
+  try {
+    const request = await axios.post(getPath, userData);
+    const token = request.data;
+    localStorage.setItem('userId', JSON.stringify(token));
+    auth.logIn(userData);
+    navigate('/');
+  } catch (err) {
+    if (err.isAxiosError && err.response.status === 401) {
+      setAuthFailed(true);
+    }
+    throw err;
+  }
+};
 
 const LoginForm = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
   const auth = useAuth();
   const inputRef = useRef();
 
   useEffect(() => {
     inputRef.current.focus();
   }, []);
-
-  const authorizeUser = async (userData) => {
-    setAuthFailed(false);
-    const getPath = routes.loginPath();
-    try {
-      const request = await axios.post(getPath, userData);
-      const token = request.data;
-      localStorage.setItem('userId', JSON.stringify(token));
-      auth.logIn();
-      const { from } = location.state || { from: { pathname: '/' } };
-      navigate(from);
-    } catch (err) {
-      if (err.isAxiosError && err.response.status === 401) {
-        setAuthFailed(true);
-        inputRef.current.select();
-      }
-      throw err;
-    }
-  };
 
   const f = useFormik({
     initialValues:
@@ -53,7 +50,7 @@ const LoginForm = () => {
         .max(20, 'Пароль должен быть меньше 20 символов')
         .required('Пароль обязателен!'),
     }),
-    onSubmit: (values) => authorizeUser(values),
+    onSubmit: (values) => authorizeUser(values, setAuthFailed, auth, navigate),
   });
 
   return (

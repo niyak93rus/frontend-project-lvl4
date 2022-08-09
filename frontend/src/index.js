@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { io } from "socket.io-client";
 
 import App from './components/App.jsx';
+import './i18n';
 import store from './slices/index.js';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
