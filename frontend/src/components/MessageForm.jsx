@@ -1,23 +1,19 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
 import {
   Form,
   Button,
   Row,
 } from 'react-bootstrap';
 import _ from 'lodash';
-
-// import { selectors } from '../slices/usersSlice.js';
-import { actions } from '../slices/messagesSlice.js';
+import { useTranslation } from 'react-i18next';
 
 import { socket } from '../index.js';
 
 const MessageForm = (props) => {
   const { currentChannelId } = props;
-  // const users = useSelector(selectors.selectAll);
-  const dispatch = useDispatch();
   const [text, setText] = useState('');
   const inputRef = useRef(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -36,11 +32,11 @@ const MessageForm = (props) => {
     };
 
     if (message.body) {
-      socket.connected
-        ? socket.emit('newMessage', message, (response) => {
-          response.status === 'ok' ? dispatch(actions.addMessage(message)) : console.log('Something went wrong');
-        })
-        : console.log('Socket not connected');
+      socket.emit('newMessage', message, (response) => {
+        if (!response.status === 'ok') {
+          throw new Error(t('messageNotDelivered'));
+        }
+      });
 
       setText('');
     }
@@ -56,18 +52,18 @@ const MessageForm = (props) => {
         <Form.Group as={Row}>
           <Form.Control
             name="body"
-            id="body" 
-            as="textarea" 
-            value={text} 
+            id="body"
+            as="textarea"
+            value={text}
             onChange={(e) => handleChange(e)}
-            placeholder='Введите сообщение'
-            ref={inputRef} 
+            placeholder={t('message.placeholder')}
+            ref={inputRef}
             rows={1} />
         </Form.Group>
 
         <Form.Group className="mt-3" as={Row}>
           <Button variant="primary" type="submit">
-            Отправить сообщение
+            {t('message.button')}
           </Button>
         </Form.Group>
       </Form>

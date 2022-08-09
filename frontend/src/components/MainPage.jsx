@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { normalize, schema } from 'normalizr';
+import { useTranslation } from 'react-i18next';
 
 import axios from 'axios';
 
@@ -28,6 +29,7 @@ const MainPage = () => {
   const dispatch = useDispatch();
   const [currentChannelId, setCurrentChannel] = useState(1);
   const [appError, setAppError] = useState('');
+  const { t } = useTranslation();
 
   const getNormalized = (data) => {
     const message = new schema.Entity('messages');
@@ -53,20 +55,22 @@ const MainPage = () => {
           dispatch(messagesActions.allMessages(messages));
       } catch (err) {
         console.error(err.message);
-        err.name === 'AxiosError' ? setAppError('Не удается связаться с сервером') : setAppError('Что-то пошло не так');
+        err.name === 'AxiosError' ? setAppError(t('axiosError')) : setAppError(t('unnknownError'));
       }
     };
 
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, t]);
 
   useEffect(() => {
     socket.on('newMessage', (payload) => {
       console.log(payload);
+      dispatch(messagesActions.addMessage(payload))
     });
 
     socket.on('newChannel', (payload) => {
       console.log(payload);
+      dispatch(channelsActions.addChannel(payload));
     });
   })
 

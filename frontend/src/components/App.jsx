@@ -9,6 +9,7 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { Button, Navbar, Nav } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import AuthContext from '../contexts/index.jsx';
 import useAuth from '../hooks/index.jsx';
@@ -55,24 +56,27 @@ const MainRoute = ({ children }) => {
 
 const AuthButton = () => {
   const auth = useAuth();
+  const { t } = useTranslation('translation');
   const location = useLocation();
 
   return (
     auth.userData
-      ? <Button onClick={auth.logOut}>Выйти</Button>
-      : <Button as={Link} to="/login" state={{ from: location }}>Войти</Button>
+      ? <Button onClick={auth.logOut}>{t('logOut')}</Button>
+      : <Button as={Link} to="/login" state={{ from: location }}>{t('logIn')}</Button>
   );
 };
 
 const App = () => {
+  const { t } = useTranslation();
+
   return (
     <AuthProvider>
       <Router>
         <Navbar bg="light" expand="lg">
           <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
           <Nav className="mr-auto">
-            <Nav.Link as={Link} to="/">Главная</Nav.Link>
-            <Nav.Link as={Link} to="/signup">Регистрация</Nav.Link>
+            <Nav.Link as={Link} to="/">{t('mainPage')}</Nav.Link>
+            <Nav.Link as={Link} to="/signup">{t('registration')}</Nav.Link>
           </Nav>
           <AuthButton />
         </Navbar>

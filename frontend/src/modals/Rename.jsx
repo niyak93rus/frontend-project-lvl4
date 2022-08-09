@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { Modal, FormGroup, FormControl } from 'react-bootstrap';
 import * as Yup from 'yup';
+import { useTranslation } from 'react-i18next';
 
 import { socket } from '../index.js';
 import { selectors } from '../slices/channelsSlice.js';
@@ -21,6 +22,8 @@ const generateOnSubmit = ({ modalInfo, onHide }, dispatch) => (values) => {
 const Rename = (props) => {
   const dispatch = useDispatch();
   const channels = useSelector(selectors.selectAll);
+  const { t } = useTranslation();
+
   const channelNames = channels.map((channel) => channel.name);
   const { onHide, modalInfo } = props;
   const { item } = modalInfo;
@@ -30,8 +33,8 @@ const Rename = (props) => {
     initialValues: item,
     validationSchema: Yup.object({
       channelName: Yup.string()
-        .notOneOf(channelNames, 'Такой канал уже добавлен!')
-        .required('Укажите название канала!'),
+        .notOneOf(channelNames, t('errors.other.existingChannel'))
+        .required(t('errors.other.requiredChannelname')),
     }),
    });
   
@@ -43,7 +46,7 @@ const Rename = (props) => {
   return (
     <Modal show>
       <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('rename')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -63,7 +66,7 @@ const Rename = (props) => {
           {f.touched.channelName && f.errors.channelName && (
             <div className='text-danger'>{f.errors.channelName}</div>
           )}
-          <input type="submit" className="btn btn-primary mt-2" value="Изменить имя" />
+          <input type="submit" className="btn btn-primary mt-2" value={t('rename')} />
         </form>
       </Modal.Body>
     </Modal>

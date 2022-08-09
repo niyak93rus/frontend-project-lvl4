@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import useAuth from '../hooks/index.jsx';
 import { authorizeUser } from './Login.jsx';
@@ -14,6 +15,7 @@ const SignupForm = () => {
   const navigate = useNavigate();
   const auth = useAuth();
   const inputRef = useRef();
+  const { t } = useTranslation();
   
   useEffect(() => {
     inputRef.current.focus();
@@ -28,30 +30,29 @@ const SignupForm = () => {
     }).catch((err) => {
       console.error(err);
       err.request.status === 409
-        ? setSignupError('Пользователь с таким именем уже существует!')
-        : setSignupError('Что-то пошло не так');
+        ? setSignupError(t('errors.other.existingUsername'))
+        : setSignupError(t('errors.other.unnknownError'));
     });
   };
 
   const f = useFormik({
-    initialValues:
-    {
+    initialValues: {
       username: '',
       password: '',
       passwordConfirmation: ''
     },
     validationSchema: Yup.object({
       username: Yup.string()
-        .min(3, 'Логин должен быть от 3 до 20 символов')
-        .max(20, 'Логин должен быть от 3 до 20 символов')
-        .required('Логин обязателен!'),
+        .min(3, t('errors.username.length'))
+        .max(20, t('errors.username.length'))
+        .required(t('errors.username.required')),
       password: Yup.string()
-        .min(6, 'Пароль должен содержать не менее 6 символов')
-        .max(20, 'Пароль должен быть меньше 20 символов')
-        .required('Пароль обязателен!'),
+        .min(6, t('errors.password.length'))
+        .max(20, t('errors.password.length'))
+        .required(t('errors.password.required')),
       passwordConfirmation: Yup.string()
-        .required('Введите подтверждение пароля!')
-        .oneOf([Yup.ref('password'), null], 'Не совпадает с введенным паролем')
+        .required(t('errors.passwordConfirmation.required'))
+        .oneOf([Yup.ref('password'), null], t('errors.passwordConfirmation.oneOf'))
     }),
     onSubmit: (values) => signUpUser(values),
   });
@@ -59,14 +60,14 @@ const SignupForm = () => {
   return (
     <>
       <div className='container w-50'>
-        <h2 className='text-center'>Регистрация</h2>
+        <h2 className='text-center'>{t('registration')}</h2>
         <Form onSubmit={f.handleSubmit}>
           <Form.Group className="mb-3" controlId="formLogin">
-            <Form.Label>Логин</Form.Label>
+            <Form.Label>{t('loginLabel')}</Form.Label>
             <Form.Control
               autoComplete="username"
               type="username"
-              placeholder="Введите логин"
+              placeholder={t('loginPlaceholder')}
               onChange={f.handleChange}
               value={f.values.username}
               data-testid="input-username"
@@ -81,11 +82,11 @@ const SignupForm = () => {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPassword">
-            <Form.Label>Пароль</Form.Label>
+            <Form.Label>{t('passwordLabel')}</Form.Label>
             <Form.Control
               autoComplete="current-password"
               type="password"
-              placeholder="Введите пароль"
+              placeholder={t('passwordPlaceholder')}
               value={f.values.password}
               onChange={f.handleChange}
               data-testid="input-password"
@@ -96,14 +97,14 @@ const SignupForm = () => {
             {f.touched.password && f.errors.password && (
               <p className='text-danger'>{f.errors.password}</p>
             )}
-            {f.errors.password && <div className="invalid-feedback d-block">Введен неверный логин или пароль</div>}
+            {f.errors.password && <div className="invalid-feedback d-block">{f.errors.password}</div>}
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPasswordConfirmation">
-            <Form.Label>Подтверждение пароля</Form.Label>
+            <Form.Label>{t('passwordConfirmationLabel')}</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Введите пароль еще раз"
+              placeholder={t('passwordConfirmationPlaceholder')}
               value={f.values.passwordConfirmation}
               onChange={f.handleChange}
               data-testid="input-passwordConfirmation"
@@ -114,12 +115,12 @@ const SignupForm = () => {
             {f.touched.passwordConfirmation && f.errors.passwordConfirmation && (
               <p className='text-danger'>{f.errors.passwordConfirmation}</p>
             )}
-            {f.errors.passwordConfirmation && <div className="invalid-feedback d-block">Введен неверный логин или пароль</div>}
+            {f.errors.passwordConfirmation && <div className="invalid-feedback d-block">{f.errors.passwordConfirmation}</div>}
             {signupError && <div className="invalid-feedback d-block">{signupError}</div>}
-            {authFailed && <div className="invalid-feedback d-block">Не удалось авторизоваться</div>}
+            {authFailed && <div className="invalid-feedback d-block">{t('errors.other.unnknownError')}</div>}
           </Form.Group>
           <Button variant="primary" type="submit">
-            Зарегистрироваться
+            {t('signUp')}
           </Button>
         </Form>
       </div>

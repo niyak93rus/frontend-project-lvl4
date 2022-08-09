@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { io } from "socket.io-client";
+import { I18nextProvider } from 'react-i18next';
 
 import App from './components/App.jsx';
 import './i18n';
@@ -19,7 +20,9 @@ socket.on('connect', () => {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <App />
+    <I18nextProvider>
+      <App />
+    </I18nextProvider>
   </Provider>
 );
 

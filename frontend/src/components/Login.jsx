@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 
@@ -29,26 +31,26 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const auth = useAuth();
   const inputRef = useRef();
+  const { t } = useTranslation();
 
   useEffect(() => {
     inputRef.current.focus();
   }, []);
 
   const f = useFormik({
-    initialValues:
-    {
+    initialValues: {
       username: '',
       password: ''
     },
     validationSchema: Yup.object({
       username: Yup.string()
-        .min(2, 'Логин должен быть больше 2 символов')
-        .max(20, 'Логин должен быть меньше 20 символов')
-        .required('Логин обязателен!'),
+        .min(2, t('errors.username.length'))
+        .max(20, t('errors.username.length'))
+        .required(t('errors.username.required')),
       password: Yup.string()
-        .min(4, 'Пароль должен быть больше 4 символов')
-        .max(20, 'Пароль должен быть меньше 20 символов')
-        .required('Пароль обязателен!'),
+        .min(2, t('errors.password.length'))
+        .max(20, t('errors.password.length'))
+        .required(t('errors.password.required')),
     }),
     onSubmit: (values) => authorizeUser(values, setAuthFailed, auth, navigate),
   });
@@ -56,11 +58,11 @@ const LoginForm = () => {
   return (
     <Form onSubmit={f.handleSubmit}>
       <Form.Group className="mb-3" controlId="formLogin">
-        <Form.Label>Логин</Form.Label>
+        <Form.Label>{t('loginLabel')}</Form.Label>
         <Form.Control
           autoComplete="username"
           type="username"
-          placeholder="Введите логин"
+          placeholder={t('loginPlaceholder')}
           onChange={f.handleChange}
           value={f.values.username}
           data-testid="input-username"
@@ -70,16 +72,16 @@ const LoginForm = () => {
           required
         />
         {f.touched.username && f.errors.username && (
-            <span className='text-danger'>{f.errors.username}</span>
-          )}
+          <span className='text-danger'>{f.errors.username}</span>
+        )}
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formPassword">
-        <Form.Label>Пароль</Form.Label>
+        <Form.Label>{t('passwordLabel')}</Form.Label>
         <Form.Control
           autoComplete="current-password"
           type="password"
-          placeholder="Введите пароль"
+          placeholder={t('passwordPlaceholder')}
           value={f.values.password}
           onChange={f.handleChange}
           data-testid="input-password"
@@ -88,12 +90,12 @@ const LoginForm = () => {
           required
         />
         {f.touched.password && f.errors.password && (
-            <p className='text-danger'>{f.errors.password}</p>
-          )}
-        {authFailed ? <div className="invalid-feedback d-block">Введен неверный логин или пароль</div> : null}
+          <p className='text-danger'>{f.errors.password}</p>
+        )}
+        {authFailed ? <div className="invalid-feedback d-block">{t('errors.other.authFailed')}</div> : null}
       </Form.Group>
       <Button variant="primary" type="submit">
-        Войти
+        {t('logIn')}
       </Button>
     </Form>
   );

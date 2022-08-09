@@ -1,20 +1,19 @@
 import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Modal, FormGroup, FormControl } from 'react-bootstrap';
 import * as Yup from 'yup';
+import { useTranslation } from 'react-i18next';
 
 import { socket } from '../index.js';
 import { selectors } from '../slices/channelsSlice.js';
-import { actions as channelsActions } from '../slices/channelsSlice.js';
 
-const generateOnSubmit = ({ onHide, modalInfo }, dispatch) => (values) => {
+const generateOnSubmit = ({ onHide, modalInfo }) => (values) => {
   const newChannelName = values.channelName;
   const { changeChannel } = modalInfo;
 
   socket.emit('newChannel', { name: newChannelName });
   socket.on('newChannel', (payload) => {
-    dispatch(channelsActions.addChannel(payload));
     changeChannel(payload.id);
   });
 
@@ -22,17 +21,18 @@ const generateOnSubmit = ({ onHide, modalInfo }, dispatch) => (values) => {
 };
 
 const Add = (props) => {
-  const dispatch = useDispatch();
   const channels = useSelector(selectors.selectAll);
+  const { t } = useTranslation();
+
   const channelNames = channels.map((channel) => channel.name);
   const { onHide } = props;
   const f = useFormik({ 
-    onSubmit: generateOnSubmit(props, dispatch), 
+    onSubmit: generateOnSubmit(props),
     initialValues: { channelName: '' },
     validationSchema: Yup.object({
       channelName: Yup.string()
-        .notOneOf(channelNames, 'Такой канал уже добавлен!')
-        .required('Укажите название канала!'),
+        .notOneOf(channelNames, t('errors.other.existingChannel'))
+        .required(t('errors.other.requiredChannelname')),
     }),
   });
 
@@ -44,7 +44,7 @@ const Add = (props) => {
   return (
     <Modal show>
       <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t('addChannel')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -64,7 +64,7 @@ const Add = (props) => {
           {f.touched.channelName && f.errors.channelName && (
             <div className='text-danger'>{f.errors.channelName}</div>
           )}
-          <input type="submit" className="btn btn-primary mt-2" value="Добавить" />
+          <input type="submit" className="btn btn-primary mt-2" value={t('addChannel')} />
         </form>
       </Modal.Body>
     </Modal>
