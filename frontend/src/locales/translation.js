@@ -45,6 +45,7 @@ const resources = {
     passwordLabel: "Пароль",
     passwordPlaceholder: 'Пароль',
     prompt: 'Вы уверены?',
+    promptSignUp: 'Нет аккаунта?',
     registration: "Регистрация",
     rename: "Переименовать",
     remove: "Удалить",

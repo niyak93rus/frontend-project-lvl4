@@ -11,7 +11,7 @@ import { useRollbar } from '@rollbar/react';
 import 'react-toastify/dist/ReactToastify.css';
 
 import useAuth from '../hooks/index.jsx';
-import { authorizeUser } from './Login.jsx';
+import { logIn } from './Login.jsx';
 
 const SignupForm = () => {
   const [signupError, setSignupError] = useState('');
@@ -31,10 +31,8 @@ const SignupForm = () => {
   }, []);
 
   const signUpUser = async (userData) => {
-    const { username, password } = userData;
-    console.log(username, password);
-    axios.post('/api/v1/signup', { username, password }).then(() => {
-      authorizeUser(userData, setAuthFailed, auth, navigate);
+    axios.post('/api/v1/signup', userData).then(() => {
+      logIn(userData, navigate, auth);
     }).catch((err) => {
       console.error(err);
 
