@@ -18,7 +18,7 @@ const SignupForm = () => {
   const navigate = useNavigate();
   const auth = useAuth();
   const inputRef = useRef();
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const notify = (message) => toast.error(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER
   });
