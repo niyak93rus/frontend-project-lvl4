@@ -10,12 +10,12 @@ const Messages = (props) => {
   const { currentChannelId } = props;
 
   return messages.length > 0
-    ? (<div className="mt-3">
-      <ul className="list-group">
+    ? (<div className="mt-3 bg-light">
+      <ul className="list-group bg-light">
         {messages
           .filter((message) => Number(message.channelId) === Number(currentChannelId))
           .map((message) => (
-            <li key={nanoid()} className="list-group-item">
+            <li key={nanoid()} className="list-group-item border-0 bg-light">
               <Message key={message.id} message={message} />
             </li>
           ))}

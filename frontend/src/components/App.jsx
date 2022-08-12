@@ -23,12 +23,12 @@ import LoginPage from './Login.jsx';
 import MainPage from './MainPage';
 import SignupPage from './Signup.jsx';
 
-const checkAuthorization = () => {
-  if (localStorage.getItem('userId')) {
-    return true;
-  }
-  return false;
-}
+// const checkAuthorization = () => {
+//   if (localStorage.getItem('userId')) {
+//     return true;
+//   }
+//   return false;
+// }
 
 const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState({});
@@ -93,7 +93,7 @@ const App = () => {
               <AuthButton />
             </Navbar>
 
-            <div className="container p-3 h-100 w-100">
+            <div className="container p-3 mt-3 h-100 w-100 bg-light">
               <Routes>
                 <Route
                   path="/"

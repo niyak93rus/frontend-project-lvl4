@@ -9,30 +9,40 @@ import 'react-toastify/dist/ReactToastify.css';
 import { socket } from '../index.js';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 
-const generateOnSubmit = ({ modalInfo, onHide }, dispatch, notify) => (e) => {
+const generateOnSubmit = ({ modalInfo, onHide }, dispatch, notify, t) => (e) => {
   e.preventDefault();
-  const { changeChannel } = modalInfo;
-
-  socket.emit('removeChannel', { id: modalInfo.item.id });
-  notify('channelRemoved');
-
-  socket.on('removeChannel', (payload) => {
-    dispatch(channelsActions.removeChannel(payload.id));
-    changeChannel();
-  });
-  onHide();
+  const { changeChannel, item } = modalInfo;
+  if (item.removable) {
+    socket.emit('removeChannel', { id: item.id });
+    notify['success']('channelRemoved');
+  
+    socket.on('removeChannel', (payload) => {
+      dispatch(channelsActions.removeChannel(payload.id));
+      changeChannel();
+    });
+    onHide();
+  } else {
+    const errorName = 'errors.other.notRemovable';
+    console.error(t(errorName));
+    notify['error'](errorName);
+  }
 };
 
 const Remove = (props) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const notify = (message) => toast.success(t(`${message}`), {
-    position: toast.POSITION.BOTTOM_CENTER
-  });
+  const notify = {
+    success: (message) => toast.success(t(`${message}`), {
+      position: toast.POSITION.BOTTOM_CENTER
+    }),
+    error: (message) => toast.error(t(`${message}`), {
+      position: toast.POSITION.BOTTOM_CENTER
+    }),
+  }
 
   const { onHide } = props;
-  const onSubmit = generateOnSubmit(props, dispatch, notify);
+  const onSubmit = generateOnSubmit(props, dispatch, notify, t);
 
   return (
     <Modal show>

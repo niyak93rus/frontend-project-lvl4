@@ -34,6 +34,7 @@ const resources = {
         existingChannel: 'Такой канал уже добавлен!',
         existingUsername: "Пользователь с таким именем уже существует!",
         messageNotDelivered: "Сообщение не доставлено",
+        notRemovable: 'Канал нельзя удалить',
         requiredChannelname: 'Укажите название канала!',
         unnknownError: 'Что-то пошло не так',
       },

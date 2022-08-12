@@ -61,7 +61,7 @@ const MessageForm = (props) => {
   }
 
   return (
-    <div className="m-3">
+    <div className="m-3 p-2 ">
       <Form onSubmit={onSubmit}>
         <Form.Group as={Row}>
           <Form.Control

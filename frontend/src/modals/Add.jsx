@@ -68,6 +68,7 @@ const Add = (props) => {
               data-testid="input-channelName"
               name="channelName"
               isInvalid={f.errors.channelName}
+              disabled={f.isSubmitting}
             />
           </FormGroup>
           {f.touched.channelName && f.errors.channelName && (
