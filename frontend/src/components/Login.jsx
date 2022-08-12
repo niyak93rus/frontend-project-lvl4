@@ -6,12 +6,13 @@ import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { useRollbar } from '@rollbar/react';
 
 import 'react-toastify/dist/ReactToastify.css';
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 
-export const authorizeUser = async (userData, setAuthFailed, auth, navigate, notify, t) => {
+export const authorizeUser = async (userData, setAuthFailed, auth, navigate, notify, rollbar) => {
   setAuthFailed(false);
   const getPath = routes.loginPath();
   try {
@@ -25,7 +26,8 @@ export const authorizeUser = async (userData, setAuthFailed, auth, navigate, not
       setAuthFailed(true);
       notify('errors.other.authFailed');
     }
-    throw err;
+    console.error(err);
+    rollbar(err);
   }
 };
 
@@ -35,6 +37,7 @@ const LoginForm = () => {
   const auth = useAuth();
   const inputRef = useRef();
   const { t } = useTranslation();
+  const rollbar = useRollbar();
   
   const notify = (message) => toast.error(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER
@@ -59,7 +62,7 @@ const LoginForm = () => {
         .max(20, t('errors.password.length'))
         .required(t('errors.password.required')),
     }),
-    onSubmit: (values) => authorizeUser(values, setAuthFailed, auth, navigate, notify),
+    onSubmit: (values) => authorizeUser(values, setAuthFailed, auth, navigate, notify, rollbar),
   });
 
   return (

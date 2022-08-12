@@ -6,6 +6,7 @@ import {
 } from 'react-bootstrap';
 import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
+import { useRollbar } from '@rollbar/react';
 import { toast } from 'react-toastify';
 import * as filter from 'leo-profanity'
 
@@ -20,6 +21,8 @@ const MessageForm = (props) => {
   const [text, setText] = useState('');
   const inputRef = useRef(null);
   const { t } = useTranslation();
+  const rollbar = useRollbar();
+
   const notify = (message) => toast.error(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER
   });
@@ -44,6 +47,7 @@ const MessageForm = (props) => {
       socket.emit('newMessage', message, (response) => {
         if (!response.status === 'ok') {
           notify('errors.other.messageNotDelivered');
+          rollbar('Message not delivered');
           throw new Error(t('errors.other.messageNotDelivered'));
         }
       });

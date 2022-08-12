@@ -4,6 +4,7 @@ import { normalize, schema } from 'normalizr';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useRollbar } from '@rollbar/react';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -33,6 +34,8 @@ const MainPage = () => {
   const [currentChannelId, setCurrentChannel] = useState(1);
   const [appError, setAppError] = useState('');
   const { t } = useTranslation();
+  const rollbar = useRollbar();
+
   const notify = (message) => toast.error(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER
   });
@@ -59,12 +62,16 @@ const MainPage = () => {
       } catch (err) {
         console.error(err.message);
         if (err.name === 'AxiosError') {
-          setAppError(t('errors.other.axiosError'));
-          notify('errors.other.axiosError');
+          const errorName = 'errors.other.axiosError';
+          setAppError(t(errorName));
+          notify(errorName);
         } else {
-          setAppError(t('errors.other.unnknownError'));
-          notify('errors.other.unnknownError');
+          const errorName = 'errors.other.unnknownError';
+          setAppError(t(errorName));
+          notify(errorName);
         }
+
+        rollbar.error(err);
       }
     };
 

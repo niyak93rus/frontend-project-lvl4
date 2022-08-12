@@ -6,6 +6,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { useRollbar } from '@rollbar/react';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -18,7 +19,9 @@ const SignupForm = () => {
   const navigate = useNavigate();
   const auth = useAuth();
   const inputRef = useRef();
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
+  const rollbar = useRollbar();
+
   const notify = (message) => toast.error(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER
   });
@@ -44,6 +47,8 @@ const SignupForm = () => {
         setSignupError(t(errorName));
         notify(errorName);
       }
+      
+      rollbar.error(err);
     });
   };
 

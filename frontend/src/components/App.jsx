@@ -80,41 +80,39 @@ const App = () => {
     },
   });
 
-  rollbar.info('hello');
-
   return (
     <Provider instance={rollbar}>
-      <AuthProvider>
-        <Router>
-          <Navbar bg="light" expand="lg">
-            <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
-            <Nav className="mr-auto">
-              <Nav.Link as={Link} to="/">{t('mainPage')}</Nav.Link>
-              <Nav.Link as={Link} to="/signup">{t('registration')}</Nav.Link>
-            </Nav>
-            <AuthButton />
-          </Navbar>
+        <AuthProvider>
+          <Router>
+            <Navbar bg="light" expand="lg">
+              <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
+              <Nav className="mr-auto">
+                <Nav.Link as={Link} to="/">{t('mainPage')}</Nav.Link>
+                <Nav.Link as={Link} to="/signup">{t('registration')}</Nav.Link>
+              </Nav>
+              <AuthButton />
+            </Navbar>
 
-          <div className="container p-3 h-100 w-100">
-            <Routes>
-              <Route
-                path="/"
-                element={(
-                  <MainRoute>
-                    <MainPage />
-                  </MainRoute>
-                )}
-              />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignupPage />} />
-              <Route path="*" element={<NoMatch />} />
+            <div className="container p-3 h-100 w-100">
+              <Routes>
+                <Route
+                  path="/"
+                  element={(
+                    <MainRoute>
+                      <MainPage />
+                    </MainRoute>
+                  )}
+                />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="*" element={<NoMatch />} />
 
-            </Routes>
-          </div>
-          <ToastContainer />
+              </Routes>
+            </div>
+            <ToastContainer />
 
-        </Router>
-      </AuthProvider>
+          </Router>
+        </AuthProvider>
     </Provider>
   )
 };
