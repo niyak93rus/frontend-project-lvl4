@@ -67,7 +67,7 @@ const MessageForm = (props) => {
           <Form.Control
             name="body"
             id="body"
-            as="textarea"
+            as="input"
             value={text}
             onChange={(e) => handleChange(e)}
             placeholder={t('message.placeholder')}

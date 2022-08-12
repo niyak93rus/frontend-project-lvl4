@@ -23,7 +23,7 @@ import LoginPage from './Login.jsx';
 import MainPage from './MainPage';
 import SignupPage from './Signup.jsx';
 
-export const checkAuthorization = () => {
+const checkAuthorization = () => {
   if (localStorage.getItem('userId')) {
     return true;
   }
