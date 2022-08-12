@@ -26,19 +26,19 @@ const Channels = (props) => {
 
   return (
     <>
-      <div className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
-        <span className='text-center'>
+      <div className="col-sm-auto pt-3 px-0 bg-light">
+        <h5 className='d-flex align-items-center justify-content-between p-2'>
           {t('channels')}
           <Button className='btn sm-5' onClick={() => showModal('adding')} data-testid="item-add">+</Button>
-        </span>
-        <nav className="navbar w-100">
+        </h5>
+        <nav className="navbar w-100 m-0 p-0">
           <div className="mt-3">
-            <ul className="list-group">
+            <ul className="list-group align-items-stretch justify-content-center">
               {channels.map((channel) => (
-                <li key={channel.id} onClick={() => changeChannel(channel.id)} className="list-group-item">
-                  {<div className="btn-group d-flex">
+                <li key={channel.id} onClick={() => changeChannel(channel.id)} className="list-group-item p-0 m-0">
+                  {<div className="btn-group align-items-stretch w-100">
                     <Button
-                      className='btn btn-block'
+                      className='p-1 text-nowrap'
                       variant={(channel.id === currentChannelId) ? 'secondary' : 'light'}
                       key={channel.id}
                       style={{ margin: 0 }}>
@@ -53,7 +53,7 @@ const Channels = (props) => {
                       variant={(channel.id === currentChannelId) ? 'secondary' : 'light'}>
                       <span className="sr-only"></span>
                     </Button>
-                    <div className="dropdown-menu">
+                    <ul className="dropdown-menu">
                       <Button
                         className="dropdown-item"
                         onClick={() => showModal('renaming', channel)}
@@ -66,7 +66,7 @@ const Channels = (props) => {
                         data-testid="item-remove">
                         {t('remove')}
                       </Button>
-                    </div>
+                    </ul>
                   </div>
                   }
                 </li>

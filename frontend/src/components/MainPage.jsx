@@ -27,6 +27,7 @@ const getAuthHeader = () => {
   return {};
 };
 
+
 const MainPage = () => {
   const dispatch = useDispatch();
   const [currentChannelId, setCurrentChannel] = useState(1);

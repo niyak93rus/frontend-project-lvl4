@@ -7,10 +7,13 @@ import {
 import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import * as filter from 'leo-profanity'
 
 import 'react-toastify/dist/ReactToastify.css';
 
 import { socket } from '../index.js';
+
+filter.loadDictionary('ru');
 
 const MessageForm = (props) => {
   const { currentChannelId } = props;
@@ -30,7 +33,7 @@ const MessageForm = (props) => {
     const data = new FormData(event.target);
     const username = JSON.parse(localStorage.getItem('userId')).username;
     const message = {
-      body: data.get('body'),
+      body: filter.clean(data.get('body')),
       username,
       id: _.uniqueId(),
       comments: [],
