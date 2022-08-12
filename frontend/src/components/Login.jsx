@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 
-export const authorizeUser = async (userData, setAuthFailed, auth, navigate, notify) => {
+export const authorizeUser = async (userData, setAuthFailed, auth, navigate, notify, t) => {
   setAuthFailed(false);
   const getPath = routes.loginPath();
   try {
@@ -23,19 +23,22 @@ export const authorizeUser = async (userData, setAuthFailed, auth, navigate, not
   } catch (err) {
     if (err.isAxiosError && err.response.status === 401) {
       setAuthFailed(true);
-      notify(err.message);
+      notify('errors.other.authFailed');
     }
     throw err;
   }
 };
 
 const LoginForm = () => {
-  const notify = (text) => toast(text);
   const [authFailed, setAuthFailed] = useState(false);
   const navigate = useNavigate();
   const auth = useAuth();
   const inputRef = useRef();
   const { t } = useTranslation();
+  
+  const notify = (message) => toast.error(t(`${message}`), {
+    position: toast.POSITION.BOTTOM_CENTER
+  });
 
   useEffect(() => {
     inputRef.current.focus();

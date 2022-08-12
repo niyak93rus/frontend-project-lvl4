@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { normalize, schema } from 'normalizr';
 import { useTranslation } from 'react-i18next';
-
 import axios from 'axios';
+import { toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
@@ -30,6 +32,9 @@ const MainPage = () => {
   const [currentChannelId, setCurrentChannel] = useState(1);
   const [appError, setAppError] = useState('');
   const { t } = useTranslation();
+  const notify = (message) => toast.error(t(`${message}`), {
+    position: toast.POSITION.BOTTOM_CENTER
+  });
 
   const getNormalized = (data) => {
     const message = new schema.Entity('messages');
@@ -45,22 +50,25 @@ const MainPage = () => {
       try {
         const { data } = await axios.get(routes.usersPath(), { headers: getAuthHeader() });
         const normalizedData = getNormalized(data);
-        const {
-          channels,
-          messages,
-        } = normalizedData.entities;
+        const { channels, messages } = normalizedData.entities;
   
-          dispatch(channelsActions.setChannels({ entities: channels, ids: Object.keys(channels) }));
-          if (!messages) return;
-          dispatch(messagesActions.allMessages(messages));
+        dispatch(channelsActions.setChannels({ entities: channels, ids: Object.keys(channels) }));
+        if (!messages) return;
+        dispatch(messagesActions.allMessages(messages));
       } catch (err) {
         console.error(err.message);
-        err.name === 'AxiosError' ? setAppError(t('axiosError')) : setAppError(t('unnknownError'));
+        if (err.name === 'AxiosError') {
+          setAppError(t('errors.other.axiosError'));
+          notify('errors.other.axiosError');
+        } else {
+          setAppError(t('errors.other.unnknownError'));
+          notify('errors.other.unnknownError');
+        }
       }
     };
 
     fetchData();
-  }, [dispatch, t]);
+  });
 
   useEffect(() => {
     socket.on('newMessage', (payload) => {

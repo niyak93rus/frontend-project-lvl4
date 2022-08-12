@@ -5,6 +5,9 @@ import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 import useAuth from '../hooks/index.jsx';
 import { authorizeUser } from './Login.jsx';
@@ -16,6 +19,9 @@ const SignupForm = () => {
   const auth = useAuth();
   const inputRef = useRef();
   const { t } = useTranslation();
+  const notify = (message) => toast.error(t(`${message}`), {
+    position: toast.POSITION.BOTTOM_CENTER
+  });
   
   useEffect(() => {
     inputRef.current.focus();
@@ -24,14 +30,20 @@ const SignupForm = () => {
   const signUpUser = async (userData) => {
     const { username, password } = userData;
     console.log(username, password);
-    axios.post('/api/v1/signup', { username, password }).then((response) => {
-      console.log(response.data);
+    axios.post('/api/v1/signup', { username, password }).then(() => {
       authorizeUser(userData, setAuthFailed, auth, navigate);
     }).catch((err) => {
       console.error(err);
-      err.request.status === 409
-        ? setSignupError(t('errors.other.existingUsername'))
-        : setSignupError(t('errors.other.unnknownError'));
+
+      if (err.request.status === 409) {
+        const errorName = 'errors.other.existingUsername';
+        setSignupError(t(errorName));
+        notify(errorName);
+      } else {
+        const errorName = 'errors.other.unnknownError';
+        setSignupError(t(errorName));
+        notify(errorName);
+      }
     });
   };
 

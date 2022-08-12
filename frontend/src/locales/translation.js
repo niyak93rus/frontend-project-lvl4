@@ -3,6 +3,9 @@ const resources = {
     addChannel: 'Добавить канал',
     backToMain: "Вернуться на главную",
     channels: "Каналы",
+    channelAdded: 'Канал успешно добавлен!',
+    channelRenamed: 'Канал переименован',
+    channelRemoved: 'Канал удален',
     mainPage: "Главная",
     message: {
       placeholder: "Введите сообщение",

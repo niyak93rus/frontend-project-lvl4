@@ -6,6 +6,9 @@ import {
 } from 'react-bootstrap';
 import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 import { socket } from '../index.js';
 
@@ -14,6 +17,9 @@ const MessageForm = (props) => {
   const [text, setText] = useState('');
   const inputRef = useRef(null);
   const { t } = useTranslation();
+  const notify = (message) => toast.error(t(`${message}`), {
+    position: toast.POSITION.BOTTOM_CENTER
+  });
 
   useEffect(() => {
     inputRef.current.focus();
@@ -34,7 +40,8 @@ const MessageForm = (props) => {
     if (message.body) {
       socket.emit('newMessage', message, (response) => {
         if (!response.status === 'ok') {
-          throw new Error(t('messageNotDelivered'));
+          notify('errors.other.messageNotDelivered');
+          throw new Error(t('errors.other.messageNotDelivered'));
         }
       });
 

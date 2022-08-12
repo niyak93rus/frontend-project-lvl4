@@ -4,13 +4,18 @@ import { useFormik } from 'formik';
 import { Modal, FormGroup, FormControl } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 import { socket } from '../index.js';
 import { selectors } from '../slices/channelsSlice.js';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 
-const generateOnSubmit = ({ modalInfo, onHide }, dispatch) => (values) => {
+const generateOnSubmit = ({ modalInfo, onHide }, dispatch, notify) => (values) => {
   socket.emit('renameChannel', { id: modalInfo.item.id, name: values.channelName });
+  notify('channelRenamed');
+  
   socket.on('renameChannel', (payload) => {
     const { name, id } = payload;
     dispatch(channelsActions.renameChannel({ id, changes: { name } }));
@@ -24,12 +29,16 @@ const Rename = (props) => {
   const channels = useSelector(selectors.selectAll);
   const { t } = useTranslation();
 
+  const notify = (message) => toast.success(t(`${message}`), {
+    position: toast.POSITION.BOTTOM_CENTER
+  });
+
   const channelNames = channels.map((channel) => channel.name);
   const { onHide, modalInfo } = props;
   const { item } = modalInfo;
 
   const f = useFormik({ 
-    onSubmit: generateOnSubmit(props, dispatch), 
+    onSubmit: generateOnSubmit(props, dispatch, notify), 
     initialValues: item,
     validationSchema: Yup.object({
       channelName: Yup.string()
