@@ -15,7 +15,7 @@ const Messages = (props) => {
         {messages
           .filter((message) => Number(message.channelId) === Number(currentChannelId))
           .map((message) => (
-            <li key={nanoid()} className="list-group-item border-0 bg-light">
+            <li key={nanoid()} className="list-group-item border-0">
               <Message key={message.id} message={message} />
             </li>
           ))}

@@ -83,7 +83,7 @@ const SignupForm = () => {
 
   return (
     <>
-      <div className='container w-50'>
+      <div className='container rounded w-50 my-3 p-3 bg-light'>
         <h2 className='text-center'>{t('registration')}</h2>
         <Form onSubmit={f.handleSubmit}>
           <Form.Group className="mb-3" controlId="formLogin">

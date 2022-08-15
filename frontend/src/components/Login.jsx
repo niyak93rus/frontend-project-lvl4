@@ -71,7 +71,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <div className='container rounded'>
+      <div className='container rounded w-50 my-3 p-3 bg-white'>
         <div className='row'>
           <h3>{t('logIn')}</h3>
           <Form onSubmit={f.handleSubmit}>
@@ -112,12 +112,12 @@ const LoginForm = () => {
               )}
               {authFailed ? <div className="invalid-feedback d-block">{t('errors.other.authFailed')}</div> : null}
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" disabled={f.isSubmitting}>
               {t('logIn')}
             </Button>
           </Form>
         </div>
-        <div className='row mt-5 p-2 text-center bg-white'>
+        <div className='row mt-5 p-2 text-center bg-light'>
           <span>{t('promptSignUp')}</span>
           <a href="/signup">{t('registration')}</a>
         </div>

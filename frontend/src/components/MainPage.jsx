@@ -10,7 +10,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
-import { selectors } from '../slices/channelsSlice.js';
+import { selectors as channelSelectors } from '../slices/channelsSlice.js';
+import { selectors as messageSelectors } from '../slices/messagesSlice.js';
 
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
@@ -22,14 +23,22 @@ import routes from '../routes.js';
 
 const Header = (props) => {
   const { currentChannelId } = props;
-  const channels = useSelector(selectors.selectAll);
+  const channels = useSelector(channelSelectors.selectAll);
+  const messages = useSelector(messageSelectors.selectAll);
+
   const currentChannel = channels.find((channel) => Number(channel.id) === Number(currentChannelId));
   if (!currentChannel) return;
 
+  const messagesCount = messages.reduce((prev, curr) => curr.channelId === currentChannelId ? prev + 1 : prev, 0)
   const channelName = `# ${currentChannel.name}`;
 
   return (
-    <b>{channelName}</b>
+    <>
+      <p className='m-0'>
+        <b>{channelName}</b>
+      </p>
+      <span className='text-muted'>{`${messagesCount} сообщений`}</span>
+    </>
   )
 }
 
@@ -103,11 +112,11 @@ const MainPage = () => {
 
   return (
     <>
-      <div className="row mt-3 w-100 border-1 bg-light">
+      <div className="row h-100 bg-white flex-md-row">
         <Channels currentChannelId={currentChannelId} changeChannel={changeChannel} />
         <div className='col p-0 h-100'>
           <div className='d-flex flex-column h-100'>
-            <div className='bg-light mb-4 p-3 shadow-sm small'>
+            <div className='bg-light mb-4 p-3 shadow'>
               <Header currentChannelId={currentChannelId} />
             </div>
             <div className='mt-auto px-5 py-3'>
