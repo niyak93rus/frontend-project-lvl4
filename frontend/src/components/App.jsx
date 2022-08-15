@@ -1,5 +1,4 @@
 import 'bootstrap';
-import axios from 'axios';
 import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
@@ -14,48 +13,41 @@ import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
 import Rollbar from 'rollbar';
 import { Provider } from '@rollbar/react';
-import { useNavigate } from 'react-router-dom';
 
 import AuthContext from '../contexts/index.jsx';
-import useAuth from '../hooks/index.jsx';
+import useAuth from '../hooks/index.js';
 import '../App.css';
 
-import routes from '../routes.js';
 import NoMatch from './NoMatch';
 import LoginPage from './Login.jsx';
 import MainPage from './MainPage';
 import SignupPage from './Signup.jsx';
 
-export const authorizeUser = async (userData) => {
-  const getPath = routes.loginPath();
-  const request = await axios.post(getPath, userData);
-  const token = request.data;
-  localStorage.setItem('userId', JSON.stringify(token));
-  // finish: add error handling
-}
-
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const currentUser = JSON.parse(localStorage.getItem('user'));
+  const [user, setUser] = useState(currentUser ? { username: currentUser.username } : null);
 
   const logIn = (userData) => {
-    try {
-      authorizeUser(userData);
-      if (localStorage.getItem('userId')) {
-        setLoggedIn(true);
-      }
-    } catch (err) {
-      setLoggedIn(false);
-      console.error(err);
-    }
-  }
+    localStorage.setItem('user', JSON.stringify(userData));
+    setUser({ username: userData.username });
+  };
 
   const logOut = () => {
-    localStorage.removeItem('userId');
-    setLoggedIn(false);
+    localStorage.removeItem('user');
+    setUser(null);
+  };
+
+  const getAuthHeader = () => {
+    const userData = JSON.parse(localStorage.getItem('user'));
+
+    return userData?.token ? { Authorization: `Bearer ${userData.token}` } : {};
   };
 
   return (
-    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
+    <AuthContext.Provider value={{
+      logIn, logOut, getAuthHeader, user,
+    }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -66,7 +58,7 @@ const MainRoute = ({ children }) => {
   const location = useLocation();
 
   return (
-    auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
+    auth.user ? children : <Navigate to="/login" state={{ from: location }} />
   );
 };
 
@@ -78,7 +70,7 @@ const AuthButton = () => {
   if (location.pathname === '/login') return;
 
   return (
-    auth.loggedIn
+    auth.user
       ? <Button onClick={auth.logOut}>{t('logOut')}</Button>
       : <Button as={Link} to="/login" state={{ from: location }}>{t('logIn')}</Button>
   );
@@ -98,12 +90,12 @@ const App = () => {
     <Provider instance={rollbar}>
         <AuthProvider>
           <Router>
-            <Navbar bg="light" expand="lg" className='align-items-stretch justify-content-between'>
+            <Navbar bg="light" expand="lg" className='align-items-stretch justify-content-between p-2'>
               <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
               <AuthButton />
             </Navbar>
 
-            <div className="container p-3 mt-3 h-100 w-100 bg-light">
+            <div className="container h-100 my-4 overflow-hidden rounded shadow">
               <Routes>
                 <Route
                   path="/"

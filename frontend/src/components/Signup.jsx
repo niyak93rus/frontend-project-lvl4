@@ -10,12 +10,12 @@ import { useRollbar } from '@rollbar/react';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import useAuth from '../hooks/index.jsx';
-import { logIn } from './Login.jsx';
+import useAuth from '../hooks/index.js';
+import routes from '../routes.js';
 
 const SignupForm = () => {
   const [signupError, setSignupError] = useState('');
-  const [authFailed, setAuthFailed] = useState(false);
+  const [registrationFailed, setRegistrationFailed] = useState(false);
   const navigate = useNavigate();
   const auth = useAuth();
   const inputRef = useRef();
@@ -25,30 +25,10 @@ const SignupForm = () => {
   const notify = (message) => toast.error(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER
   });
-  
+
   useEffect(() => {
     inputRef.current.focus();
   }, []);
-
-  const signUpUser = async (userData) => {
-    axios.post('/api/v1/signup', userData).then(() => {
-      logIn(userData, navigate, auth);
-    }).catch((err) => {
-      console.error(err);
-
-      if (err.request.status === 409) {
-        const errorName = 'errors.other.existingUsername';
-        setSignupError(t(errorName));
-        notify(errorName);
-      } else {
-        const errorName = 'errors.other.unnknownError';
-        setSignupError(t(errorName));
-        notify(errorName);
-      }
-      
-      rollbar.error(err);
-    });
-  };
 
   const f = useFormik({
     initialValues: {
@@ -69,7 +49,36 @@ const SignupForm = () => {
         .required(t('errors.passwordConfirmation.required'))
         .oneOf([Yup.ref('password'), null], t('errors.passwordConfirmation.oneOf'))
     }),
-    onSubmit: (values) => signUpUser(values),
+    onSubmit: async (values) => {
+      setRegistrationFailed(false);
+
+      try {
+        const res = await axios.post(routes.signupPath(),
+          { username: values.username, password: values.password },
+        );
+        auth.logIn(res.data);
+        navigate('/');
+      } catch (err) {
+        rollbar.error(err);
+        if (!err.isAxiosError) {
+          const errorName = 'errors.other.unnknownError';
+          setSignupError(t(errorName));
+          notify(errorName);
+          throw err;
+        }
+
+        if (err.response.status === 409) {
+          const errorName = 'errors.other.existingUsername';
+          setSignupError(t(errorName));
+          notify(errorName);
+          setRegistrationFailed(true);
+          inputRef.current.select();
+          return;
+        }
+
+        throw err;
+      }
+    },
   });
 
   return (
@@ -88,12 +97,10 @@ const SignupForm = () => {
               data-testid="input-username"
               name="username"
               ref={inputRef}
-              isInvalid={f.errors.username || signupError}
+              isInvalid={f.errors.username || registrationFailed}
               required
             />
-            {f.touched.username && f.errors.username && (
-              <span className='text-danger'>{f.errors.username}</span>
-            )}
+            {f.errors.username && <div className="invalid-feedback d-block">{f.errors.username}</div>}
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPassword">
@@ -106,12 +113,9 @@ const SignupForm = () => {
               onChange={f.handleChange}
               data-testid="input-password"
               name="password"
-              isInvalid={f.errors.password || signupError}
+              isInvalid={f.errors.password || registrationFailed}
               required
             />
-            {f.touched.password && f.errors.password && (
-              <p className='text-danger'>{f.errors.password}</p>
-            )}
             {f.errors.password && <div className="invalid-feedback d-block">{f.errors.password}</div>}
           </Form.Group>
 
@@ -127,12 +131,8 @@ const SignupForm = () => {
               isInvalid={f.errors.passwordConfirmation || signupError}
               required
             />
-            {f.touched.passwordConfirmation && f.errors.passwordConfirmation && (
-              <p className='text-danger'>{f.errors.passwordConfirmation}</p>
-            )}
             {f.errors.passwordConfirmation && <div className="invalid-feedback d-block">{f.errors.passwordConfirmation}</div>}
-            {signupError && <div className="invalid-feedback d-block">{signupError}</div>}
-            {authFailed && <div className="invalid-feedback d-block">{t('errors.other.unnknownError')}</div>}
+            {registrationFailed && <div className="invalid-feedback d-block">{signupError}</div>}
           </Form.Group>
           <Button variant="primary" type="submit">
             {t('signUp')}

@@ -10,7 +10,7 @@ const Messages = (props) => {
   const { currentChannelId } = props;
 
   return messages.length > 0
-    ? (<div className="mt-3 bg-light">
+    ? (<div className="m-3 bg-light">
       <ul className="list-group bg-light">
         {messages
           .filter((message) => Number(message.channelId) === Number(currentChannelId))

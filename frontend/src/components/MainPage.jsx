@@ -17,31 +17,19 @@ import Messages from './Messages.jsx';
 import MessageForm from './MessageForm.jsx';
 
 import { socket } from '../index.js';
+import useAuth from '../hooks/index.js';
 import routes from '../routes.js';
-
-const getAuthHeader = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
-
-  if (userId && userId.token) {
-    return { Authorization: `Bearer ${userId.token}` };
-  }
-
-  return {};
-};
 
 const Header = (props) => {
   const { currentChannelId } = props;
   const channels = useSelector(selectors.selectAll);
-  console.log(channels)
   const currentChannel = channels.find((channel) => Number(channel.id) === Number(currentChannelId));
   if (!currentChannel) return;
 
   const channelName = `# ${currentChannel.name}`;
 
   return (
-    <h5>
-      {channelName}
-    </h5>
+    <b>{channelName}</b>
   )
 }
 
@@ -51,7 +39,7 @@ const MainPage = () => {
   const [appError, setAppError] = useState('');
   const { t } = useTranslation();
   const rollbar = useRollbar();
-
+  const auth = useAuth();
 
   const notify = (message) => toast.error(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER
@@ -69,7 +57,7 @@ const MainPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(routes.usersPath(), { headers: getAuthHeader() });
+        const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
         const normalizedData = getNormalized(data);
 
         const { channels, messages } = normalizedData.entities;
@@ -115,15 +103,19 @@ const MainPage = () => {
 
   return (
     <>
-      <div className="container row mt-3 w-100 border-1 bg-light">
+      <div className="row mt-3 w-100 border-1 bg-light">
         <Channels currentChannelId={currentChannelId} changeChannel={changeChannel} />
-        <div className='col m-0 p-0 border-1'>
-          <div className='row bg-light m-0'>
-            <Header currentChannelId={currentChannelId} />
+        <div className='col p-0 h-100'>
+          <div className='d-flex flex-column h-100'>
+            <div className='bg-light mb-4 p-3 shadow-sm small'>
+              <Header currentChannelId={currentChannelId} />
+            </div>
+            <div className='mt-auto px-5 py-3'>
+              <Messages currentChannelId={currentChannelId} />
+              <MessageForm currentChannelId={currentChannelId} />
+              {appError && <div className='text-danger'>{appError}</div>}
+            </div>
           </div>
-          <Messages currentChannelId={currentChannelId} />
-          <MessageForm currentChannelId={currentChannelId} />
-          {appError && <div className='text-danger'>{appError}</div>}
         </div>
       </div>
     </>
