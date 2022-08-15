@@ -74,7 +74,7 @@ const Add = (props) => {
           {f.touched.channelName && f.errors.channelName && (
             <div className='text-danger'>{f.errors.channelName}</div>
           )}
-          <input type="submit" className="btn btn-primary mt-2" value={t('addChannel')} />
+          <input type="submit" className="btn btn-primary mt-2" value={t('addChannel')} disabled={f.isSubmitting} />
         </form>
       </Modal.Body>
     </Modal>

@@ -134,7 +134,7 @@ const SignupForm = () => {
             {f.errors.passwordConfirmation && <div className="invalid-feedback d-block">{f.errors.passwordConfirmation}</div>}
             {registrationFailed && <div className="invalid-feedback d-block">{signupError}</div>}
           </Form.Group>
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" disabled={f.isSubmitting}>
             {t('signUp')}
           </Button>
         </Form>

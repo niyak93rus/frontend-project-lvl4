@@ -21,7 +21,6 @@ const generateOnSubmit = ({ modalInfo, onHide }, dispatch, notify) => (values) =
     dispatch(channelsActions.renameChannel({ id, changes: { name } }));
   });
   onHide();
-  // close dropdown automatically?
 };
 
 const Rename = (props) => {
@@ -76,7 +75,7 @@ const Rename = (props) => {
           {f.touched.channelName && f.errors.channelName && (
             <div className='text-danger'>{f.errors.channelName}</div>
           )}
-          <input type="submit" className="btn btn-primary mt-2" value={t('rename')} />
+          <input type="submit" className="btn btn-primary mt-2" disabled={f.isSubmitting} value={t('rename')} />
         </form>
       </Modal.Body>
     </Modal>
