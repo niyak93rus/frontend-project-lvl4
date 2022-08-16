@@ -67,11 +67,11 @@ const Add = (props) => {
               value={f.values.body}
               data-testid="input-channelName"
               name="channelName"
-              isInvalid={f.errors.channelName}
+              isInvalid={f.touched && f.errors.channelName}
               disabled={f.isSubmitting}
             />
           </FormGroup>
-          {f.touched.channelName && f.errors.channelName && (
+          {f.errors.channelName && (
             <div className='text-danger'>{f.errors.channelName}</div>
           )}
           <input type="submit" className="btn btn-primary mt-2" value={t('addChannel')} disabled={f.isSubmitting} />

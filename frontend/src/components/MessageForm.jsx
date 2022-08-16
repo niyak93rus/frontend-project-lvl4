@@ -7,15 +7,14 @@ import { toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { socket } from '../index.js';
-
-filter.loadDictionary('ru');
+import { useApi } from '../hooks/index.js';
 
 const MessageForm = (props) => {
   const { currentChannelId, rollbar } = props;
   const [text, setText] = useState('');
   const inputRef = useRef(null);
   const { t } = useTranslation();
+  const api = useApi();
 
   const notify = (message) => toast.error(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER
@@ -25,7 +24,7 @@ const MessageForm = (props) => {
     inputRef.current.focus();
   })
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
     const username = JSON.parse(localStorage.getItem('user')).username;
@@ -38,13 +37,13 @@ const MessageForm = (props) => {
     };
 
     if (message.body) {
-      socket.emit('newMessage', message, (response) => {
-        if (!response.status === 'ok') {
-          notify('errors.other.messageNotDelivered');
-          rollbar('Message not delivered');
-          throw new Error(t('errors.other.messageNotDelivered'));
-        }
-      });
+      try {
+        await api.sendMessage(message);
+      } catch(err) {
+        notify('errors.other.messageNotDelivered');
+        rollbar('Message not delivered');
+        console.error(err);
+      }
 
       setText('');
     }

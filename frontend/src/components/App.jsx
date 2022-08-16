@@ -11,8 +11,8 @@ import { Button, Navbar } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
 
-import AuthContext from '../contexts/index.js';
-import useAuth from '../hooks/index.js';
+import { useAuth } from '../hooks/index.js';
+import { AuthContext } from '../contexts/index.js';
 import '../App.css';
 
 import NoMatch from './NoMatch';

@@ -67,7 +67,7 @@ export default async (socket) => {
 
   socket.on('newMessage', (payload) => {
     logSocket('newMessage', payload);
-    store.dispatch(actions.addMessage({ message: payload }));
+    store.dispatch(actions.addMessage(payload));
   });
   socket.on('newChannel', (payload) => {
     logSocket('newChannel', payload);
