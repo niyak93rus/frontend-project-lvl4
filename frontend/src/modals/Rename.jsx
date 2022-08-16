@@ -8,23 +8,19 @@ import { toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { socket } from '../index.js';
+import { useApi } from '../hooks/index.js';
 import { selectors } from '../slices/channelsSlice.js';
-import { actions as channelsActions } from '../slices/channelsSlice.js';
 
-const generateOnSubmit = ({ modalInfo, onHide }, dispatch, notify) => (values) => {
-  socket.emit('renameChannel', { id: modalInfo.item.id, name: values.channelName });
+const generateOnSubmit = ({ modalInfo, onHide }, api, notify) => (values) => {
+  const { id, channelName } = values;
+  api.renameChannel({ id, name: channelName});
   notify('channelRenamed');
-  
-  socket.on('renameChannel', (payload) => {
-    const { name, id } = payload;
-    dispatch(channelsActions.renameChannel({ id, changes: { name } }));
-  });
+
   onHide();
 };
 
 const Rename = (props) => {
-  const dispatch = useDispatch();
+  const api = useApi();
   const channels = useSelector(selectors.selectAll);
   const { t } = useTranslation();
 
@@ -37,7 +33,7 @@ const Rename = (props) => {
   const { item } = modalInfo;
 
   const f = useFormik({ 
-    onSubmit: generateOnSubmit(props, dispatch, notify), 
+    onSubmit: generateOnSubmit(props, api, notify), 
     initialValues: item,
     validationSchema: Yup.object({
       channelName: Yup.string()

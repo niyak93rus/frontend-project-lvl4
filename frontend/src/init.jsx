@@ -15,7 +15,6 @@ import App from './components/App.jsx';
 import getLogger from './lib/logger.js';
 import { actions } from './slices/index.js';
 import resources from './locales/translation.js';
-// import { changeChannel } from './components/MainPage.jsx'
 
 import messagesReducer from './slices/messagesSlice.js';
 import channelsReducer from './slices/channelsSlice.js';
@@ -71,19 +70,18 @@ export default async (socket) => {
   });
   socket.on('newChannel', (payload) => {
     logSocket('newChannel', payload);
-    store.dispatch(actions.addChannel({ channel: payload }));
+    store.dispatch(actions.addChannel(payload));
   });
   socket.on('removeChannel', (payload) => {
+    console.log(payload);
     logSocket('removeChannel', payload);
-    // changeChannel(); STOPPPED HERE - not changing channel after removing
-    store.dispatch(actions.removeChannel({ channelId: payload.id }));
+    store.dispatch(actions.removeChannel(payload.id));
+    store.dispatch(actions.setCurrentChannelId())
   });
   socket.on('renameChannel', (payload) => {
     logSocket('renameChannel', payload);
-    store.dispatch(actions.renameChannel({
-      channelId: payload.id,
-      channelName: payload.name,
-    }));
+    const { id, name } = payload;
+    store.dispatch(actions.renameChannel({ id, changes: { name } }));
   });
 
   const i18n = i18next.createInstance();
