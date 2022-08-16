@@ -72,7 +72,7 @@ const Rename = (props) => {
               disabled={f.isSubmitting}
             />
           </FormGroup>
-          {f.touched.channelName && f.errors.channelName && (
+          {f.errors.channelName && (
             <div className='text-danger'>{f.errors.channelName}</div>
           )}
           <input type="submit" className="btn btn-primary mt-2" disabled={f.isSubmitting} value={t('rename')} />

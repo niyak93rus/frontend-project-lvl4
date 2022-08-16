@@ -7,7 +7,7 @@ ___
 ___
 
 ### Description:
-This is a simple chat application made during learning on <a href="https://hexlet.io//" target="_blank">Hexlet</a> Frontend-developer course.
+This is a simple chat application made during learning on <a href="https://hexlet.io/" target="_blank">Hexlet</a> Frontend-developer course.
 Used technologies: web-sockets, interacting with REST API, React (hooks), Redux (reduxjs/toolkit), routing, auhorization and authentification, bundling (webpack) and deploy (heroku).
 ___
 

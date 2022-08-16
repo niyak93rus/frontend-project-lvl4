@@ -3,7 +3,6 @@ import * as filter from 'leo-profanity'
 import React, { useEffect, useState, useRef } from 'react';
 import { Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { useRollbar } from '@rollbar/react';
 import { toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,11 +12,10 @@ import { socket } from '../index.js';
 filter.loadDictionary('ru');
 
 const MessageForm = (props) => {
-  const { currentChannelId } = props;
+  const { currentChannelId, rollbar } = props;
   const [text, setText] = useState('');
   const inputRef = useRef(null);
   const { t } = useTranslation();
-  const rollbar = useRollbar();
 
   const notify = (message) => toast.error(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER
