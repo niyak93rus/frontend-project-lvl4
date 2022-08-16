@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import useAuth from '../hooks/index.js';
+import {useAuth} from '../hooks/index.js';
 import routes from '../routes.js';
 
 const SignupForm = (props) => {

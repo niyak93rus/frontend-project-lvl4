@@ -4,6 +4,7 @@ import { normalize, schema } from 'normalizr';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useStore } from 'react-redux';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -16,7 +17,7 @@ import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
 import MessageForm from './MessageForm.jsx';
 
-import useAuth from '../hooks/index.js';
+import { useAuth } from '../hooks/index.js';
 import routes from '../routes.js';
 
 const Header = (props) => {
@@ -47,6 +48,9 @@ const MainPage = (props) => {
   const { t } = useTranslation();
   const { rollbar } = props;
   const auth = useAuth();
+  const store = useStore();
+
+  console.log(store.getState())
 
   const notify = (message) => toast.error(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER
@@ -69,7 +73,7 @@ const MainPage = (props) => {
 
         const { channels, messages } = normalizedData.entities;
 
-        dispatch(channelsActions.setChannels({ entities: channels, ids: Object.keys(channels) }));
+        dispatch(channelsActions.setChannels(channels));
         if (!messages) return;
         dispatch(messagesActions.allMessages(messages));
       } catch (err) {
@@ -92,8 +96,9 @@ const MainPage = (props) => {
   });
 
   const changeChannel = (channelId = 1) => {
-    setCurrentChannelId(channelId);
     dispatch(channelsActions.setCurrentChannelId(channelId));
+    const { channels } = store.getState();
+    setCurrentChannelId(store.getState(channels.currentChannelId));
   };
 
   return (

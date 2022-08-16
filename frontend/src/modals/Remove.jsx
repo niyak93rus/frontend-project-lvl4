@@ -1,25 +1,19 @@
 import React from 'react';
 import { Modal, FormGroup } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { socket } from '../index.js';
-import { actions as channelsActions } from '../slices/channelsSlice.js';
+import { useApi } from '../hooks/index.js';
 
-const generateOnSubmit = ({ modalInfo, onHide }, dispatch, notify, t) => (e) => {
+const generateOnSubmit = ({ modalInfo, onHide }, notify, t, api) => (e) => {
   e.preventDefault();
-  const { changeChannel, item } = modalInfo;
+  const { item } = modalInfo;
   if (item.removable) {
-    socket.emit('removeChannel', { id: item.id });
+    api.removeChannel({ id: item.id });
     notify['success']('channelRemoved');
-  
-    socket.on('removeChannel', (payload) => {
-      dispatch(channelsActions.removeChannel(payload.id));
-      changeChannel();
-    });
+
     onHide();
   } else {
     const errorName = 'errors.other.notRemovable';
@@ -29,8 +23,8 @@ const generateOnSubmit = ({ modalInfo, onHide }, dispatch, notify, t) => (e) => 
 };
 
 const Remove = (props) => {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
+  const api = useApi();
 
   const notify = {
     success: (message) => toast.success(t(`${message}`), {
@@ -42,7 +36,7 @@ const Remove = (props) => {
   }
 
   const { onHide } = props;
-  const onSubmit = generateOnSubmit(props, dispatch, notify, t);
+  const onSubmit = generateOnSubmit(props, notify, t, api);
 
   return (
     <Modal show>

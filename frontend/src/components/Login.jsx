@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import useAuth from '../hooks/index.js';
+import {useAuth} from '../hooks/index.js';
 import routes from '../routes.js';
 
 const LoginForm = (props) => {
@@ -51,10 +51,10 @@ const LoginForm = (props) => {
         auth.logIn(res.data);
         navigate('/');
       } catch (err) {
-        rollbar.error(err);
-        console.error(err);
         if (!err.isAxiosError) {
           notify('errors.other.unnknownError');
+          console.error(err);
+          rollbar.error(err);
           return;
         }
 
@@ -63,6 +63,8 @@ const LoginForm = (props) => {
           inputRef.current.select();
         } else {
           notify('errors.other.axiosError');
+          console.error(err);
+          rollbar.error(err);
         }
       }
     },
