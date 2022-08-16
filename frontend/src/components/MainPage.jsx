@@ -16,7 +16,6 @@ import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
 import MessageForm from './MessageForm.jsx';
 
-import { socket } from '../index.js';
 import useAuth from '../hooks/index.js';
 import routes from '../routes.js';
 

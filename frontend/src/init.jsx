@@ -15,7 +15,7 @@ import App from './components/App.jsx';
 import getLogger from './lib/logger.js';
 import { actions } from './slices/index.js';
 import resources from './locales/translation.js';
-import { changeChannel } from './components/MainPage.jsx'
+// import { changeChannel } from './components/MainPage.jsx'
 
 import messagesReducer from './slices/messagesSlice.js';
 import channelsReducer from './slices/channelsSlice.js';
