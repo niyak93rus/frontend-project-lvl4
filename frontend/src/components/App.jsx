@@ -1,4 +1,3 @@
-import 'bootstrap';
 import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
@@ -11,10 +10,8 @@ import {
 import { Button, Navbar } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
-import Rollbar from 'rollbar';
-import { Provider } from '@rollbar/react';
 
-import AuthContext from '../contexts/index.jsx';
+import AuthContext from '../contexts/index.js';
 import useAuth from '../hooks/index.js';
 import '../App.css';
 
@@ -76,47 +73,33 @@ const AuthButton = () => {
   );
 };
 
-const App = () => {
-  const rollbar = new Rollbar({
-    accessToken: 'b7ea9e3bca2941aa8f4360689f5480e0',
-    captureUncaught: true,
-    captureUnhandledRejections: true,
-    payload: {
-      environment: 'production',
-    },
-  });
+const App = () => (
+  <AuthProvider>
+    <Router>
+      <Navbar bg="light" expand="lg" className='align-items-stretch justify-content-between p-2'>
+        <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
+        <AuthButton />
+      </Navbar>
 
-  return (
-    <Provider instance={rollbar}>
-        <AuthProvider>
-          <Router>
-            <Navbar bg="light" expand="lg" className='align-items-stretch justify-content-between p-2'>
-              <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
-              <AuthButton />
-            </Navbar>
+      <div className="container h-100 my-4 overflow-hidden rounded shadow">
+        <Routes>
+          <Route
+            path="/"
+            element={(
+              <MainRoute>
+                <MainPage />
+              </MainRoute>
+            )}
+          />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="*" element={<NoMatch />} />
 
-            <div className="container h-100 my-4 overflow-hidden rounded shadow">
-              <Routes>
-                <Route
-                  path="/"
-                  element={(
-                    <MainRoute>
-                      <MainPage />
-                    </MainRoute>
-                  )}
-                />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignupPage />} />
-                <Route path="*" element={<NoMatch />} />
-
-              </Routes>
-            </div>
-            <ToastContainer />
-
-          </Router>
-        </AuthProvider>
-    </Provider>
-  )
-};
+        </Routes>
+      </div>
+      <ToastContainer />
+    </Router>
+  </AuthProvider>
+);
 
 export default App;

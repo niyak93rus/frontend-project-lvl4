@@ -40,7 +40,7 @@ const Channels = (props) => {
         <ul className="list-group align-items-stretch justify-content-center">
           {channels.map((channel) => (
             <li key={channel.id} onClick={() => changeChannel(channel.id)} className="list-group-item p-0 m-0 border-0">
-              {<div className="btn-group align-items-stretch w-100 border">
+              {<div key={channel.id} className="btn-group align-items-stretch w-100 border">
                 <Button
                   className='p-1 text-nowrap'
                   variant={(channel.id === currentChannelId) ? 'secondary' : 'light'}

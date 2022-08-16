@@ -6,20 +6,19 @@ import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { useRollbar } from '@rollbar/react';
 
 import 'react-toastify/dist/ReactToastify.css';
 
 import useAuth from '../hooks/index.js';
 import routes from '../routes.js';
 
-const LoginForm = () => {
+const LoginForm = (props) => {
   const [authFailed, setAuthFailed] = useState(false);
   const navigate = useNavigate();
   const auth = useAuth();
   const inputRef = useRef();
   const { t } = useTranslation();
-  const rollbar = useRollbar();
+  const { rollbar } = props;
 
   const notify = (message) => toast.error(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER

@@ -4,7 +4,6 @@ import { normalize, schema } from 'normalizr';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useRollbar } from '@rollbar/react';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -17,7 +16,6 @@ import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
 import MessageForm from './MessageForm.jsx';
 
-import { socket } from '../index.js';
 import useAuth from '../hooks/index.js';
 import routes from '../routes.js';
 
@@ -42,12 +40,12 @@ const Header = (props) => {
   )
 }
 
-const MainPage = () => {
+const MainPage = (props) => {
   const dispatch = useDispatch();
   const [currentChannelId, setCurrentChannelId] = useState(1);
   const [appError, setAppError] = useState('');
   const { t } = useTranslation();
-  const rollbar = useRollbar();
+  const { rollbar } = props;
   const auth = useAuth();
 
   const notify = (message) => toast.error(t(`${message}`), {
@@ -91,18 +89,6 @@ const MainPage = () => {
     };
 
     fetchData();
-  });
-
-  useEffect(() => {
-    socket.on('newMessage', (payload) => {
-      console.log(payload);
-      dispatch(messagesActions.addMessage(payload))
-    });
-
-    socket.on('newChannel', (payload) => {
-      console.log(payload);
-      dispatch(channelsActions.addChannel(payload));
-    });
   });
 
   const changeChannel = (channelId = 1) => {
