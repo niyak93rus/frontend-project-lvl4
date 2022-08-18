@@ -78,7 +78,6 @@ const LoginForm = (props) => {
           <Form onSubmit={f.handleSubmit}>
             <Form.Group className="mb-3" controlId="formLogin">
               <FloatingLabel
-                controlId="floatingUsername"
                 label={t('loginPlaceholder')}
                 className="mb-3"
               >
@@ -99,28 +98,21 @@ const LoginForm = (props) => {
               </FloatingLabel>
             </Form.Group>
 
-            <Form.Group className="mb-3">
-              <FloatingLabel
-                label={t('passwordPlaceholder')}
-                className="mb-3"
-              >
-                <Form.Control
-                  id='password'
-                  type="password"
-                  placeholder={t('passwordPlaceholder')}
-                  value={f.values.password}
-                  onChange={f.handleChange}
-                  data-testid="input-password"
-                  name="password"
-                  isInvalid={f.errors.password || authFailed}
-                  required
-                />
-                {f.touched.password && f.errors.password && (
-                  <p className='text-danger'>{f.errors.password}</p>
-                )}
-                {authFailed ? <div className="invalid-tooltip">{t('errors.other.authFailed')}</div> : null}
-              </FloatingLabel>
-            </Form.Group>
+            <Form.Group className="form-floating mb-4">
+                  <Form.Control
+                    type="password"
+                    onChange={f.handleChange}
+                    value={f.values.password}
+                    name="password"
+                    id="password"
+                    autoComplete="current-password"
+                    isInvalid={authFailed}
+                    required
+                    placeholder={t('passwordPlaceholder')}
+                  />
+                  <Form.Label htmlFor="password">{t('passwordPlaceholder')}</Form.Label>
+                  {authFailed && <Form.Control.Feedback type="invalid" tooltip>{t('errors.other.authFailed')}</Form.Control.Feedback>}
+                </Form.Group>
             <Button variant="primary" type="submit" disabled={f.isSubmitting}>
               {t('logIn')}
             </Button>
