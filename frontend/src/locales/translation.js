@@ -47,6 +47,7 @@ const resources = {
     prompt: 'Вы уверены?',
     promptSignUp: 'Нет аккаунта?',
     registration: "Регистрация",
+    registrationUserName: "Имя пользователя",
     rename: "Переименовать",
     remove: "Удалить",
     signUp: "Зарегистрироваться",

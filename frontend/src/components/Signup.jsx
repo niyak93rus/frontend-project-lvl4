@@ -90,7 +90,7 @@ const SignupForm = (props) => {
             <Form.Control
               autoComplete="username"
               type="username"
-              placeholder={t('loginPlaceholder')}
+              placeholder={t('registrationUserName')}
               onChange={f.handleChange}
               value={f.values.username}
               data-testid="input-username"
