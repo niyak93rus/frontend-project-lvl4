@@ -99,19 +99,19 @@ const LoginForm = (props) => {
             </Form.Group>
 
             <Form.Group className="form-floating mb-4">
-              <FloatingLabel label={t('passwordPlaceholder')}>
-              <Form.Control
-                type="password"
-                onChange={f.handleChange}
-                value={f.values.password}
-                name="password"
-                id="password"
-                autoComplete="current-password"
-                isInvalid={authFailed}
-                required
-                placeholder={t('passwordPlaceholder')}
-              />
-              </FloatingLabel>
+              <label htmlFor='password'>{t('passwordLabel')}</label>
+                <Form.Control
+                  type="password"
+                  onChange={f.handleChange}
+                  value={f.values.password}
+                  name="password"
+                  id="password"
+                  autoComplete="current-password"
+                  isInvalid={authFailed}
+                  required
+                  placeholder={t('passwordPlaceholder')}
+                />
+              
               {authFailed && <Form.Control.Feedback type="invalid" tooltip>{t('errors.other.authFailed')}</Form.Control.Feedback>}
             </Form.Group>
             <Button variant="primary" type="submit" disabled={f.isSubmitting}>
