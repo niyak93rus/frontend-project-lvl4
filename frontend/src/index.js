@@ -4,7 +4,6 @@ import { io } from "socket.io-client";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import init from './init.jsx';
-import './index.css';
 
 export const socket = io();
 socket.on('connect', () => {

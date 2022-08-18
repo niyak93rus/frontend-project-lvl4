@@ -13,7 +13,6 @@ import { ToastContainer } from 'react-toastify';
 
 import { useAuth } from '../hooks/index.js';
 import { AuthContext } from '../contexts/index.js';
-import '../App.css';
 
 import NoMatch from './NoMatch';
 import LoginPage from './Login.jsx';
