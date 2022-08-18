@@ -86,10 +86,10 @@ const SignupForm = (props) => {
         <h2 className='text-center'>{t('registration')}</h2>
         <Form onSubmit={f.handleSubmit}>
           <Form.Group className="mb-4 position-relative" controlId="formLogin">
-            <label htmlFor="username">{t('registrationUserName')}</label>
+            <Form.Label>{t('registrationUserName')}</Form.Label>
             <Form.Control
               autoComplete="username"
-              type="username"
+              type="text"
               placeholder={t('registrationUserName')}
               onChange={f.handleChange}
               value={f.values.username}
@@ -106,7 +106,7 @@ const SignupForm = (props) => {
             <Form.Label>{t('passwordPlaceholder')}</Form.Label>
             <Form.Control
               autoComplete="current-password"
-              type="password"
+              type="text"
               placeholder={t('passwordPlaceholder')}
               value={f.values.password}
               onChange={f.handleChange}
@@ -121,7 +121,7 @@ const SignupForm = (props) => {
           <Form.Group className="mb-4 position-relative" controlId="formPasswordConfirmation">
             <Form.Label>{t('passwordConfirmationPlaceholder')}</Form.Label>
             <Form.Control
-              type="password"
+              type="text"
               placeholder={t('passwordConfirmationPlaceholder')}
               value={f.values.passwordConfirmation}
               onChange={f.handleChange}
