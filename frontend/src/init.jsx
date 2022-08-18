@@ -25,7 +25,7 @@ const logSocket = getLogger('socket');
 
 export default async (socket) => {
   const isProduction = process.env.NODE_ENV === 'production';
-  
+
   const ruDict = leoProfanity.getDictionary('ru');
   leoProfanity.add(ruDict);
 
@@ -73,10 +73,11 @@ export default async (socket) => {
     store.dispatch(actions.addChannel(payload));
   });
   socket.on('removeChannel', (payload) => {
-    console.log(payload);
     logSocket('removeChannel', payload);
     store.dispatch(actions.removeChannel(payload.id));
-    store.dispatch(actions.setCurrentChannelId())
+    if (Number(store.getState().channels.currentChannelId) === Number(payload.id)) {
+      store.dispatch(actions.setCurrentChannelId());
+    }
   });
   socket.on('renameChannel', (payload) => {
     logSocket('renameChannel', payload);

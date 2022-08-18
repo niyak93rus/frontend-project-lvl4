@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import * as filter from 'leo-profanity'
 import React, { useEffect, useState, useRef } from 'react';
+import {  useSelector } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -10,11 +11,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useApi } from '../hooks/index.js';
 
 const MessageForm = (props) => {
-  const { currentChannelId, rollbar } = props;
+  const { rollbar } = props;
   const [text, setText] = useState('');
   const inputRef = useRef(null);
   const { t } = useTranslation();
   const api = useApi();
+
+  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
 
   const notify = (message) => toast.error(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER
@@ -32,7 +35,6 @@ const MessageForm = (props) => {
       body: filter.clean(data.get('body')),
       username,
       id: _.uniqueId(),
-      comments: [],
       channelId: currentChannelId,
     };
 

@@ -1,33 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import { normalize, schema } from 'normalizr';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useStore } from 'react-redux';
 
 import 'react-toastify/dist/ReactToastify.css';
 
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
-import { selectors as channelSelectors } from '../slices/channelsSlice.js';
-import { selectors as messageSelectors } from '../slices/messagesSlice.js';
 
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
 import MessageForm from './MessageForm.jsx';
 
+import { selectors as channelSelectors } from '../slices/channelsSlice.js';
+import { selectors as messageSelectors } from '../slices/messagesSlice.js';
+
 import { useAuth } from '../hooks/index.js';
 import routes from '../routes.js';
 
-const Header = (props) => {
-  const { currentChannelId } = props;
-  const channels = useSelector(channelSelectors.selectAll);
+const Header = () => {
   const messages = useSelector(messageSelectors.selectAll);
+  const channels = useSelector(channelSelectors.selectAll);
 
+  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
   const currentChannel = channels.find((channel) => Number(channel.id) === Number(currentChannelId));
   if (!currentChannel) return;
-
+  
   const messagesCount = messages.reduce((prev, curr) => curr.channelId === currentChannelId ? prev + 1 : prev, 0)
   const channelName = `# ${currentChannel.name}`;
 
@@ -43,14 +43,11 @@ const Header = (props) => {
 
 const MainPage = (props) => {
   const dispatch = useDispatch();
-  const [currentChannelId, setCurrentChannelId] = useState(1);
   const [appError, setAppError] = useState('');
+  const store = useStore();
   const { t } = useTranslation();
   const { rollbar } = props;
   const auth = useAuth();
-  const store = useStore();
-
-  console.log(store.getState())
 
   const notify = (message) => toast.error(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER
@@ -59,8 +56,9 @@ const MainPage = (props) => {
   const getNormalized = (data) => {
     const message = new schema.Entity('messages');
     const channel = new schema.Entity('channels');
+    const {currentChannelId} = data;
 
-    const mySchema = { channels: [channel], messages: [message] };
+    const mySchema = { channels: [channel], messages: [message], currentChannelId };
     const normalizedData = normalize(data, mySchema);
     return normalizedData;
   };
@@ -74,6 +72,7 @@ const MainPage = (props) => {
         const { channels, messages } = normalizedData.entities;
 
         dispatch(channelsActions.setChannels(channels));
+        dispatch(channelsActions.setCurrentChannelId(channels.currentChannelId));
         if (!messages) return;
         dispatch(messagesActions.allMessages(messages));
       } catch (err) {
@@ -95,24 +94,18 @@ const MainPage = (props) => {
     fetchData();
   });
 
-  const changeChannel = (channelId = 1) => {
-    dispatch(channelsActions.setCurrentChannelId(channelId));
-    const { channels } = store.getState();
-    setCurrentChannelId(store.getState(channels.currentChannelId));
-  };
-
   return (
     <>
       <div className="row h-100 bg-white flex-md-row">
-        <Channels currentChannelId={currentChannelId} changeChannel={changeChannel} />
+        <Channels />
         <div className='col p-0 h-100'>
           <div className='d-flex flex-column h-100'>
             <div className='bg-light mb-4 p-3 shadow'>
-              <Header currentChannelId={currentChannelId} />
+              <Header store={store} />
             </div>
             <div className='mt-auto px-5 py-3'>
-              <Messages currentChannelId={currentChannelId} />
-              <MessageForm currentChannelId={currentChannelId} />
+              <Messages />
+              <MessageForm />
               {appError && <div className='text-danger'>{appError}</div>}
             </div>
           </div>

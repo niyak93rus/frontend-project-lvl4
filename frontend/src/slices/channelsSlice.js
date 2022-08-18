@@ -1,5 +1,4 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
-import remove from 'lodash/remove.js';
 
 const defaultChannelId = 1;
 
@@ -10,7 +9,6 @@ const channelsSlice = createSlice({
   initialState: channelsAdapter.getInitialState(),
   reducers: {
     setChannels(state, action) {
-      console.log(action.payload);
       channelsAdapter.setAll(state, action.payload)
     },
     setCurrentChannelId(state, { payload }) {
