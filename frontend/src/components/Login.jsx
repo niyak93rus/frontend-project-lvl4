@@ -2,14 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useFormik } from 'formik';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, FloatingLabel } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import {useAuth} from '../hooks/index.js';
+import { useAuth } from '../hooks/index.js';
 import routes from '../routes.js';
 
 const LoginForm = (props) => {
@@ -77,41 +77,49 @@ const LoginForm = (props) => {
           <h3>{t('logIn')}</h3>
           <Form onSubmit={f.handleSubmit}>
             <Form.Group className="mb-3" controlId="formLogin">
-              <Form.Label>{t('loginLabel')}</Form.Label>
-              <Form.Control
-                autoComplete="username"
-                type="username"
-                placeholder={t('loginPlaceholder')}
-                onChange={f.handleChange}
-                value={f.values.username}
-                data-testid="input-username"
-                name="username"
-                ref={inputRef}
-                isInvalid={f.errors.username || authFailed}
-                required
-              />
-              {f.touched.username && f.errors.username && (
-                <span className='text-danger'>{f.errors.username}</span>
-              )}
+              <FloatingLabel
+                controlId="floatingUsername"
+                label={t('loginPlaceholder')}
+                className="mb-3"
+              >
+                <Form.Control
+                  type="text"
+                  placeholder={t('loginPlaceholder')}
+                  onChange={f.handleChange}
+                  value={f.values.username}
+                  data-testid="input-username"
+                  name="username"
+                  ref={inputRef}
+                  isInvalid={f.errors.username || authFailed}
+                  required
+                />
+                {f.touched.username && f.errors.username && (
+                  <span className='text-danger'>{f.errors.username}</span>
+                )}
+              </FloatingLabel>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formPassword">
-              <Form.Label>{t('passwordLabel')}</Form.Label>
-              <Form.Control
-                autoComplete="current-password"
-                type="password"
-                placeholder={t('passwordPlaceholder')}
-                value={f.values.password}
-                onChange={f.handleChange}
-                data-testid="input-password"
-                name="password"
-                isInvalid={f.errors.password || authFailed}
-                required
-              />
-              {f.touched.password && f.errors.password && (
-                <p className='text-danger'>{f.errors.password}</p>
-              )}
-              {authFailed ? <div className="invalid-feedback d-block">{t('errors.other.authFailed')}</div> : null}
+              <FloatingLabel
+                controlId="floatingUsername"
+                label={t('passwordPlaceholder')}
+                className="mb-3"
+              >
+                <Form.Control
+                  type="text"
+                  placeholder={t('passwordPlaceholder')}
+                  value={f.values.password}
+                  onChange={f.handleChange}
+                  data-testid="input-password"
+                  name="password"
+                  isInvalid={f.errors.password || authFailed}
+                  required
+                />
+                {f.touched.password && f.errors.password && (
+                  <p className='text-danger'>{f.errors.password}</p>
+                )}
+                {authFailed ? <div className="invalid-feedback d-block">{t('errors.other.authFailed')}</div> : null}
+              </FloatingLabel>
             </Form.Group>
             <Button variant="primary" type="submit" disabled={f.isSubmitting}>
               {t('logIn')}
