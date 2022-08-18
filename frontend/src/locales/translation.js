@@ -11,6 +11,7 @@ const resources = {
       placeholder: "Введите сообщение",
       button: "Отправить",
     },
+    messageFormLabel: "Новое сообщение",
     logIn: "Войти",
     loginLabel: "Логин",
     loginPlaceholder: "Ваш ник",

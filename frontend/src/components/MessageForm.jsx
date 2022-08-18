@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import * as filter from 'leo-profanity'
 import React, { useEffect, useState, useRef } from 'react';
-import {  useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -41,7 +41,7 @@ const MessageForm = (props) => {
     if (message.body) {
       try {
         await api.sendMessage(message);
-      } catch(err) {
+      } catch (err) {
         notify('errors.other.messageNotDelivered');
         rollbar('Message not delivered');
         console.error(err);
@@ -59,6 +59,7 @@ const MessageForm = (props) => {
     <Form onSubmit={onSubmit} className='py-1 border rounded-2'>
       <div className="input-group">
         <input
+          aria-label={t('messageFormLabel')}
           className='border-0 p-0 ps-2 form-control'
           name="body"
           id="body"

@@ -101,11 +101,12 @@ const LoginForm = (props) => {
 
             <Form.Group className="mb-3" controlId="formPassword">
               <FloatingLabel
-                controlId="floatingUsername"
+                controlId="floatingPassword"
                 label={t('passwordPlaceholder')}
                 className="mb-3"
               >
                 <Form.Control
+                  id='password'
                   type="text"
                   placeholder={t('passwordPlaceholder')}
                   value={f.values.password}
@@ -118,7 +119,7 @@ const LoginForm = (props) => {
                 {f.touched.password && f.errors.password && (
                   <p className='text-danger'>{f.errors.password}</p>
                 )}
-                {authFailed ? <div className="invalid-feedback d-block">{t('errors.other.authFailed')}</div> : null}
+                {authFailed ? <div className="invalid-tooltip">{t('errors.other.authFailed')}</div> : null}
               </FloatingLabel>
             </Form.Group>
             <Button variant="primary" type="submit" disabled={f.isSubmitting}>
