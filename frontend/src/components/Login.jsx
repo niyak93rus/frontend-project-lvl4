@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useFormik } from 'formik';
-import { Button, Form, FloatingLabel } from 'react-bootstrap';
+import { Button, Form, FloatingLabel, FormControl } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -97,21 +97,22 @@ const LoginForm = (props) => {
                 )}
               </FloatingLabel>
             </Form.Group>
-
-            <Form.Group className="form-floating mb-4">
-              <label htmlFor='password'>{t('passwordLabel')}</label>
-                <Form.Control
+            <Form.Group>
+              <FloatingLabel label={t('passwordLabel')} controlId="password" className="mb-4">
+                <FormControl
                   type="password"
-                  onChange={f.handleChange}
-                  value={f.values.password}
                   name="password"
-                  id="password"
-                  autoComplete="current-password"
-                  isInvalid={authFailed}
-                  required
                   placeholder={t('passwordPlaceholder')}
+                  autoComplete="current-password"
+                  value={f.values.password}
+                  onChange={f.handleChange}
+                  isInvalid={(f.touched.password && !!f.errors.password) || authFailed}
                 />
-              
+
+                <FormControl.Feedback type="invalid" tooltip>{t('errors.other.authFailed')}</FormControl.Feedback>
+              </FloatingLabel>
+
+
               {authFailed && <Form.Control.Feedback type="invalid" tooltip>{t('errors.other.authFailed')}</Form.Control.Feedback>}
             </Form.Group>
             <Button variant="primary" type="submit" disabled={f.isSubmitting}>
