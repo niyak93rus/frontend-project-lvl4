@@ -99,14 +99,14 @@ const LoginForm = (props) => {
               </FloatingLabel>
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formPassword">
+            <Form.Group className="mb-3">
               <FloatingLabel
                 label={t('passwordPlaceholder')}
                 className="mb-3"
               >
                 <Form.Control
                   id='password'
-                  type="text"
+                  type="password"
                   placeholder={t('passwordPlaceholder')}
                   value={f.values.password}
                   onChange={f.handleChange}
