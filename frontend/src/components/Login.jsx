@@ -101,7 +101,6 @@ const LoginForm = (props) => {
 
             <Form.Group className="mb-3" controlId="formPassword">
               <FloatingLabel
-                controlId="floatingPassword"
                 label={t('passwordPlaceholder')}
                 className="mb-3"
               >
