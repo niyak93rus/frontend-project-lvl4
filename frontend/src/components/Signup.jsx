@@ -85,7 +85,7 @@ const SignupForm = (props) => {
       <div className='container rounded w-50 my-3 p-3 bg-light'>
         <h2 className='text-center'>{t('registration')}</h2>
         <Form onSubmit={f.handleSubmit}>
-          <Form.Group className="mb-3" controlId="formLogin">
+          <Form.Group className="mb-4 position-relative" controlId="formLogin">
             <label htmlFor="username">{t('registrationUserName')}</label>
             <Form.Control
               autoComplete="username"
@@ -99,10 +99,10 @@ const SignupForm = (props) => {
               isInvalid={f.errors.username || registrationFailed}
               required
             />
-            {f.errors.username && <div className="invalid-feedback d-block">{f.errors.username}</div>}
+            {f.errors.username && <div className="invalid-tooltip">{f.errors.username}</div>}
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formPassword">
+          <Form.Group className="mb-4 position-relative" controlId="formPassword">
             <Form.Label>{t('passwordPlaceholder')}</Form.Label>
             <Form.Control
               autoComplete="current-password"
@@ -115,10 +115,10 @@ const SignupForm = (props) => {
               isInvalid={f.errors.password || registrationFailed}
               required
             />
-            {f.errors.password && <div className="invalid-feedback d-block">{f.errors.password}</div>}
+            {f.errors.password && <div className="invalid-tooltip d-block">{f.errors.password}</div>}
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formPasswordConfirmation">
+          <Form.Group className="mb-4 position-relative" controlId="formPasswordConfirmation">
             <Form.Label>{t('passwordConfirmationPlaceholder')}</Form.Label>
             <Form.Control
               type="password"
@@ -130,7 +130,7 @@ const SignupForm = (props) => {
               isInvalid={f.errors.passwordConfirmation || signupError}
               required
             />
-            {f.errors.passwordConfirmation && <div className="invalid-feedback d-block">{f.errors.passwordConfirmation}</div>}
+            {f.errors.passwordConfirmation && <div className="invalid-tooltip d-block">{f.errors.passwordConfirmation}</div>}
             {registrationFailed && <div className="invalid-feedback d-block">{signupError}</div>}
           </Form.Group>
           <Button variant="primary" type="submit" disabled={f.isSubmitting}>
