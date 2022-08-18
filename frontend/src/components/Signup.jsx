@@ -86,7 +86,7 @@ const SignupForm = (props) => {
         <h2 className='text-center'>{t('registration')}</h2>
         <Form onSubmit={f.handleSubmit}>
           <Form.Group className="mb-3" controlId="formLogin">
-            <Form.Label>{t('loginLabel')}</Form.Label>
+            <label htmlFor="username">{t('registrationUserName')}</label>
             <Form.Control
               autoComplete="username"
               type="username"
