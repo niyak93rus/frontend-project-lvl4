@@ -103,7 +103,7 @@ const SignupForm = (props) => {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPassword">
-            <Form.Label>{t('passwordLabel')}</Form.Label>
+            <Form.Label>{t('passwordPlaceholder')}</Form.Label>
             <Form.Control
               autoComplete="current-password"
               type="password"
@@ -119,7 +119,7 @@ const SignupForm = (props) => {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPasswordConfirmation">
-            <Form.Label>{t('passwordConfirmationLabel')}</Form.Label>
+            <Form.Label>{t('passwordConfirmationPlaceholder')}</Form.Label>
             <Form.Control
               type="password"
               placeholder={t('passwordConfirmationPlaceholder')}
