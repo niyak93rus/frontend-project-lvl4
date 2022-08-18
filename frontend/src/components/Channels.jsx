@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
+import { actions } from '../slices/index.js';
 import { selectors } from '../slices/channelsSlice.js';
 import getModal from '../modals/index.js';
+
 
 const renderModal = ({ modalInfo, hideModal }) => {
   if (!modalInfo.type) {
@@ -15,14 +17,15 @@ const renderModal = ({ modalInfo, hideModal }) => {
   return <Component modalInfo={modalInfo} onHide={hideModal} />;
 };
 
-const Channels = (props) => {
+const Channels = () => {
   const { t } = useTranslation();
-  const { changeChannel, currentChannelId } = props;
+  const dispatch = useDispatch();
+  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
   const channels = useSelector(selectors.selectAll);
 
   const [modalInfo, setModalInfo] = useState({ type: null, item: null });
   const hideModal = () => setModalInfo({ type: null, item: null });
-  const showModal = (type, item = null) => setModalInfo({ type, item, changeChannel });
+  const showModal = (type, item = null) => setModalInfo({ type, item });
 
   return (
     <>
@@ -39,11 +42,11 @@ const Channels = (props) => {
         </div>
         <ul className="list-group align-items-stretch justify-content-center">
           {channels.map((channel) => (
-            <li key={channel.id} onClick={() => changeChannel(channel.id)} className="list-group-item p-0 m-0 border-0">
+            <li key={channel.id} onClick={() => dispatch(actions.setCurrentChannelId(channel.id))} className="list-group-item p-0 m-0 border-0">
               {<div key={channel.id} className="btn-group align-items-stretch w-100 border">
                 <Button
                   className='p-1 text-nowrap'
-                  variant={(channel.id === currentChannelId) ? 'secondary' : 'light'}
+                  variant={(Number(channel.id) === Number(currentChannelId)) ? 'secondary' : 'light'}
                   key={channel.id}
                   style={{ margin: 0 }}>
                   # {channel.name}

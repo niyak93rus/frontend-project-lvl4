@@ -3,11 +3,12 @@ import { useSelector } from 'react-redux';
 import Message from './Message.jsx';
 import { nanoid } from '@reduxjs/toolkit'
 
-import { selectors } from '../slices/messagesSlice.js';
+import { selectors as messageSelectors } from '../slices/messagesSlice.js';
 
-const Messages = (props) => {
-  const messages = useSelector(selectors.selectAll);
-  const { currentChannelId } = props;
+const Messages = () => {
+  const messages = useSelector(messageSelectors.selectAll);
+  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
+  console.log(messages, currentChannelId)
 
   return messages.length > 0
     ? (<div className="m-3 bg-light">

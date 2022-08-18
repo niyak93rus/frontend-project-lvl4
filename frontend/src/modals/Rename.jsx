@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useApi } from '../hooks/index.js';
 import { selectors } from '../slices/channelsSlice.js';
 
-const generateOnSubmit = ({ modalInfo, onHide }, api, notify) => (values) => {
+const generateOnSubmit = ({ onHide }, api, notify) => (values) => {
   const { id, channelName } = values;
   api.renameChannel({ id, name: channelName});
   notify('channelRenamed');
