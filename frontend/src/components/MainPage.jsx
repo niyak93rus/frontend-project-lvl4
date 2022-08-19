@@ -22,12 +22,11 @@ const Header = () => {
   const channels = useSelector(channelSelectors.selectAll);
 
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
+  if (!currentChannelId) return;
   const currentChannel = channels.find((c) => Number(c.id) === Number(currentChannelId));
 
   const messagesCount = messages
-    .filter((message) => message.channelId === currentChannelId)
-    .length;
-  // messages.reduce((prev, curr) => curr.channelId === currentChannelId ? prev + 1 : prev, 0);
+    .reduce((prev, curr) => curr.channelId === currentChannelId ? prev + 1 : prev, 0);
   const channelName = `# ${currentChannel.name}`;
 
   return (
