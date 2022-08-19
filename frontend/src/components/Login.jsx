@@ -80,17 +80,18 @@ const LoginForm = (props) => {
               <FloatingLabel
                 label={t('loginPlaceholder')}
                 className="mb-3"
+                controlId="username"
               >
                 <Form.Control
-                  type="text"
-                  placeholder={t('loginPlaceholder')}
                   onChange={f.handleChange}
                   value={f.values.username}
-                  data-testid="input-username"
                   name="username"
-                  ref={inputRef}
-                  isInvalid={f.errors.username || authFailed}
+                  id="username"
+                  autoComplete="username"
+                  isInvalid={authFailed}
                   required
+                  ref={inputRef}
+                  placeholder={t('loginPlaceholder')}
                 />
                 {f.touched.username && f.errors.username && (
                   <span className='text-danger'>{f.errors.username}</span>

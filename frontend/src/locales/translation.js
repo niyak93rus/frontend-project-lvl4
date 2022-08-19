@@ -13,7 +13,6 @@ const resources = {
     },
     messageFormLabel: "Новое сообщение",
     logIn: "Войти",
-    loginLabel: "Логин",
     loginPlaceholder: "Ваш ник",
     logOut: "Выйти",
     errors: {
