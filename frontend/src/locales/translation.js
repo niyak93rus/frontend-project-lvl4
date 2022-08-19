@@ -4,6 +4,7 @@ const resources = {
     backToMain: "Вернуться на главную",
     channels: "Каналы",
     channelAdded: 'Канал создан',
+    channelControl: 'Управление каналом',
     channelRenamed: 'Канал переименован',
     channelRemoved: 'Канал удалён',
     mainPage: "Главная",

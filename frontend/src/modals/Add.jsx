@@ -12,12 +12,11 @@ import { socket } from '../index.js';
 import { selectors } from '../slices/channelsSlice.js';
 import { actions } from '../slices/channelsSlice.js';
 const generateOnSubmit = ({ onHide }, notify, dispatch) => (values) => {
-  console.log(values);
   const { name } = values;
 
   socket.emit('newChannel', { name });
   socket.on('newChannel', (payload) => {
-    dispatch(actions.setCurrentChannelId(payload.id))
+    dispatch(actions.setCurrentChannelId(payload.id));
   });
   notify('channelAdded');
 
@@ -71,7 +70,7 @@ const Add = (props) => {
           />
           <label className="visually-hidden" htmlFor="name">{t('modals.channelName')}</label>
           <Form.Control.Feedback type="invalid">
-            {t(f.errors.name)}
+            {(f.errors.name)}
           </Form.Control.Feedback>
           <div className="d-flex justify-content-end mt-2">
             <Button

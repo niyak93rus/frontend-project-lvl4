@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import * as filter from 'leo-profanity'
 
 import { actions } from '../slices/index.js';
 import { selectors } from '../slices/channelsSlice.js';
@@ -49,31 +50,37 @@ const Channels = () => {
                   variant={(Number(channel.id) === Number(currentChannelId)) ? 'secondary' : 'light'}
                   key={channel.id}
                   style={{ margin: 0 }}>
-                  # {channel.name}
+                  # {filter.clean(channel.name)}
                 </Button>
-                <Button
-                  type="button"
-                  className="btn dropdown-toggle dropdown-toggle-split"
-                  data-bs-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  variant={(channel.id === currentChannelId) ? 'secondary' : 'light'}>
-                  <span className="sr-only"></span>
-                </Button>
-                <ul className="dropdown-menu">
-                  <Button
-                    className="dropdown-item"
-                    onClick={() => showModal('renaming', channel)}
-                    data-testid="item-rename">
-                    {t('rename')}
-                  </Button>
-                  <Button
-                    className="dropdown-item"
-                    onClick={() => showModal('removing', channel)}
-                    data-testid="item-remove">
-                    {t('remove')}
-                  </Button>
-                </ul>
+                {channel.removable
+                  ? (<>
+                    <Button
+                      type="button"
+                      className="btn dropdown-toggle dropdown-toggle-split"
+                      data-bs-toggle="dropdown"
+                      aria-label={t('channelControl')}
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      variant={(channel.id === currentChannelId) ? 'secondary' : 'light'}>
+                      <span className="sr-only"></span>
+                    </Button>
+                    <ul className="dropdown-menu">
+                      <Button
+                        className="dropdown-item"
+                        onClick={() => showModal('renaming', channel)}
+                        data-testid="item-rename">
+                        {t('rename')}
+                      </Button>
+                      <Button
+                        className="dropdown-item"
+                        onClick={() => showModal('removing', channel)}
+                        data-testid="item-remove">
+                        {t('remove')}
+                      </Button>
+                    </ul>
+                  </>)
+                  : null
+                }
               </div>
               }
             </li>
