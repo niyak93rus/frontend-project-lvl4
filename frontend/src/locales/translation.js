@@ -50,7 +50,7 @@ const resources = {
     passwordConfirmationPlaceholder: "Подтвердите пароль",
     passwordLabel: "Пароль",
     passwordPlaceholder: 'Пароль',
-    prompt: 'Вы уверены?',
+    prompt: 'Уверены?',
     promptSignUp: 'Нет аккаунта?',
     registration: "Регистрация",
     registrationUserName: "Имя пользователя",

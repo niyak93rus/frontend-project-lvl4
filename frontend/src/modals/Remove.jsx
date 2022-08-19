@@ -48,7 +48,7 @@ const Remove = (props) => {
         <form onSubmit={onSubmit}>
           <FormGroup>
             <span className='m-3'>{t('prompt')}</span>
-            <input type="submit" className="btn btn-danger mt-2" value={t('remove')} />
+            <button type="submit" className="btn btn-danger mt-2">{t('remove')}</button>
           </FormGroup>
         </form>
       </Modal.Body>
