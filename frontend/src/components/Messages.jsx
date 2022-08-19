@@ -8,7 +8,6 @@ import { selectors as messageSelectors } from '../slices/messagesSlice.js';
 const Messages = () => {
   const messages = useSelector(messageSelectors.selectAll);
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
-  console.log(messages, currentChannelId)
 
   return messages.length > 0
     ? (<div className="m-3 bg-light">

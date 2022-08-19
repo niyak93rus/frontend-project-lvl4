@@ -40,12 +40,12 @@ const Channels = () => {
             <span className="visually-hidden">+</span>
           </button>
         </div>
-        <ul className="list-group align-items-stretch justify-content-center">
+        <ul className=" list-group align-items-stretch justify-content-center">
           {channels.map((channel) => (
             <li key={channel.id} onClick={() => dispatch(actions.setCurrentChannelId(channel.id))} className="list-group-item p-0 m-0 border-0">
               {<div key={channel.id} className="btn-group align-items-stretch w-100 border">
                 <Button
-                  className='p-1 text-nowrap'
+                  className='p-1 text-wrap'
                   variant={(Number(channel.id) === Number(currentChannelId)) ? 'secondary' : 'light'}
                   key={channel.id}
                   style={{ margin: 0 }}>

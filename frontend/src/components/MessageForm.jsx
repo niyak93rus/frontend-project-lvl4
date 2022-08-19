@@ -43,7 +43,7 @@ const MessageForm = (props) => {
         await api.sendMessage(message);
       } catch (err) {
         notify('errors.other.messageNotDelivered');
-        rollbar('Message not delivered');
+        rollbar.error('Message not delivered');
         console.error(err);
       }
 
