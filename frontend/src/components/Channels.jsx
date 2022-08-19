@@ -62,7 +62,7 @@ const Channels = () => {
                       aria-haspopup="true"
                       aria-expanded="false"
                       variant={(channel.id === currentChannelId) ? 'secondary' : 'light'}>
-                      <span className="sr-only"></span>
+                      <span className='visually-hidden'>{t('channelControl')}</span>
                     </Button>
                     <ul className="dropdown-menu">
                       <Button
