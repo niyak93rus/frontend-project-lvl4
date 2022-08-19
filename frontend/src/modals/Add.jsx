@@ -8,9 +8,9 @@ import { toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { socket } from '../index.js';
-import { selectors } from '../slices/channelsSlice.js';
-import { actions } from '../slices/channelsSlice.js';
+import socket from '../index.js';
+import { selectors, actions } from '../slices/channelsSlice.js';
+
 const generateOnSubmit = ({ onHide }, notify, dispatch) => (values) => {
   const { name } = values;
 
@@ -29,7 +29,7 @@ const Add = (props) => {
   const dispatch = useDispatch();
 
   const notify = (message) => toast.success(t(`${message}`), {
-    position: toast.POSITION.BOTTOM_CENTER
+    position: toast.POSITION.BOTTOM_CENTER,
   });
 
   const channelNames = channels.map((channel) => channel.name);
@@ -82,8 +82,8 @@ const Add = (props) => {
               {t('modals.cancel')}
             </Button>
             <input
-              className='btn btn-primary'
-              type='submit'
+              className="btn btn-primary"
+              type="submit"
               disabled={f.isSubmitting}
               value={t('modals.submit')}
             />
@@ -91,7 +91,7 @@ const Add = (props) => {
         </Form>
       </Modal.Body>
     </Modal>
-  )
+  );
 };
 
 export default Add;

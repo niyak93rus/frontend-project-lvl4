@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useFormik } from 'formik';
-import { Button, Form, FloatingLabel, FormControl } from 'react-bootstrap';
+import {
+  Button, Form, FloatingLabel, FormControl,
+} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -21,7 +23,7 @@ const LoginForm = (props) => {
   const { rollbar } = props;
 
   const notify = (message) => toast.error(t(`${message}`), {
-    position: toast.POSITION.BOTTOM_CENTER
+    position: toast.POSITION.BOTTOM_CENTER,
   });
 
   useEffect(() => {
@@ -31,7 +33,7 @@ const LoginForm = (props) => {
   const f = useFormik({
     initialValues: {
       username: '',
-      password: ''
+      password: '',
     },
     validationSchema: Yup.object({
       username: Yup.string()
@@ -71,62 +73,58 @@ const LoginForm = (props) => {
   });
 
   return (
-    <>
-      <div className='container rounded w-50 my-3 p-3 bg-white'>
-        <div className='row'>
-          <h3>{t('logIn')}</h3>
-          <Form onSubmit={f.handleSubmit}>
-            <Form.Group className="mb-3" controlId="formLogin">
-              <FloatingLabel
-                label={t('loginPlaceholder')}
-                className="mb-3"
-                controlId="username"
-              >
-                <Form.Control
-                  onChange={f.handleChange}
-                  value={f.values.username}
-                  name="username"
-                  id="username"
-                  autoComplete="username"
-                  isInvalid={authFailed}
-                  required
-                  ref={inputRef}
-                  placeholder={t('loginPlaceholder')}
-                />
-                {f.touched.username && f.errors.username && (
-                  <span className='text-danger'>{f.errors.username}</span>
-                )}
-              </FloatingLabel>
-            </Form.Group>
-            <Form.Group>
-              <FloatingLabel label={t('passwordLabel')} controlId="password" className="mb-4">
-                <FormControl
-                  type="password"
-                  name="password"
-                  placeholder={t('passwordPlaceholder')}
-                  autoComplete="current-password"
-                  value={f.values.password}
-                  onChange={f.handleChange}
-                  isInvalid={(f.touched.password && !!f.errors.password) || authFailed}
-                />
+    <div className="container rounded w-50 my-3 p-3 bg-white">
+      <div className="row">
+        <h3>{t('logIn')}</h3>
+        <Form onSubmit={f.handleSubmit}>
+          <Form.Group className="mb-3" controlId="formLogin">
+            <FloatingLabel
+              label={t('loginPlaceholder')}
+              className="mb-3"
+              controlId="username"
+            >
+              <Form.Control
+                onChange={f.handleChange}
+                value={f.values.username}
+                name="username"
+                id="username"
+                autoComplete="username"
+                isInvalid={authFailed}
+                required
+                ref={inputRef}
+                placeholder={t('loginPlaceholder')}
+              />
+              {f.touched.username && f.errors.username && (
+                <span className="text-danger">{f.errors.username}</span>
+              )}
+            </FloatingLabel>
+          </Form.Group>
+          <Form.Group>
+            <FloatingLabel label={t('passwordLabel')} controlId="password" className="mb-4">
+              <FormControl
+                type="password"
+                name="password"
+                placeholder={t('passwordPlaceholder')}
+                autoComplete="current-password"
+                value={f.values.password}
+                onChange={f.handleChange}
+                isInvalid={(f.touched.password && !!f.errors.password) || authFailed}
+              />
 
-                <FormControl.Feedback type="invalid" tooltip>{t('errors.other.authFailed')}</FormControl.Feedback>
-              </FloatingLabel>
-
-
-              {authFailed && <Form.Control.Feedback type="invalid" tooltip>{t('errors.other.authFailed')}</Form.Control.Feedback>}
-            </Form.Group>
-            <Button variant="primary" type="submit" disabled={f.isSubmitting}>
-              {t('logIn')}
-            </Button>
-          </Form>
-        </div>
-        <div className='row mt-5 p-2 text-center bg-light'>
-          <span>{t('promptSignUp')}</span>
-          <a href="/signup">{t('registration')}</a>
-        </div>
+              <FormControl.Feedback type="invalid" tooltip>{t('errors.other.authFailed')}</FormControl.Feedback>
+            </FloatingLabel>
+            {authFailed && <Form.Control.Feedback type="invalid" tooltip>{t('errors.other.authFailed')}</Form.Control.Feedback>}
+          </Form.Group>
+          <Button variant="primary" type="submit" disabled={f.isSubmitting}>
+            {t('logIn')}
+          </Button>
+        </Form>
       </div>
-    </>
+      <div className="row mt-5 p-2 text-center bg-light">
+        <span>{t('promptSignUp')}</span>
+        <a href="/signup">{t('registration')}</a>
+      </div>
+    </div>
   );
   // END
 };

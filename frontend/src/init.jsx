@@ -88,24 +88,24 @@ export default async (socket) => {
   const i18n = i18next.createInstance();
 
   await i18n
-  .use(initReactI18next)
-  .init({
-    debug: true,
-    lng: 'ru',
-    resources: {
-      ru: {
-        translation,
-      }
-    },
-  });
+    .use(initReactI18next)
+    .init({
+      debug: true,
+      lng: 'ru',
+      resources: {
+        ru: {
+          translation,
+        },
+      },
+    });
 
   const rollbarConfig = {
-      enabled: isProduction,
-      accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
-      captureUncaught: true,
-      captureUnhandledRejections: true,
-    };
-  
+    enabled: isProduction,
+    accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+  };
+
   const rollbar = new Rollbar(rollbarConfig);
 
   const vdom = (

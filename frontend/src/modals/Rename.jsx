@@ -25,23 +25,23 @@ const Rename = (props) => {
   const { t } = useTranslation();
 
   const notify = (message) => toast.success(t(`${message}`), {
-    position: toast.POSITION.BOTTOM_CENTER
+    position: toast.POSITION.BOTTOM_CENTER,
   });
 
   const channelNames = channels.map((channel) => channel.name);
   const { onHide, modalInfo } = props;
   const { item } = modalInfo;
 
-  const f = useFormik({ 
-    onSubmit: generateOnSubmit(props, api, notify), 
+  const f = useFormik({
+    onSubmit: generateOnSubmit(props, api, notify),
     initialValues: item,
     validationSchema: Yup.object({
       name: Yup.string()
         .notOneOf(channelNames, t('errors.other.existingChannel'))
         .required(t('errors.other.requiredChannelname')),
     }),
-   });
-  
+  });
+
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.select();
@@ -80,8 +80,8 @@ const Rename = (props) => {
               {t('modals.cancel')}
             </Button>
             <input
-              className='btn btn-primary'
-              type='submit'
+              className="btn btn-primary"
+              type="submit"
               disabled={f.isSubmitting}
               value={t('modals.submit')}
             />

@@ -12,7 +12,6 @@ const usersSlice = createSlice({
   },
 });
 
-
 export const { actions } = usersSlice;
 export const selectors = usersAdapter.getSelectors((state) => state.users);
 export default usersSlice.reducer;

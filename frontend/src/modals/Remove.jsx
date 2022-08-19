@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 import React from 'react';
 import { Modal, FormGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -28,12 +29,12 @@ const Remove = (props) => {
 
   const notify = {
     success: (message) => toast.success(t(`${message}`), {
-      position: toast.POSITION.BOTTOM_CENTER
+      position: toast.POSITION.BOTTOM_CENTER,
     }),
     error: (message) => toast.error(t(`${message}`), {
-      position: toast.POSITION.BOTTOM_CENTER
+      position: toast.POSITION.BOTTOM_CENTER,
     }),
-  }
+  };
 
   const { onHide } = props;
   const onSubmit = generateOnSubmit(props, notify, t, api);
@@ -47,14 +48,11 @@ const Remove = (props) => {
       <Modal.Body>
         <form onSubmit={onSubmit}>
           <FormGroup>
-            <span className='m-3'>{t('prompt')}</span>
+            <span className="m-3">{t('prompt')}</span>
             <button type="submit" className="btn btn-danger mt-2">{t('remove')}</button>
           </FormGroup>
         </form>
       </Modal.Body>
-      <Modal.Footer>
-        
-      </Modal.Footer>
     </Modal>
   );
 };

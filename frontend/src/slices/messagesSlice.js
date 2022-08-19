@@ -8,7 +8,7 @@ const messagesSlice = createSlice({
   reducers: {
     addMessage: messagesAdapter.addOne,
     allMessages(state, action) {
-      messagesAdapter.setAll(state, action.payload)
+      messagesAdapter.setAll(state, action.payload);
     },
   },
 });

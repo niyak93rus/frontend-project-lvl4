@@ -22,7 +22,7 @@ const SignupForm = (props) => {
   const { rollbar } = props;
 
   const notify = (message) => toast.error(t(`${message}`), {
-    position: toast.POSITION.BOTTOM_CENTER
+    position: toast.POSITION.BOTTOM_CENTER,
   });
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const SignupForm = (props) => {
     initialValues: {
       username: '',
       password: '',
-      passwordConfirmation: ''
+      passwordConfirmation: '',
     },
     validationSchema: Yup.object({
       username: Yup.string()
@@ -46,13 +46,14 @@ const SignupForm = (props) => {
         .required(t('errors.password.required')),
       passwordConfirmation: Yup.string()
         .required(t('errors.passwordConfirmation.required'))
-        .oneOf([Yup.ref('password'), null], t('errors.passwordConfirmation.oneOf'))
+        .oneOf([Yup.ref('password'), null], t('errors.passwordConfirmation.oneOf')),
     }),
     onSubmit: async (values) => {
       setRegistrationFailed(false);
 
       try {
-        const res = await axios.post(routes.signupPath(),
+        const res = await axios.post(
+          routes.signupPath(),
           { username: values.username, password: values.password },
         );
         auth.logIn(res.data);
@@ -81,79 +82,77 @@ const SignupForm = (props) => {
   });
 
   return (
-    <>
-      <div className='container rounded w-50 my-3 p-3 bg-light'>
-        <h2 className='text-center'>{t('registration')}</h2>
-        <Form onSubmit={f.handleSubmit}>
-          <Form.Group className="mb-4 position-relative" controlId="formLogin">
-            <FloatingLabel
-              controlId="floatingUsername"
-              label={t('registrationUserName')}
-              className="mb-3"
-            >
-              <Form.Control
-                autoComplete="username"
-                type="text"
-                placeholder={t('registrationUserName')}
-                onChange={f.handleChange}
-                value={f.values.username}
-                data-testid="input-username"
-                name="username"
-                ref={inputRef}
-                isInvalid={f.errors.username || registrationFailed}
-                required
-              />
-              {f.errors.username && <div className="invalid-tooltip">{f.errors.username}</div>}
-            </FloatingLabel>
-          </Form.Group>
+    <div className="container rounded w-50 my-3 p-3 bg-light">
+      <h2 className="text-center">{t('registration')}</h2>
+      <Form onSubmit={f.handleSubmit}>
+        <Form.Group className="mb-4 position-relative" controlId="formLogin">
+          <FloatingLabel
+            controlId="floatingUsername"
+            label={t('registrationUserName')}
+            className="mb-3"
+          >
+            <Form.Control
+              autoComplete="username"
+              type="text"
+              placeholder={t('registrationUserName')}
+              onChange={f.handleChange}
+              value={f.values.username}
+              data-testid="input-username"
+              name="username"
+              ref={inputRef}
+              isInvalid={f.errors.username || registrationFailed}
+              required
+            />
+            {f.errors.username && <div className="invalid-tooltip">{f.errors.username}</div>}
+          </FloatingLabel>
+        </Form.Group>
 
-          <Form.Group className="mb-4 position-relative" controlId="formPassword">
-            <FloatingLabel
-              controlId="floatingPassword"
-              label={t('passwordPlaceholder')}
-              className="mb-3"
-            >
-              <Form.Control
-                autoComplete="current-password"
-                type="text"
-                placeholder={t('passwordPlaceholder')}
-                value={f.values.password}
-                onChange={f.handleChange}
-                data-testid="input-password"
-                name="password"
-                isInvalid={f.errors.password || registrationFailed}
-                required
-              />
-              {f.errors.password && <div className="invalid-tooltip d-block">{f.errors.password}</div>}
-            </FloatingLabel>
-          </Form.Group>
+        <Form.Group className="mb-4 position-relative" controlId="formPassword">
+          <FloatingLabel
+            controlId="floatingPassword"
+            label={t('passwordPlaceholder')}
+            className="mb-3"
+          >
+            <Form.Control
+              autoComplete="current-password"
+              type="text"
+              placeholder={t('passwordPlaceholder')}
+              value={f.values.password}
+              onChange={f.handleChange}
+              data-testid="input-password"
+              name="password"
+              isInvalid={f.errors.password || registrationFailed}
+              required
+            />
+            {f.errors.password && <div className="invalid-tooltip d-block">{f.errors.password}</div>}
+          </FloatingLabel>
+        </Form.Group>
 
-          <Form.Group className="mb-4 position-relative" controlId="formPasswordConfirmation">
-            <FloatingLabel
-              controlId="floatingPasswordConfirmation"
-              label={t('passwordConfirmationPlaceholder')}
-              className="mb-3"
-            >
-              <Form.Control
-                type="text"
-                placeholder={t('passwordConfirmationPlaceholder')}
-                value={f.values.passwordConfirmation}
-                onChange={f.handleChange}
-                data-testid="input-passwordConfirmation"
-                name="passwordConfirmation"
-                isInvalid={f.errors.passwordConfirmation || signupError}
-                required
-              />
-              {f.errors.passwordConfirmation && <div className="invalid-tooltip d-block">{f.errors.passwordConfirmation}</div>}
-              {registrationFailed && <div className="invalid-feedback d-block">{signupError}</div>}
-            </FloatingLabel>
-          </Form.Group>
-          <Button variant="primary" type="submit" disabled={f.isSubmitting}>
-            {t('signUp')}
-          </Button>
-        </Form>
-      </div>
-    </>
+        <Form.Group className="mb-4 position-relative" controlId="formPasswordConfirmation">
+          <FloatingLabel
+            controlId="floatingPasswordConfirmation"
+            label={t('passwordConfirmationPlaceholder')}
+            className="mb-3"
+          >
+            <Form.Control
+              type="text"
+              placeholder={t('passwordConfirmationPlaceholder')}
+              value={f.values.passwordConfirmation}
+              onChange={f.handleChange}
+              data-testid="input-passwordConfirmation"
+              name="passwordConfirmation"
+              isInvalid={f.errors.passwordConfirmation || signupError}
+              required
+            />
+            {f.errors.passwordConfirmation && <div className="invalid-tooltip d-block">{f.errors.passwordConfirmation}</div>}
+            {registrationFailed && <div className="invalid-feedback d-block">{signupError}</div>}
+          </FloatingLabel>
+        </Form.Group>
+        <Button variant="primary" type="submit" disabled={f.isSubmitting}>
+          {t('signUp')}
+        </Button>
+      </Form>
+    </div>
   );
 };
 

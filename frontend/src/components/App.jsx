@@ -63,19 +63,18 @@ const AuthButton = () => {
   const { t } = useTranslation('translation');
   const location = useLocation();
 
-  if (location.pathname === '/login') return;
-
-  return (
-    auth.user
+  if (!location.pathname === '/login') {
+    return (auth.user
       ? <Button onClick={auth.logOut}>{t('logOut')}</Button>
-      : <Button as={Link} to="/login" state={{ from: location }}>{t('logIn')}</Button>
-  );
+      : <Button as={Link} to="/login" state={{ from: location }}>{t('logIn')}</Button>);
+  }
+  return null;
 };
 
 const App = () => (
   <AuthProvider>
     <Router>
-      <Navbar bg="light" expand="lg" className='align-items-stretch justify-content-between p-2'>
+      <Navbar bg="light" expand="lg" className="align-items-stretch justify-content-between p-2">
         <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
         <AuthButton />
       </Navbar>
