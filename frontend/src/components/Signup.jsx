@@ -115,7 +115,7 @@ const SignupForm = (props) => {
           >
             <Form.Control
               autoComplete="current-password"
-              type="text"
+              type="password"
               placeholder={t('passwordPlaceholder')}
               value={f.values.password}
               onChange={f.handleChange}
@@ -135,7 +135,7 @@ const SignupForm = (props) => {
             className="mb-3"
           >
             <Form.Control
-              type="text"
+              type="password"
               placeholder={t('passwordConfirmationPlaceholder')}
               value={f.values.passwordConfirmation}
               onChange={f.handleChange}
