@@ -3,12 +3,18 @@
 ___
 
 ### Deployed on Heroku:
-<a href="https://reactive-messenger-niyak93.herokuapp.com/" target="_blank">Click me</a>
+<a href="https://reactive-messenger-niyak93.herokuapp.com/" target="_blank">
+  <img src="assets/heroku.png" alt="heroku logo" width="75"/>
+</a>
+
 ___
 
 ### Description:
 This is a simple chat application made during learning on <a href="https://hexlet.io/" target="_blank">Hexlet</a> Frontend-developer course.
 Used technologies: web-sockets, interacting with REST API, React (hooks), Redux (reduxjs/toolkit), routing, auhorization and authentification, bundling (webpack) and deploy (heroku).
+
+<img src="assets/app screenshot.png" alt="screenshot" width="650"/>
+
 ___
 
 ### How to use it: 
