@@ -71,6 +71,7 @@ export default async (socket) => {
   socket.on('newChannel', (payload) => {
     logSocket('newChannel', payload);
     store.dispatch(actions.addChannel(payload));
+    store.dispatch(actions.setCurrentChannelId(payload.id));
   });
   socket.on('removeChannel', (payload) => {
     logSocket('removeChannel', payload);

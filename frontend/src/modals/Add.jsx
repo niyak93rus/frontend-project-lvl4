@@ -1,32 +1,29 @@
+import * as Yup from 'yup';
 import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Button, Modal, Form } from 'react-bootstrap';
-import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import socket from '../index.js';
-import { selectors, actions } from '../slices/channelsSlice.js';
+import { useApi } from '../hooks/index.js';
+import { selectors } from '../slices/channelsSlice.js';
 
-const generateOnSubmit = ({ onHide }, notify, dispatch) => (values) => {
+const generateOnSubmit = ({ onHide }, notify, api) => (values) => {
   const { name } = values;
 
-  socket.emit('newChannel', { name });
-  socket.on('newChannel', (payload) => {
-    dispatch(actions.setCurrentChannelId(payload.id));
-  });
+  api.createChannel({ name });
   notify('channelAdded');
 
   onHide();
 };
 
 const Add = (props) => {
+  const api = useApi();
   const channels = useSelector(selectors.selectAll);
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   const notify = (message) => toast.success(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER,
@@ -35,7 +32,7 @@ const Add = (props) => {
   const channelNames = channels.map((channel) => channel.name);
   const { onHide } = props;
   const f = useFormik({
-    onSubmit: generateOnSubmit(props, notify, dispatch),
+    onSubmit: generateOnSubmit(props, notify, api),
     initialValues: { name: '' },
     validationSchema: Yup.object({
       name: Yup.string()

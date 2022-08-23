@@ -21,6 +21,7 @@
     "immer": "^9.0.15",
     "jquery": "^3.6.0",
     "leo-profanity": "^1.5.1",
+    "lodash": "^4.17.21",
     "normalizr": "^3.6.2",
     "popper.js": "^1.16.1",
     "react": "^18.2.0",
@@ -44,12 +45,6 @@
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.js src/**/*.jsx"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -61,5 +56,16 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.18.6",
+    "babel-eslint": "^10.1.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-flowtype": "^8.0.3",
+    "eslint-plugin-functional": "^4.2.2",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-react-hooks": "^4.6.0"
   }
 }

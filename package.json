@@ -29,7 +29,5 @@
   "homepage": "https://github.com/niyak93rus/frontend-project-lvl4#readme",
   "dependencies": {
     "@hexlet/chat-server": "^1.1.5"
-  },
-  "devDependencies": {
   }
 }

@@ -22,21 +22,23 @@ const Header = () => {
   const channels = useSelector(channelSelectors.selectAll);
 
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
-  if (!currentChannelId) return;
-  const currentChannel = channels.find((c) => Number(c.id) === Number(currentChannelId));
+  if (currentChannelId) {
+    const currentChannel = channels.find((c) => Number(c.id) === Number(currentChannelId));
 
-  const messagesCount = messages
-    .reduce((prev, curr) => curr.channelId === currentChannelId ? prev + 1 : prev, 0);
-  const channelName = `# ${currentChannel.name}`;
+    const messagesCount = messages
+      .reduce((prev, curr) => (curr.channelId === currentChannelId ? prev + 1 : prev), 0);
+    const channelName = `# ${currentChannel.name}`;
 
-  return (
-    <>
-      <p className="m-0">
-        <b>{channelName}</b>
-      </p>
-      <span className="text-muted">{`${messagesCount} сообщений`}</span>
-    </>
-  );
+    return (
+      <>
+        <p className="m-0">
+          <b>{channelName}</b>
+        </p>
+        <span className="text-muted">{`${messagesCount} сообщений`}</span>
+      </>
+    );
+  }
+  return null;
 };
 
 const MainPage = (props) => {
