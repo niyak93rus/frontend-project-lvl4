@@ -81,12 +81,12 @@ const LoginForm = (props) => {
             <FloatingLabel
               label={t('loginPlaceholder')}
               className="mb-3"
+              controlId="username"
             >
               <Form.Control
                 onChange={f.handleChange}
                 value={f.values.username}
                 name="username"
-                id="username"
                 autoComplete="username"
                 isInvalid={authFailed}
                 required
