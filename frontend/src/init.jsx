@@ -1,4 +1,3 @@
-/* eslint-disable import/no-anonymous-default-export */
 import 'bootstrap';
 import React from 'react';
 import { Provider } from 'react-redux';
