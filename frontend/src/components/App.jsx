@@ -64,8 +64,6 @@ const AuthButton = () => {
   const { t } = useTranslation('translation');
   const location = useLocation();
 
-  console.log(location.pathname)
-
   if (location.pathname === '/login') {
     return null;
   }
