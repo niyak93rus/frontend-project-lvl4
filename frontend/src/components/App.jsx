@@ -66,11 +66,12 @@ const AuthButton = () => {
 
   console.log(location.pathname)
 
-  if (location.pathname !== '/login') {
-    return (auth.user
-      ? <Button onClick={auth.logOut}>{t('logOut')}</Button>
-      : <Button as={Link} to="/login" state={{ from: location }}>{t('logIn')}</Button>);
+  if (location.pathname === '/login') {
+    return null;
   }
+  return (auth.user
+    ? <Button onClick={auth.logOut}>{t('logOut')}</Button>
+    : <Button as={Link} to="/login" state={{ from: location }}>{t('logIn')}</Button>);
 };
 
 const App = () => (
