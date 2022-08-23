@@ -64,12 +64,13 @@ const AuthButton = () => {
   const { t } = useTranslation('translation');
   const location = useLocation();
 
-  if (!location.pathname === '/login') {
+  console.log(location.pathname)
+
+  if (location.pathname !== '/login') {
     return (auth.user
       ? <Button onClick={auth.logOut}>{t('logOut')}</Button>
       : <Button as={Link} to="/login" state={{ from: location }}>{t('logIn')}</Button>);
   }
-  return null;
 };
 
 const App = () => (

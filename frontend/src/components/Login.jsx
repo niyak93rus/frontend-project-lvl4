@@ -81,7 +81,6 @@ const LoginForm = (props) => {
             <FloatingLabel
               label={t('loginPlaceholder')}
               className="mb-3"
-              controlId="username"
             >
               <Form.Control
                 onChange={f.handleChange}
