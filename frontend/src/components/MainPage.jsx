@@ -47,8 +47,6 @@ const MainPage = (props) => {
   const rollbar = useRollbar();
   const auth = useAuth();
 
-  console.log(props);
-
   const notify = (message) => toast.error(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER,
   });

@@ -1,6 +1,7 @@
 import 'bootstrap';
 import React from 'react';
 import { Provider } from 'react-redux';
+import { Provider as RollbarProvider } from '@rollbar/react';
 import { configureStore } from '@reduxjs/toolkit';
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
@@ -109,12 +110,14 @@ export default async (socket) => {
   const rollbar = new Rollbar(rollbarConfig);
 
   const vdom = (
-    <Provider store={store} instance={rollbar}>
-      <I18nextProvider i18n={i18n}>
-        <ApiContext.Provider value={api}>
-          <App />
-        </ApiContext.Provider>
-      </I18nextProvider>
+    <Provider store={store}>
+      <RollbarProvider instance={rollbar}>
+        <I18nextProvider i18n={i18n}>
+          <ApiContext.Provider value={api}>
+            <App />
+          </ApiContext.Provider>
+        </I18nextProvider>
+      </RollbarProvider>
     </Provider>
   );
 
