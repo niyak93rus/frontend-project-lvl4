@@ -13,7 +13,7 @@ import { useRollbar } from '@rollbar/react';
 import { useAuth } from '../hooks/index.js';
 import routes from '../routes.js';
 
-const LoginForm = (props) => {
+const LoginForm = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const navigate = useNavigate();
   const auth = useAuth();

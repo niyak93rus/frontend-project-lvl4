@@ -6,8 +6,8 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useRollbar } from '@rollbar/react';
 
-import { actions as channelsActions, selectors as channelSelectors } from '../slices/channelsSlice.js';
-import { actions as messagesActions, selectors as messageSelectors } from '../slices/messagesSlice.js';
+import { actions as channelsActions } from '../slices/channelsSlice.js';
+import { actions as messagesActions } from '../slices/messagesSlice.js';
 
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
@@ -15,34 +15,9 @@ import Messages from './Messages.jsx';
 import { useAuth } from '../hooks/index.js';
 import routes from '../routes.js';
 
-const Header = () => {
-  const messages = useSelector(messageSelectors.selectAll);
-  const channels = useSelector(channelSelectors.selectAll);
-
-  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
-  if (currentChannelId) {
-    const currentChannel = channels.find((c) => Number(c.id) === Number(currentChannelId));
-
-    const messagesCount = messages
-      .reduce((prev, curr) => (curr.channelId === currentChannelId ? prev + 1 : prev), 0);
-    const channelName = `# ${currentChannel.name}`;
-
-    return (
-      <>
-        <p className="m-0">
-          <b>{channelName}</b>
-        </p>
-        <span className="text-muted">{`${messagesCount} сообщений`}</span>
-      </>
-    );
-  }
-  return null;
-};
-
-const MainPage = (props) => {
+const MainPage = () => {
   const dispatch = useDispatch();
   const [appError, setAppError] = useState('');
-  const store = useStore();
   const { t } = useTranslation();
   const rollbar = useRollbar();
   const auth = useAuth();
@@ -97,9 +72,6 @@ const MainPage = (props) => {
       <Channels />
       <div className="col p-0 h-100">
         <div className="d-flex flex-column h-100">
-          <div className="bg-light mb-4 p-3 shadow">
-            <Header store={store} />
-          </div>
           <Messages />
           {appError && <div className="text-danger">{appError}</div>}
         </div>

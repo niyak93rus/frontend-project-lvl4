@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import * as filter from 'leo-profanity';
 
 import { actions } from '../slices/index.js';
-import { selectors } from '../slices/channelsSlice.js';
+import { getChannels, getCurrentChannelId } from '../selectors.js';
 
 import getModal from '../modals/index.js';
 
@@ -21,8 +21,8 @@ const renderModal = ({ modalInfo, hideModal }) => {
 const Channels = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
-  const channels = useSelector(selectors.selectAll);
+  const channels = useSelector(getChannels);
+  const currentChannelId = useSelector(getCurrentChannelId);
 
   const [modalInfo, setModalInfo] = useState({ type: null, item: null });
   const hideModal = () => setModalInfo({ type: null, item: null });

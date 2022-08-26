@@ -12,6 +12,10 @@ const resources = {
       placeholder: 'Введите сообщение',
       button: 'Отправить',
     },
+    messagesCount_zero: '{{count}} сообщений',
+    messagesCount_one: '{{count}} сообщение',
+    messagesCount_few: '{{count}} сообщения',
+    messagesCount_many: '{{count}} сообщений',
     messageFormLabel: 'Новое сообщение',
     modals: {
       cancel: 'Отмена',
