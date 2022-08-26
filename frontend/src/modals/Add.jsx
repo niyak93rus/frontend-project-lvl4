@@ -6,8 +6,8 @@ import { Button, Modal, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
+import { getChannels } from '../selectors.js';
 import { useApi } from '../hooks/index.js';
-import { selectors } from '../slices/channelsSlice.js';
 
 const generateOnSubmit = ({ onHide }, notify, api) => (values) => {
   const { name } = values;
@@ -20,7 +20,7 @@ const generateOnSubmit = ({ onHide }, notify, api) => (values) => {
 
 const Add = (props) => {
   const api = useApi();
-  const channels = useSelector(selectors.selectAll);
+  const channels = useSelector(getChannels);
   const { t } = useTranslation();
 
   const notify = (message) => toast.success(t(`${message}`), {

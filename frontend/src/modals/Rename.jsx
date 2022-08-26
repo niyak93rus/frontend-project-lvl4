@@ -6,7 +6,7 @@ import { Button, Form, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-import { selectors } from '../slices/channelsSlice.js';
+import { getChannels } from '../selectors.js';
 import { useApi } from '../hooks/index.js';
 
 const generateOnSubmit = ({ onHide }, api, notify) => (values) => {
@@ -19,7 +19,7 @@ const generateOnSubmit = ({ onHide }, api, notify) => (values) => {
 
 const Rename = (props) => {
   const api = useApi();
-  const channels = useSelector(selectors.selectAll);
+  const channels = useSelector(getChannels);
   const { t } = useTranslation();
 
   const notify = (message) => toast.success(t(`${message}`), {
@@ -31,6 +31,8 @@ const Rename = (props) => {
   const { item } = modalInfo;
 
   const f = useFormik({
+    validateOnChange: false,
+    validateOnBlur: false,
     onSubmit: generateOnSubmit(props, api, notify),
     initialValues: item,
     validationSchema: Yup.object({
