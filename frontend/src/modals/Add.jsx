@@ -30,6 +30,8 @@ const Add = (props) => {
   const channelNames = channels.map((channel) => channel.name);
   const { onHide } = props;
   const f = useFormik({
+    validateOnChange: false,
+    validateOnBlur: false,
     onSubmit: generateOnSubmit(props, notify, api),
     initialValues: { name: '' },
     validationSchema: Yup.object({
@@ -53,7 +55,6 @@ const Add = (props) => {
       <Modal.Body>
         <Form onSubmit={f.handleSubmit}>
           <Form.Control
-            required
             ref={inputRef}
             onChange={f.handleChange}
             onBlur={f.handleBlur}

@@ -5,11 +5,12 @@ import { useSelector } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { useRollbar } from '@rollbar/react';
 
 import { useApi } from '../hooks/index.js';
 
 const MessageForm = (props) => {
-  const { rollbar } = props;
+  const rollbar = useRollbar();
   const [text, setText] = useState('');
   const inputRef = useRef(null);
   const { t } = useTranslation();
@@ -41,7 +42,7 @@ const MessageForm = (props) => {
         await api.sendMessage(message);
       } catch (err) {
         notify('errors.other.messageNotDelivered');
-        rollbar.error('Message not delivered');
+        rollbar.error(t('errors.other.messageNotDelivered'));
         console.error(err);
       }
 

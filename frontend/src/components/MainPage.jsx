@@ -4,6 +4,7 @@ import { normalize, schema } from 'normalizr';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useRollbar } from '@rollbar/react';
 
 import { actions as channelsActions, selectors as channelSelectors } from '../slices/channelsSlice.js';
 import { actions as messagesActions, selectors as messageSelectors } from '../slices/messagesSlice.js';
@@ -43,8 +44,10 @@ const MainPage = (props) => {
   const [appError, setAppError] = useState('');
   const store = useStore();
   const { t } = useTranslation();
-  const { rollbar } = props;
+  const rollbar = useRollbar();
   const auth = useAuth();
+
+  console.log(props);
 
   const notify = (message) => toast.error(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER,

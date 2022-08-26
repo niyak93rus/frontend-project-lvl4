@@ -6,6 +6,7 @@ import { Button, Form, FloatingLabel } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { useRollbar } from '@rollbar/react';
 
 import { useAuth } from '../hooks/index.js';
 import routes from '../routes.js';
@@ -17,7 +18,7 @@ const SignupForm = (props) => {
   const auth = useAuth();
   const inputRef = useRef();
   const { t } = useTranslation();
-  const { rollbar } = props;
+  const rollbar = useRollbar();
 
   const notify = (message) => toast.error(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER,
