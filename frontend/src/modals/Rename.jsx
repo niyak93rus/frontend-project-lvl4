@@ -6,8 +6,6 @@ import { Button, Form, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-import 'react-toastify/dist/ReactToastify.css';
-
 import { selectors } from '../slices/channelsSlice.js';
 import { useApi } from '../hooks/index.js';
 

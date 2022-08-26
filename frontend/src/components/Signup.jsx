@@ -7,8 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-import 'react-toastify/dist/ReactToastify.css';
-
 import { useAuth } from '../hooks/index.js';
 import routes from '../routes.js';
 
@@ -100,10 +98,10 @@ const SignupForm = (props) => {
               data-testid="input-username"
               name="username"
               ref={inputRef}
-              isInvalid={f.errors.username || registrationFailed}
+              isInvalid={f.touched.username && f.errors.username || registrationFailed}
               required
             />
-            {f.errors.username && <div className="invalid-tooltip">{f.errors.username}</div>}
+            {f.touched.username && f.errors.username && <div className="invalid-tooltip">{f.errors.username}</div>}
           </FloatingLabel>
         </Form.Group>
 
@@ -121,10 +119,10 @@ const SignupForm = (props) => {
               onChange={f.handleChange}
               data-testid="input-password"
               name="password"
-              isInvalid={f.errors.password || registrationFailed}
+              isInvalid={f.touched.password && f.errors.password || registrationFailed}
               required
             />
-            {f.errors.password && <div className="invalid-tooltip d-block">{f.errors.password}</div>}
+            {f.touched.password && f.errors.password && <div className="invalid-tooltip d-block">{f.errors.password}</div>}
           </FloatingLabel>
         </Form.Group>
 
@@ -141,10 +139,10 @@ const SignupForm = (props) => {
               onChange={f.handleChange}
               data-testid="input-passwordConfirmation"
               name="passwordConfirmation"
-              isInvalid={f.errors.passwordConfirmation || signupError}
+              isInvalid={f.touched.passwordConfirmation && f.errors.passwordConfirmation || signupError}
               required
             />
-            {f.errors.passwordConfirmation && <div className="invalid-tooltip d-block">{f.errors.passwordConfirmation}</div>}
+            {f.touched.passwordConfirmation && f.errors.passwordConfirmation && <div className="invalid-tooltip d-block">{f.errors.passwordConfirmation}</div>}
             {registrationFailed && <div className="invalid-feedback d-block">{signupError}</div>}
           </FloatingLabel>
         </Form.Group>

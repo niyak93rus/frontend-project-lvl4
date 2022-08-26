@@ -21,7 +21,7 @@ import SignupPage from './Signup.jsx';
 
 const AuthProvider = ({ children }) => {
   const currentUser = JSON.parse(localStorage.getItem('user'));
-  const [user, setUser] = useState(currentUser ? { username: currentUser.username } : null);
+  const [user, setUser] = useState(currentUser ? { username: currentUser.username, token: currentUser.token } : null);
 
   const logIn = (userData) => {
     localStorage.setItem('user', JSON.stringify(userData));
@@ -34,7 +34,8 @@ const AuthProvider = ({ children }) => {
   };
 
   const getAuthHeader = () => {
-    const userData = JSON.parse(localStorage.getItem('user'));
+    console.log(user);
+    const userData = user;
 
     return userData?.token ? { Authorization: `Bearer ${userData.token}` } : {};
   };

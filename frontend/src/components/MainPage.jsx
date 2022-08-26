@@ -5,14 +5,11 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-import 'react-toastify/dist/ReactToastify.css';
-
 import { actions as channelsActions, selectors as channelSelectors } from '../slices/channelsSlice.js';
 import { actions as messagesActions, selectors as messageSelectors } from '../slices/messagesSlice.js';
 
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
-import MessageForm from './MessageForm.jsx';
 
 import { useAuth } from '../hooks/index.js';
 import routes from '../routes.js';
@@ -95,18 +92,15 @@ const MainPage = (props) => {
   });
 
   return (
-    <div className="row h-100 bg-white flex-md-row">
+    <div id="chat" className="row h-100 bg-white flex-md-row">
       <Channels />
       <div className="col p-0 h-100">
         <div className="d-flex flex-column h-100">
           <div className="bg-light mb-4 p-3 shadow">
             <Header store={store} />
           </div>
-          <div className="mt-auto px-5 py-3">
-            <Messages />
-            <MessageForm />
-            {appError && <div className="text-danger">{appError}</div>}
-          </div>
+          <Messages />
+          {appError && <div className="text-danger">{appError}</div>}
         </div>
       </div>
     </div>
