@@ -36,7 +36,7 @@ const App = () => (
         <AuthButton />
       </Navbar>
 
-      <div className="container h-100 my-4 overflow-hidden rounded shadow">
+      <div id="chat" className="container h-100 my-4 overflow-hidden rounded shadow">
         <Routes>
           <Route
             path="/"

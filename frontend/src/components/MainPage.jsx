@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
+import Spinner from 'react-bootstrap/Spinner';
 import { normalize, schema } from 'normalizr';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
@@ -11,6 +12,7 @@ import { actions as messagesActions } from '../slices/messagesSlice.js';
 
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
+import Modal from './Modal.jsx';
 
 import { useAuth } from '../hooks/index.js';
 import routes from '../routes.js';
@@ -18,6 +20,7 @@ import routes from '../routes.js';
 const MainPage = () => {
   const dispatch = useDispatch();
   const [appError, setAppError] = useState('');
+  const [fetching, setFetching] = useState(true);
   const { t } = useTranslation();
   const rollbar = useRollbar();
   const auth = useAuth();
@@ -37,13 +40,14 @@ const MainPage = () => {
   };
 
   useEffect(() => {
+    let didMount = true;
     const fetchData = async () => {
       try {
         const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
         const normalizedData = getNormalized(data);
 
         const { channels, messages } = normalizedData.entities;
-
+        if (didMount) setFetching(false);
         dispatch(channelsActions.setChannels(channels));
         dispatch(channelsActions.setCurrentChannelId(channels.currentChannelId));
         if (!messages) return;
@@ -67,17 +71,28 @@ const MainPage = () => {
     fetchData();
   });
 
-  return (
-    <div id="chat" className="row h-100 bg-white flex-md-row">
-      <Channels />
-      <div className="col p-0 h-100">
-        <div className="d-flex flex-column h-100">
-          <Messages />
-          {appError && <div className="text-danger">{appError}</div>}
-        </div>
+  return fetching
+    ? (
+      <div className="h-100 d-flex justify-content-center align-items-center">
+        <Spinner animation="border" role="status" variant="primary">
+          <span className="visually-hidden">{t('loading')}</span>
+        </Spinner>
       </div>
-    </div>
-  );
+    )
+    : (
+      <>
+        <Modal />
+        <div className="row h-100 bg-white flex-md-row">
+          <Channels />
+          <div className="col p-0 h-100">
+            <div className="d-flex flex-column h-100">
+              <Messages />
+              {appError && <div className="text-danger">{appError}</div>}
+            </div>
+          </div>
+        </div>
+      </>
+    );
 };
 
 export default MainPage;

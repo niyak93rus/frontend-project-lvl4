@@ -1,29 +1,34 @@
 /* eslint-disable dot-notation */
-import React from 'react';
-import { Modal, FormGroup } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Button, Modal, FormGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-
+import { useRollbar } from '@rollbar/react';
 import { useApi } from '../hooks/index.js';
 
-const generateOnSubmit = ({ modalInfo, onHide }, notify, t, api) => (e) => {
+const generateOnSubmit = (handleClose, setLoading, channelId, notify, api, rollbar) => (e) => {
+  setLoading(true);
   e.preventDefault();
-  const { item } = modalInfo;
-  if (item.removable) {
-    api.removeChannel({ id: item.id });
+  try {
+    api.removeChannel({ id: channelId });
     notify['success']('channelRemoved');
 
-    onHide();
-  } else {
-    const errorName = 'errors.other.notRemovable';
-    console.error(t(errorName));
-    notify['error'](errorName);
+    handleClose();
+  } catch (err) {
+    console.error(err);
+    setLoading(false);
+    rollbar.error(err);
   }
 };
 
-const Remove = (props) => {
+const Remove = ({ handleClose }) => {
   const { t } = useTranslation();
   const api = useApi();
+  const rollbar = useRollbar();
+  const channelId = useSelector((state) => state.modal.extra?.channelId);
+
+  const [loading, setLoading] = useState(false);
 
   const notify = {
     success: (message) => toast.success(t(`${message}`), {
@@ -34,24 +39,46 @@ const Remove = (props) => {
     }),
   };
 
-  const { onHide } = props;
-  const onSubmit = generateOnSubmit(props, notify, t, api);
+  const onSubmit = generateOnSubmit(handleClose, setLoading, channelId, notify, api, rollbar);
 
   return (
-    <Modal show>
-      <Modal.Header closeButton onHide={onHide}>
+    <>
+      <Modal.Header>
         <Modal.Title>{t('remove')}</Modal.Title>
+        <Button
+          variant="close"
+          type="button"
+          onClick={handleClose}
+          aria-label="Close"
+          data-bs-dismiss="modal"
+        />
       </Modal.Header>
 
       <Modal.Body>
         <form onSubmit={onSubmit}>
           <FormGroup>
             <span className="m-3">{t('prompt')}</span>
-            <button type="submit" className="btn btn-danger mt-2">{t('remove')}</button>
+            <Button
+              className="me-2"
+              variant="secondary"
+              type="button"
+              onClick={handleClose}
+              disabled={loading}
+            >
+              {t('modals.cancel')}
+            </Button>
+            <Button
+              variant="danger"
+              type="button"
+              onClick={onSubmit}
+              disabled={loading}
+            >
+              {t('remove')}
+            </Button>
           </FormGroup>
         </form>
       </Modal.Body>
-    </Modal>
+    </>
   );
 };
 

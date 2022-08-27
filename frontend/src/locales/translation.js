@@ -7,6 +7,7 @@ const resources = {
     channelControl: 'Управление каналом',
     channelRenamed: 'Канал переименован',
     channelRemoved: 'Канал удалён',
+    loading: 'Загрузка',
     mainPage: 'Главная',
     message: {
       placeholder: 'Введите сообщение',

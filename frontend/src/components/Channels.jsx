@@ -1,22 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from 'react-bootstrap';
+import { PlusSquare } from 'react-bootstrap-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import * as filter from 'leo-profanity';
 
 import { actions } from '../slices/index.js';
 import { getChannels, getCurrentChannelId } from '../selectors.js';
 
-import getModal from '../modals/index.js';
-
-const renderModal = ({ modalInfo, hideModal }) => {
-  if (!modalInfo.type) {
-    return null;
-  }
-
-  const Component = getModal(modalInfo.type);
-  return <Component modalInfo={modalInfo} onHide={hideModal} />;
-};
+import Channel from './Channel.jsx';
 
 const Channels = () => {
   const { t } = useTranslation();
@@ -24,84 +15,47 @@ const Channels = () => {
   const channels = useSelector(getChannels);
   const currentChannelId = useSelector(getCurrentChannelId);
 
-  const [modalInfo, setModalInfo] = useState({ type: null, item: null });
-  const hideModal = () => setModalInfo({ type: null, item: null });
-  const showModal = (type, item = null) => setModalInfo({ type, item });
+  const handleChooseChannel = (channelId) => () => {
+    dispatch(actions.setCurrentChannelId(channelId));
+  };
+  const handleAddChannel = () => {
+    dispatch(actions.openModal({ type: 'addChannel' }));
+  };
+  const handleRemoveChannel = (channelId) => () => {
+    dispatch(actions.openModal({ type: 'removeChannel', extra: { channelId } }));
+  };
+  const handleRenameChannel = (channelId) => () => {
+    dispatch(actions.openModal({ type: 'renameChannel', extra: { channelId } }));
+  };
 
   return (
     <>
       <div className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
         <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
           <span>{t('channels')}</span>
-          <button
+          <Button
             type="button"
-            className="p-0 text-primary btn btn-group-vertical"
-            onClick={() => showModal('adding')}
-            data-testid="item-add"
+            variant="group-vertical"
+            className="p-0 text-primary"
+            onClick={handleAddChannel}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              width="20"
-              height="20"
-              fill="currentColor"
-            >
-              <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
-              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-            </svg>
+            <PlusSquare size={20} />
             <span className="visually-hidden">+</span>
-          </button>
+          </Button>
         </div>
-        <ul className="list-group align-items-stretch justify-content-center">
+        <ul className="nav flex-column nav-pills nav-fill px-2">
           {channels.map((channel) => (
-            <li key={channel.id} className="list-group-item p-0 m-0 border-0">
-              <div key={channel.id} className="btn-group align-items-stretch w-100 border">
-                <Button
-                  className="p-1 text-wrap"
-                  variant={Number(channel.id) === Number(currentChannelId) ? 'secondary' : 'light'}
-                  key={channel.id}
-                  onClick={() => dispatch(actions.setCurrentChannelId(channel.id))}
-                  style={{ margin: 0 }}
-                >
-                  {`# ${filter.clean(channel.name)}`}
-                </Button>
-                {channel.removable ? (
-                  <>
-                    <Button
-                      type="button"
-                      className="btn dropdown-toggle dropdown-toggle-split"
-                      data-bs-toggle="dropdown"
-                      aria-label={t('channelControl')}
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                      variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                    >
-                      <span className="visually-hidden">{t('channelControl')}</span>
-                    </Button>
-                    <ul className="dropdown-menu">
-                      <Button
-                        className="dropdown-item"
-                        onClick={() => showModal('renaming', channel)}
-                        data-testid="item-rename"
-                      >
-                        {t('rename')}
-                      </Button>
-                      <Button
-                        className="dropdown-item"
-                        onClick={() => showModal('removing', channel)}
-                        data-testid="item-remove"
-                      >
-                        {t('remove')}
-                      </Button>
-                    </ul>
-                  </>
-                ) : null}
-              </div>
-            </li>
+            <Channel
+              key={channel.id}
+              channel={channel}
+              isCurrent={channel.id === currentChannelId}
+              handleChoose={handleChooseChannel(channel.id)}
+              handleRemove={handleRemoveChannel}
+              handleRename={handleRenameChannel}
+            />
           ))}
         </ul>
       </div>
-      {renderModal({ modalInfo, hideModal })}
     </>
   );
 };

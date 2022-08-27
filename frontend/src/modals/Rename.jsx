@@ -5,36 +5,46 @@ import { useFormik } from 'formik';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { useRollbar } from '@rollbar/react';
 
-import { getChannels } from '../selectors.js';
+import { getChannels, getChannelById } from '../selectors.js';
 import { useApi } from '../hooks/index.js';
 
-const generateOnSubmit = ({ onHide }, api, notify) => (values) => {
-  const { id, name } = values;
-  api.renameChannel({ id, name });
-  notify('channelRenamed');
+const generateOnSubmit = (handleClose, channelId, api, notify, rollbar) => (values) => {
+  const { name } = values;
+  try {
+    api.renameChannel({ id: channelId, name });
+    notify('channelRenamed');
+  } catch(err) {
+    console.error(err);
+    rollbar.error(err);
+  }
 
-  onHide();
+  handleClose();
 };
 
-const Rename = (props) => {
+const Rename = ({handleClose}) => {
   const api = useApi();
   const channels = useSelector(getChannels);
   const { t } = useTranslation();
+  const rollbar = useRollbar();
+
+  const channelId = useSelector((state) => state.modal.extra?.channelId);
+  const channel = useSelector(getChannelById(channelId));
 
   const notify = (message) => toast.success(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER,
   });
 
   const channelNames = channels.map((channel) => channel.name);
-  const { onHide, modalInfo } = props;
-  const { item } = modalInfo;
 
   const f = useFormik({
     validateOnChange: false,
     validateOnBlur: false,
-    onSubmit: generateOnSubmit(props, api, notify),
-    initialValues: item,
+    onSubmit: generateOnSubmit(handleClose, channelId, api, notify, rollbar),
+    initialValues: {
+      name: channel.name,
+    },
     validationSchema: Yup.object({
       name: Yup.string()
         .notOneOf(channelNames, t('errors.other.existingChannel'))
@@ -48,21 +58,28 @@ const Rename = (props) => {
   }, []);
 
   return (
-    <Modal show>
-      <Modal.Header closeButton onHide={onHide}>
+    <>
+      <Modal.Header>
         <Modal.Title>{t('rename')}</Modal.Title>
+        <Button
+          variant="close"
+          type="button"
+          onClick={handleClose}
+          aria-label="Close"
+          data-bs-dismiss="modal"
+        />
       </Modal.Header>
 
       <Modal.Body>
         <Form onSubmit={f.handleSubmit}>
           <Form.Control
-            required
             ref={inputRef}
             onChange={f.handleChange}
             onBlur={f.handleBlur}
             data-testid="input-name"
             name="name"
             id="name"
+            value={f.values.name}
             isInvalid={f.errors.name && f.touched.name}
             disabled={f.isSubmitting}
           />
@@ -75,7 +92,7 @@ const Rename = (props) => {
               className="me-2"
               variant="secondary"
               type="button"
-              onClick={onHide}
+              onClick={handleClose}
             >
               {t('modals.cancel')}
             </Button>
@@ -88,7 +105,7 @@ const Rename = (props) => {
           </div>
         </Form>
       </Modal.Body>
-    </Modal>
+    </>
   );
 };
 

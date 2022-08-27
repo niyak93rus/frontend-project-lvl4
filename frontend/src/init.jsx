@@ -18,6 +18,7 @@ import resources from './locales/translation.js';
 
 import messagesReducer from './slices/messagesSlice.js';
 import channelsReducer from './slices/channelsSlice.js';
+import modalReducer from './slices/modal.js'
 
 const { translation } = resources;
 
@@ -61,6 +62,7 @@ export default async (socket) => {
     reducer: {
       messages: messagesReducer,
       channels: channelsReducer,
+      modal: modalReducer,
     },
   });
 

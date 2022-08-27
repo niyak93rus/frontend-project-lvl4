@@ -9,16 +9,16 @@ import { toast } from 'react-toastify';
 import { getChannels } from '../selectors.js';
 import { useApi } from '../hooks/index.js';
 
-const generateOnSubmit = ({ onHide }, notify, api) => (values) => {
+const generateOnSubmit = (handleClose, notify, api) => (values) => {
   const { name } = values;
 
   api.createChannel({ name });
   notify('channelAdded');
 
-  onHide();
+  handleClose();
 };
 
-const Add = (props) => {
+const Add = ({ handleClose }) => {
   const api = useApi();
   const channels = useSelector(getChannels);
   const { t } = useTranslation();
@@ -28,11 +28,10 @@ const Add = (props) => {
   });
 
   const channelNames = channels.map((channel) => channel.name);
-  const { onHide } = props;
   const f = useFormik({
     validateOnChange: false,
     validateOnBlur: false,
-    onSubmit: generateOnSubmit(props, notify, api),
+    onSubmit: generateOnSubmit(handleClose, notify, api),
     initialValues: { name: '' },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -47,9 +46,16 @@ const Add = (props) => {
   }, []);
 
   return (
-    <Modal show>
-      <Modal.Header closeButton onHide={onHide}>
+    <>
+      <Modal.Header>
         <Modal.Title>{t('addChannel')}</Modal.Title>
+        <Button
+          variant="close"
+          type="button"
+          onClick={handleClose}
+          aria-label="Close"
+          data-bs-dismiss="modal"
+        />
       </Modal.Header>
 
       <Modal.Body>
@@ -73,7 +79,7 @@ const Add = (props) => {
               className="me-2"
               variant="secondary"
               type="button"
-              onClick={onHide}
+              onClick={handleClose}
             >
               {t('modals.cancel')}
             </Button>
@@ -86,7 +92,7 @@ const Add = (props) => {
           </div>
         </Form>
       </Modal.Body>
-    </Modal>
+    </>
   );
 };
 
