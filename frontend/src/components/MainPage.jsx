@@ -35,8 +35,7 @@ const MainPage = () => {
     const { currentChannelId } = data;
 
     const mySchema = { channels: [channel], messages: [message], currentChannelId };
-    const normalizedData = normalize(data, mySchema);
-    return normalizedData;
+    return normalize(data, mySchema);
   };
 
   useEffect(() => {

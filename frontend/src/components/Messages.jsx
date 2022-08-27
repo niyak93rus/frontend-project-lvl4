@@ -12,6 +12,7 @@ import MessageForm from './MessageForm.jsx';
 const Messages = () => {
   const { t } = useTranslation();
   const messages = useSelector(getMessages);
+  console.log(messages)
   const channels = useSelector(getChannels);
   const currentChannelId = useSelector(getCurrentChannelId);
   const currentChannel = channels.find((c) => Number(c.id) === Number(currentChannelId));
