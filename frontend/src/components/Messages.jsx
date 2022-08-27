@@ -12,7 +12,6 @@ import MessageForm from './MessageForm.jsx';
 const Messages = () => {
   const { t } = useTranslation();
   const messages = useSelector(getMessages);
-  console.log(messages)
   const channels = useSelector(getChannels);
   const currentChannelId = useSelector(getCurrentChannelId);
   const currentChannel = channels.find((c) => Number(c.id) === Number(currentChannelId));
@@ -35,7 +34,7 @@ const Messages = () => {
             {t("messagesCount", { count: messagesCount })}
           </span>
         </div>
-        <div id="messages-box" className="chat-messages overflow-auto px-5 ">
+        <div id="messages-box" className="d-flex flex-column chat-messages overflow-auto px-5 ">
           {messages.length > 0
             ? (
               <ul className="list-group bg-light">

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
 import { normalize, schema } from 'normalizr';
 import { useTranslation } from 'react-i18next';
@@ -84,10 +84,8 @@ const MainPage = () => {
         <div className="row h-100 bg-white flex-md-row">
           <Channels />
           <div className="col p-0 h-100">
-            <div className="d-flex flex-column h-100">
-              <Messages />
-              {appError && <div className="text-danger">{appError}</div>}
-            </div>
+            <Messages />
+            {appError && <div className="text-danger">{appError}</div>}
           </div>
         </div>
       </>

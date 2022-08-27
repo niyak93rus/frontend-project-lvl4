@@ -7,7 +7,7 @@ import {
   Navigate,
   useLocation,
 } from 'react-router-dom';
-import {  Navbar } from 'react-bootstrap';
+import { Navbar } from 'react-bootstrap';
 import { ToastContainer } from 'react-toastify';
 
 import { useAuth } from '../hooks/index.js';
@@ -31,26 +31,28 @@ const MainRoute = ({ children }) => {
 const App = () => (
   <AuthProvider>
     <Router>
-      <Navbar bg="light" expand="lg" className="align-items-stretch justify-content-between p-2">
-        <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
-        <AuthButton />
-      </Navbar>
+      <div className="d-flex flex-column h-100">
+        <Navbar bg="light" expand="lg" className="align-items-stretch justify-content-between p-2">
+          <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
+          <AuthButton />
+        </Navbar>
 
-      <div id="chat" className="container h-100 my-4 overflow-hidden rounded shadow">
-        <Routes>
-          <Route
-            path="/"
-            element={(
-              <MainRoute>
-                <MainPage />
-              </MainRoute>
-            )}
-          />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="*" element={<NoMatch />} />
+        <div id="chat" className="container h-100 my-4 overflow-hidden rounded shadow">
+          <Routes>
+            <Route
+              path="/"
+              element={(
+                <MainRoute>
+                  <MainPage />
+                </MainRoute>
+              )}
+            />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="*" element={<NoMatch />} />
 
-        </Routes>
+          </Routes>
+        </div>
       </div>
       <ToastContainer />
     </Router>
