@@ -2,7 +2,7 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "slack clone on react",
-  "main": "src/index.js",
+  "main": "frontend/src/index.js",
   "scripts": {
     "build": "npm run build --prefix frontend",
     "server": "start-server -a localhost",
