@@ -23,3 +23,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+/tests/
+/tests-examples/
+/test-results/
+/playwright-report/
+/playwright/.cache/
+playwright.config.js
