@@ -1,3 +1,6 @@
+make install:
+	cd frontend && npm ci
+
 build:
 	npm run build
 
