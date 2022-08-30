@@ -8,7 +8,7 @@
     "start-dev": "npx start-server -p 5001 && npm start",
     "start": "start-server -s ./frontend/build",
     "postinstall": "cd frontend && npm ci",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx playwright test"
   },
   "repository": {
     "type": "git",
