@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import {uniqueId} from 'lodash';
 import * as filter from 'leo-profanity';
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
@@ -34,7 +34,7 @@ const MessageForm = (props) => {
     const message = {
       body: filter.clean(data.get('body')),
       username,
-      id: _.uniqueId(),
+      id: uniqueId(),
       channelId: currentChannelId,
     };
 

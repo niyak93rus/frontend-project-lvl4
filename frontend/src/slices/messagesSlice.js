@@ -1,5 +1,4 @@
 import { createSlice, createEntityAdapter, current } from '@reduxjs/toolkit';
-import remove from 'lodash/remove.js';
 
 import { actions as channelsActions } from './channelsSlice.js';
 

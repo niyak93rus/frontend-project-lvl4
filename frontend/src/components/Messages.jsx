@@ -34,7 +34,7 @@ const Messages = () => {
             {t("messagesCount", { count: messagesCount })}
           </span>
         </div>
-        <div id="messages-box" className="d-flex flex-column chat-messages overflow-auto px-5 ">
+        <div id="messages-box" className="d-flex flex-column chat-messages overflow-auto px-5" style={{height: "500px"}}>
           {messages.length > 0
             ? (
               <ul className="list-group bg-light">
