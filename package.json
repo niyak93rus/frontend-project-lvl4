@@ -4,7 +4,7 @@
   "description": "slack clone on react",
   "main": "frontend/src/index.js",
   "scripts": {
-    "build": "npm run build --prefix frontend && npm start",
+    "build": "npm run build --prefix frontend",
     "server": "start-server -a localhost",
     "start-dev": "npx start-server -p 5001 && npm start",
     "start": "npx start-server -p 5000 -s ./frontend/build",
