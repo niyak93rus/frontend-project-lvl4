@@ -4,10 +4,10 @@
   "description": "slack clone on react",
   "main": "frontend/src/index.js",
   "scripts": {
-    "build": "npm run build --prefix frontend",
+    "build": "npm run build --prefix frontend && npm start",
     "server": "start-server -a localhost",
     "start-dev": "npx start-server -p 5001 && npm start",
-    "start": "npx start-server -s ./frontend/build",
+    "start": "npx start-server -p 5000 -s ./frontend/build",
     "postinstall": "cd frontend && npm ci",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
