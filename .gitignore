@@ -1,2 +1,9 @@
 node_modules
 .env
+
+/tests/
+/tests-examples/
+/test-results/
+/playwright-report/
+/playwright/.cache/
+playwright.config.js

@@ -4,9 +4,9 @@
   "description": "slack clone on react",
   "main": "src/index.js",
   "scripts": {
-    "build": "npm run build --prefix frontend && npm run start",
+    "build": "npm run build --prefix frontend",
     "start-dev": "npx start-server -p 5001 && npm start",
-    "start": "npx start-server -s ./frontend/build && make -C frontend start",
+    "start": "npx start-server -s ./frontend/build",
     "postinstall": "cd frontend && npm ci",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -28,6 +28,9 @@
   },
   "homepage": "https://github.com/niyak93rus/frontend-project-lvl4#readme",
   "dependencies": {
-    "@hexlet/chat-server": "^1.1.5"
+    "@hexlet/chat-server": "^1.1.6"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.25.1"
   }
 }
