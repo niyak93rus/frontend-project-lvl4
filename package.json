@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "npm run build --prefix frontend",
+    "server": "start-server -a localhost",
     "start-dev": "npx start-server -p 5001 && npm start",
     "start": "npx start-server -s ./frontend/build",
     "postinstall": "cd frontend && npm ci",
