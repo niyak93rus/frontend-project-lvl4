@@ -1,5 +1,5 @@
 import 'bootstrap';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { Provider as RollbarProvider } from '@rollbar/react';
 import { configureStore } from '@reduxjs/toolkit';
