@@ -113,7 +113,7 @@ export default async (socket) => {
 
   const vdom = (
     <Provider store={store}>
-      <RollbarProvider instance={rollbar}>
+      <RollbarProvider config={rollbarConfig}>
         <I18nextProvider i18n={i18n}>
           <ApiContext.Provider value={api}>
             <App />
