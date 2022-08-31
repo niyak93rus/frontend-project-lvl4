@@ -5,7 +5,7 @@
   "main": "/src/index.js",
   "scripts": {
     "build": "npm run build --prefix frontend",
-    "start": "start-server -p 5000 -s ./frontend/build",
+    "start": "start-server -s ./frontend/build",
     "postinstall": "cd frontend && npm ci",
     "test": "npx playwright test"
   },
@@ -29,6 +29,6 @@
     "@playwright/test": "^1.25.1"
   },
   "dependencies": {
-    "@hexlet/chat-server": "1.1.6"
+    "@hexlet/chat-server": "1.1.5"
   }
 }
