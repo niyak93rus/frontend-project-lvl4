@@ -2,7 +2,7 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "slack clone on react",
-  "main": "frontend/src/index.js",
+  "main": "/src/index.js",
   "scripts": {
     "build": "npm run build --prefix frontend",
     "start": "start-server -p 5000 -s ./frontend/build",
@@ -25,10 +25,10 @@
   "bugs": {
     "url": "https://github.com/niyak93rus/frontend-project-lvl4/issues"
   },
-  "dependencies": {
-    "@hexlet/chat-server": "^1.1.6"
-  },
   "devDependencies": {
     "@playwright/test": "^1.25.1"
+  },
+  "dependencies": {
+    "@hexlet/chat-server": "1.1.6"
   }
 }
