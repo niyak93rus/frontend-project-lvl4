@@ -1,4 +1,4 @@
-import {uniqueId} from 'lodash';
+import { uniqueId } from 'lodash';
 import * as filter from 'leo-profanity';
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
@@ -10,7 +10,7 @@ import { useRollbar } from '@rollbar/react';
 
 import { useApi } from '../hooks/index.js';
 
-const MessageForm = (props) => {
+const MessageForm = () => {
   const rollbar = useRollbar();
   const [text, setText] = useState('');
   const inputRef = useRef(null);

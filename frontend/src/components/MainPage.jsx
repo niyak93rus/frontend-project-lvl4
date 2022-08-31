@@ -39,7 +39,7 @@ const MainPage = () => {
   };
 
   useEffect(() => {
-    let didMount = true;
+    const didMount = true;
     const fetchData = async () => {
       try {
         const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });

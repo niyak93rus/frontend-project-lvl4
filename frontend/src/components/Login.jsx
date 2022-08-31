@@ -87,7 +87,7 @@ const LoginForm = () => {
                 value={f.values.username}
                 name="username"
                 autoComplete="username"
-                isInvalid={f.touched.username && f.errors.username || authFailed}
+                isInvalid={(f.touched.username && f.errors.username) || authFailed}
                 required
                 ref={inputRef}
                 placeholder={t('loginPlaceholder')}
@@ -106,7 +106,7 @@ const LoginForm = () => {
                 autoComplete="current-password"
                 value={f.values.password}
                 onChange={f.handleChange}
-                isInvalid={f.touched.password && f.errors.password || authFailed}
+                isInvalid={(f.touched.password && f.errors.password) || authFailed}
               />
 
               <FormControl.Feedback type="invalid" tooltip>{t('errors.other.authFailed')}</FormControl.Feedback>

@@ -1,9 +1,10 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState } from 'react';
 import { AuthContext } from '../contexts/index.js';
 
 const AuthProvider = ({ children }) => {
   const currentUser = JSON.parse(localStorage.getItem('user'));
-  const [user, setUser] = useState(currentUser ? { username: currentUser.username, token: currentUser.token } : null);
+  const [user, setUser] = useState(currentUser
+    ? { username: currentUser.username, token: currentUser.token } : null);
 
   const logIn = (userData) => {
     localStorage.setItem('user', JSON.stringify(userData));
@@ -15,13 +16,12 @@ const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  const getAuthHeader = () => {
-    return user?.token ? { Authorization: `Bearer ${user.token}` } : {};
-  };
-
-  const authData = useMemo(() => ({
-    logIn, logOut, getAuthHeader, user,
-  }), [user]);
+  const authData = useMemo(() => {
+    const getAuthHeader = () => (user?.token ? { Authorization: `Bearer ${user.token}` } : {});
+    return {
+      logIn, logOut, getAuthHeader, user,
+    };
+  }, [user]);
 
   return (
     <AuthContext.Provider value={authData}>

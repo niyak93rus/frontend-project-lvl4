@@ -1,6 +1,6 @@
-import { Button, ButtonGroup, Dropdown } from "react-bootstrap";
+import React from 'react';
+import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import * as filter from 'leo-profanity';
 
 const Channel = ({
   channel,

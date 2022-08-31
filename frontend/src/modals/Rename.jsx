@@ -15,7 +15,7 @@ const generateOnSubmit = (handleClose, channelId, api, notify, rollbar) => (valu
   try {
     api.renameChannel({ id: channelId, name });
     notify('channelRenamed');
-  } catch(err) {
+  } catch (err) {
     console.error(err);
     rollbar.error(err);
   }
@@ -23,7 +23,7 @@ const generateOnSubmit = (handleClose, channelId, api, notify, rollbar) => (valu
   handleClose();
 };
 
-const Rename = ({handleClose}) => {
+const Rename = ({ handleClose }) => {
   const api = useApi();
   const channels = useSelector(getChannels);
   const { t } = useTranslation();
@@ -36,7 +36,7 @@ const Rename = ({handleClose}) => {
     position: toast.POSITION.BOTTOM_CENTER,
   });
 
-  const channelNames = channels.map((channel) => channel.name);
+  const channelNames = channels.map((c) => c.name);
 
   const f = useFormik({
     validateOnChange: false,

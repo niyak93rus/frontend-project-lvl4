@@ -1,5 +1,5 @@
-import { selectors as channelSelectors } from "./slices/channelsSlice";
-import { selectors as messageSelectors } from "./slices/messagesSlice";
+import { selectors as channelSelectors } from './slices/channelsSlice';
+import { selectors as messageSelectors } from './slices/messagesSlice';
 
 export const getChannels = channelSelectors.selectAll;
 

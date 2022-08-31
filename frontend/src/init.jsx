@@ -1,12 +1,11 @@
 import 'bootstrap';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import { Provider as RollbarProvider } from '@rollbar/react';
 import { configureStore } from '@reduxjs/toolkit';
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 
-import Rollbar from 'rollbar';
 import leoProfanity from 'leo-profanity';
 
 import { ApiContext } from './contexts/index.js';
@@ -18,7 +17,7 @@ import resources from './locales/translation.js';
 
 import messagesReducer from './slices/messagesSlice.js';
 import channelsReducer from './slices/channelsSlice.js';
-import modalReducer from './slices/modal.js'
+import modalReducer from './slices/modal.js';
 
 const { translation } = resources;
 
@@ -108,8 +107,6 @@ export default async (socket) => {
     captureUncaught: true,
     captureUnhandledRejections: true,
   };
-
-  const rollbar = new Rollbar(rollbarConfig);
 
   const vdom = (
     <Provider store={store}>
