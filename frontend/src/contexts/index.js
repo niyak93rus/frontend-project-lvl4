@@ -5,8 +5,4 @@ export const ApiContext = createContext(null);
 
 export const useAuth = () => useContext(AuthContext);
 
-export const useApi = () => {
-  const api = useContext(ApiContext);
-
-  return api;
-};
+export const useApi = () => useContext(ApiContext);

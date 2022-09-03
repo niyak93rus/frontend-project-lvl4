@@ -1,22 +1,21 @@
 import 'bootstrap';
-import React from 'react';
-import { Provider } from 'react-redux';
-import { Provider as RollbarProvider } from '@rollbar/react';
-import { configureStore } from '@reduxjs/toolkit';
 import i18next from 'i18next';
-import { I18nextProvider, initReactI18next } from 'react-i18next';
-
 import leoProfanity from 'leo-profanity';
+import React from 'react';
+import { configureStore } from '@reduxjs/toolkit';
+import { Provider as RollbarProvider } from '@rollbar/react';
+import { I18nextProvider, initReactI18next } from 'react-i18next';
+import { Provider } from 'react-redux';
 
+import { actions } from './slices/index.js';
 import { ApiContext } from './contexts/index.js';
 
 import App from './components/App.jsx';
 import getLogger from './lib/logger.js';
-import { actions } from './slices/index.js';
 import resources from './locales/translation.js';
 
-import messagesReducer from './slices/messagesSlice.js';
 import channelsReducer from './slices/channelsSlice.js';
+import messagesReducer from './slices/messagesSlice.js';
 import modalReducer from './slices/modal.js';
 
 const { translation } = resources;
