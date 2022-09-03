@@ -26,6 +26,12 @@ const LoginForm = () => {
   });
 
   useEffect(() => {
+    if (auth.user) {
+      navigate('/');
+    }
+  });
+
+  useEffect(() => {
     inputRef.current.focus();
   }, []);
 

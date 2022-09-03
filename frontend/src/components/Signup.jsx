@@ -25,6 +25,12 @@ const SignupForm = () => {
   });
 
   useEffect(() => {
+    if (auth.user) {
+      navigate('/');
+    }
+  });
+
+  useEffect(() => {
     inputRef.current.focus();
   }, []);
 
