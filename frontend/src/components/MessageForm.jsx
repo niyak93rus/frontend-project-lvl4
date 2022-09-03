@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useRollbar } from '@rollbar/react';
 
-import { useApi } from '../hooks/index.js';
+import { useApi } from '../contexts/index.js';
 
 const MessageForm = () => {
   const rollbar = useRollbar();

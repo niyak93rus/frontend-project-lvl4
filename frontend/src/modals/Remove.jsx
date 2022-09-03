@@ -5,7 +5,8 @@ import { Button, Modal, FormGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useRollbar } from '@rollbar/react';
-import { useApi } from '../hooks/index.js';
+
+import { useApi } from '../contexts/index.js';
 
 const generateOnSubmit = (handleClose, setLoading, channelId, notify, api, rollbar) => (e) => {
   setLoading(true);

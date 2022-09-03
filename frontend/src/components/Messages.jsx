@@ -4,7 +4,8 @@ import { animateScroll } from 'react-scroll';
 import { nanoid } from '@reduxjs/toolkit';
 import { useTranslation } from 'react-i18next';
 
-import { getMessages, getChannels, getCurrentChannelId } from '../selectors.js';
+import { getChannels, getCurrentChannelId } from '../slices/channelsSlice.js';
+import { getMessages } from '../slices/messagesSlice.js';
 
 import Message from './Message.jsx';
 import MessageForm from './MessageForm.jsx';

@@ -9,12 +9,12 @@ import { useRollbar } from '@rollbar/react';
 
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
+import { useAuth } from '../contexts/index.js';
 
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
 import Modal from './Modal.jsx';
 
-import { useAuth } from '../hooks/index.js';
 import routes from '../routes.js';
 
 const MainPage = () => {

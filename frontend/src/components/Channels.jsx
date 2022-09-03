@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { actions } from '../slices/index.js';
-import { getChannels, getCurrentChannelId } from '../selectors.js';
+import { getChannels, getCurrentChannelId } from '../slices/channelsSlice.js';
 
 import Channel from './Channel.jsx';
 

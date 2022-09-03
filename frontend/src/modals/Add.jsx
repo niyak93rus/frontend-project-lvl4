@@ -6,8 +6,8 @@ import { Button, Modal, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-import { getChannels } from '../selectors.js';
-import { useApi } from '../hooks/index.js';
+import { getChannels } from '../slices/channelsSlice.js';
+import { useApi } from '../contexts/index.js';
 
 const generateOnSubmit = (handleClose, notify, api) => (values) => {
   const { name } = values;

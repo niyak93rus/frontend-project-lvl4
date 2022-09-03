@@ -7,8 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useRollbar } from '@rollbar/react';
 
-import { getChannels, getChannelById } from '../selectors.js';
-import { useApi } from '../hooks/index.js';
+import { getChannels, getChannelById } from '../slices/channelsSlice.js';
+import { useApi } from '../contexts/index.js';
 
 const generateOnSubmit = (handleClose, channelId, api, notify, rollbar) => (values) => {
   const { name } = values;

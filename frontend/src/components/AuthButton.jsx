@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 
-import { useAuth } from '../hooks/index.js';
+import { useAuth } from '../contexts/index.js';
 
 const AuthButton = () => {
   const auth = useAuth();

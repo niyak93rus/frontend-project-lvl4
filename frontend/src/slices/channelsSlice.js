@@ -24,5 +24,14 @@ const channelsSlice = createSlice({
 
 export const selectors = channelsAdapter.getSelectors((state) => state.channels);
 
+export const getChannels = selectors.selectAll;
+
+export const getChannelById = (channelId) => (state) => {
+  const channels = state.channels.entities;
+  return Object.values(channels).find((c) => c.id === channelId);
+};
+
+export const getCurrentChannelId = (state) => state.channels.currentChannelId;
+
 export const { actions } = channelsSlice;
 export default channelsSlice.reducer;

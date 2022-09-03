@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useRollbar } from '@rollbar/react';
 
-import { useAuth } from '../hooks/index.js';
+import { useAuth } from '../contexts/index.js';
 import routes from '../routes.js';
 
 const SignupForm = () => {

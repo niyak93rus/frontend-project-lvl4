@@ -10,7 +10,7 @@ import {
 import { Navbar } from 'react-bootstrap';
 import { ToastContainer } from 'react-toastify';
 
-import { useAuth } from '../hooks/index.js';
+import { useAuth } from '../contexts/index.js';
 
 import AuthButton from './AuthButton.jsx';
 import AuthProvider from './AuthProvider.jsx';
