@@ -56,6 +56,7 @@ const resources = {
     passwordLabel: 'Пароль',
     passwordPlaceholder: 'Пароль',
     prompt: 'Уверены?',
+    promptLogin: 'Уже есть аккаунт?',
     promptSignUp: 'Нет аккаунта?',
     registration: 'Регистрация',
     registrationUserName: 'Имя пользователя',
