@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
-import { normalize, schema } from 'normalizr';
+
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
+
 import { toast } from 'react-toastify';
 import { useRollbar } from '@rollbar/react';
 
-import { actions as channelsActions } from '../slices/channelsSlice.js';
-import { actions as messagesActions } from '../slices/messagesSlice.js';
+import { fetchChannels } from '../slices/channelsSlice.js';
 import { useAuth } from '../contexts/index.js';
 
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
 import Modal from './Modal.jsx';
-
-import routes from '../routes.js';
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -24,51 +21,32 @@ const MainPage = () => {
   const { t } = useTranslation();
   const rollbar = useRollbar();
   const auth = useAuth();
-
-  const notify = (message) => toast.error(t(`${message}`), {
+  const notify = useCallback((message) => toast.error(t(`${message}`), {
     position: toast.POSITION.BOTTOM_CENTER,
-  });
-
-  const getNormalized = (data) => {
-    const message = new schema.Entity('messages');
-    const channel = new schema.Entity('channels');
-    const { currentChannelId } = data;
-
-    const mySchema = { channels: [channel], messages: [message], currentChannelId };
-    return normalize(data, mySchema);
-  };
+  }), [t]);
 
   useEffect(() => {
     const didMount = true;
-    const fetchData = async () => {
-      try {
-        const { data } = await axios.get(routes.dataPath(), { headers: auth.getAuthHeader() });
-        const normalizedData = getNormalized(data);
+    const headers = auth.getAuthHeader();
 
-        const { channels, messages } = normalizedData.entities;
-        if (didMount) setFetching(false);
-        dispatch(channelsActions.setChannels(channels));
-        dispatch(channelsActions.setCurrentChannelId(channels.currentChannelId));
-        if (!messages) return;
-        dispatch(messagesActions.allMessages(messages));
-      } catch (err) {
-        console.error(err.message);
-        if (err.name === 'AxiosError') {
-          const errorName = 'errors.other.axiosError';
-          setAppError(t(errorName));
-          notify(errorName);
-        } else {
-          const errorName = 'errors.other.unnknownError';
-          setAppError(t(errorName));
-          notify(errorName);
-        }
-
-        rollbar.error(err);
+    try {
+      if (didMount) setFetching(false);
+      dispatch(fetchChannels(headers));
+    } catch (err) {
+      console.error(err.message);
+      if (err.name === 'AxiosError') {
+        const errorName = 'errors.other.axiosError';
+        setAppError(t(errorName));
+        notify(errorName);
+      } else {
+        const errorName = 'errors.other.unnknownError';
+        setAppError(t(errorName));
+        notify(errorName);
       }
-    };
 
-    fetchData();
-  });
+      rollbar.error(err);
+    }
+  }, [auth, dispatch, rollbar, t, notify]);
 
   return fetching
     ? (

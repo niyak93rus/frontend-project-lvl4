@@ -1,7 +1,32 @@
 /* eslint-disable no-param-reassign */
-import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { normalize, schema } from 'normalizr';
+import {
+  createAsyncThunk, createSlice, createEntityAdapter,
+} from '@reduxjs/toolkit';
+
+import routes from '../routes.js';
 
 const defaultChannelId = 1;
+
+const getNormalized = (data) => {
+  const message = new schema.Entity('messages');
+  const channel = new schema.Entity('channels');
+  const { currentChannelId } = data;
+
+  const mySchema = { channels: [channel], messages: [message], currentChannelId };
+  return normalize(data, mySchema);
+};
+
+export const fetchChannels = createAsyncThunk(
+  'channels/fetchChannels',
+  async (headers) => {
+    const { data } = await axios.get(routes.dataPath(), { headers });
+    const normalizedData = getNormalized(data);
+
+    return { ...normalizedData.entities, currentChannelId: normalizedData.result.currentChannelId };
+  },
+);
 
 const channelsAdapter = createEntityAdapter({ selectId: (channel) => channel.id });
 
@@ -19,6 +44,24 @@ const channelsSlice = createSlice({
     addChannel: channelsAdapter.addOne,
     removeChannel: channelsAdapter.removeOne,
     renameChannel: channelsAdapter.updateOne,
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchChannels.pending, (state) => {
+        state.loading = 'loading';
+        state.error = null;
+      })
+      .addCase(fetchChannels.fulfilled, (state, action) => {
+        const { channels, currentChannelId } = action.payload;
+        channelsAdapter.setAll(state, channels);
+        state.currentChannelId = currentChannelId;
+        state.loading = 'idle';
+        state.error = null;
+      })
+      .addCase(fetchChannels.rejected, (state, action) => {
+        state.loading = 'failed';
+        state.error = action.error;
+      });
   },
 });
 
