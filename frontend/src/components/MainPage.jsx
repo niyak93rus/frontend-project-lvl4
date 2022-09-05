@@ -30,8 +30,8 @@ const MainPage = () => {
     const headers = auth.getAuthHeader();
 
     try {
-      if (didMount) setFetching(false);
       dispatch(fetchChannels(headers));
+      if (didMount) setFetching(false);
     } catch (err) {
       console.error(err.message);
       if (err.name === 'AxiosError') {
@@ -50,7 +50,7 @@ const MainPage = () => {
 
   return fetching
     ? (
-      <div className="h-100 d-flex justify-content-center align-items-center">
+      <div className="h-100 d-flex justify-content-center align-items-center" style={{ minHeight: '600px' }}>
         <Spinner animation="border" role="status" variant="primary">
           <span className="visually-hidden">{t('loading')}</span>
         </Spinner>
