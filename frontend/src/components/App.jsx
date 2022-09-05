@@ -14,10 +14,10 @@ import { useAuth } from '../contexts/index.js';
 
 import AuthButton from './AuthButton.jsx';
 import AuthProvider from './AuthProvider.jsx';
-import NoMatch from './NoMatch';
-import LoginPage from './Login.jsx';
+import NoMatchPage from './NoMatchPage.jsx';
+import LoginPage from './LoginPage.jsx';
 import MainPage from './MainPage';
-import SignupPage from './Signup.jsx';
+import SignupPage from './SignupPage.jsx';
 
 const MainRoute = ({ children }) => {
   const auth = useAuth();
@@ -49,7 +49,7 @@ const App = () => (
             />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
-            <Route path="*" element={<NoMatch />} />
+            <Route path="*" element={<NoMatchPage />} />
 
           </Routes>
         </div>

@@ -24,5 +24,7 @@ const slice = createSlice({
   },
 });
 
+export const modalInfo = (state) => state.modal;
+
 export const { actions } = slice;
 export default slice.reducer;

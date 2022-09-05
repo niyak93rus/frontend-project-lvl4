@@ -3,6 +3,7 @@ import { Modal as BootstrapModal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { actions } from '../slices/index.js';
+import { modalInfo } from '../slices/modal.js';
 
 import AddChannelForm from '../modals/Add.jsx';
 import RemoveChannelForm from '../modals/Remove.jsx';
@@ -16,14 +17,14 @@ const mapping = {
 
 const Modal = () => {
   const dispatch = useDispatch();
-  const isOpened = useSelector((state) => state.modal.isOpened);
 
   const handleClose = () => {
     dispatch(actions.closeModal());
   };
-  const modalType = useSelector((state) => state.modal.type);
 
-  const Component = mapping[modalType];
+  const { isOpened, type } = useSelector(modalInfo);
+
+  const Component = mapping[type];
 
   return (
     <BootstrapModal show={isOpened} onHide={handleClose} centered>
