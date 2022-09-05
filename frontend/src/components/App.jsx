@@ -54,7 +54,7 @@ const App = () => (
           </Routes>
         </div>
       </div>
-      <ToastContainer />
+      <ToastContainer position="bottom-center" />
     </Router>
   </AuthProvider>
 );

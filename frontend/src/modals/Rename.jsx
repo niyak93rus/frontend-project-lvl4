@@ -32,9 +32,7 @@ const Rename = ({ handleClose }) => {
   const channelId = useSelector((state) => state.modal.extra?.channelId);
   const channel = useSelector(getChannelById(channelId));
 
-  const notify = (message) => toast.success(t(`${message}`), {
-    position: toast.POSITION.BOTTOM_CENTER,
-  });
+  const notify = (message) => toast.success(t(`${message}`));
 
   const channelNames = channels.map((c) => c.name);
 

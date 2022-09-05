@@ -19,9 +19,7 @@ const MessageForm = () => {
 
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
 
-  const notify = (message) => toast.error(t(`${message}`), {
-    position: toast.POSITION.BOTTOM_CENTER,
-  });
+  const notify = (message) => toast.error(t(`${message}`));
 
   useEffect(() => {
     inputRef.current.focus();

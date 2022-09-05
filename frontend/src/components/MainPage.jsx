@@ -21,9 +21,7 @@ const MainPage = () => {
   const { t } = useTranslation();
   const rollbar = useRollbar();
   const auth = useAuth();
-  const notify = useCallback((message) => toast.error(t(`${message}`), {
-    position: toast.POSITION.BOTTOM_CENTER,
-  }), [t]);
+  const notify = useCallback((message) => toast.error(t(`${message}`)), [t]);
 
   useEffect(() => {
     const didMount = true;

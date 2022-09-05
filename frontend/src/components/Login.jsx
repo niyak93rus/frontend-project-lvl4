@@ -21,9 +21,7 @@ const LoginForm = () => {
   const { t } = useTranslation();
   const rollbar = useRollbar();
 
-  const notify = (message) => toast.error(t(`${message}`), {
-    position: toast.POSITION.BOTTOM_CENTER,
-  });
+  const notify = (message) => toast.error(t(`${message}`));
 
   useEffect(() => {
     if (auth.user) {

@@ -23,9 +23,7 @@ const Add = ({ handleClose }) => {
   const channels = useSelector(getChannels);
   const { t } = useTranslation();
 
-  const notify = (message) => toast.success(t(`${message}`), {
-    position: toast.POSITION.BOTTOM_CENTER,
-  });
+  const notify = (message) => toast.success(t(`${message}`));
 
   const channelNames = channels.map((channel) => channel.name);
   const f = useFormik({

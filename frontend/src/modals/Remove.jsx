@@ -32,12 +32,8 @@ const Remove = ({ handleClose }) => {
   const [loading, setLoading] = useState(false);
 
   const notify = {
-    success: (message) => toast.success(t(`${message}`), {
-      position: toast.POSITION.BOTTOM_CENTER,
-    }),
-    error: (message) => toast.error(t(`${message}`), {
-      position: toast.POSITION.BOTTOM_CENTER,
-    }),
+    success: (message) => toast.success(t(`${message}`)),
+    error: (message) => toast.error(t(`${message}`)),
   };
 
   const onSubmit = generateOnSubmit(handleClose, setLoading, channelId, notify, api, rollbar);
