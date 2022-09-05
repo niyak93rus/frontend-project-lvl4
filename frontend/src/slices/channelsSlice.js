@@ -74,6 +74,7 @@ export const getChannelById = (channelId) => (state) => {
   return Object.values(channels).find((c) => c.id === channelId);
 };
 
+export const getChannelIdFromModal = (state) => state.modal.extra?.channelId;
 export const getCurrentChannelId = (state) => state.channels.currentChannelId;
 
 export const { actions } = channelsSlice;

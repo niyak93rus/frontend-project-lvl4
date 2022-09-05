@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { useRollbar } from '@rollbar/react';
 
 import { useApi } from '../contexts/index.js';
+import { getCurrentChannelId } from '../slices/channelsSlice.js';
 
 const MessageForm = () => {
   const rollbar = useRollbar();
@@ -17,7 +18,7 @@ const MessageForm = () => {
   const { t } = useTranslation();
   const api = useApi();
 
-  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
+  const currentChannelId = useSelector(getCurrentChannelId);
 
   const notify = (message) => toast.error(t(`${message}`));
 

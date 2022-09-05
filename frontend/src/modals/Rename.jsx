@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useRollbar } from '@rollbar/react';
 
-import { getChannels, getChannelById } from '../slices/channelsSlice.js';
+import { getChannels, getChannelById, getChannelIdFromModal } from '../slices/channelsSlice.js';
 import { useApi } from '../contexts/index.js';
 
 const generateOnSubmit = (handleClose, channelId, api, notify, rollbar) => (values) => {
@@ -29,7 +29,7 @@ const Rename = ({ handleClose }) => {
   const { t } = useTranslation();
   const rollbar = useRollbar();
 
-  const channelId = useSelector((state) => state.modal.extra?.channelId);
+  const channelId = useSelector(getChannelIdFromModal);
   const channel = useSelector(getChannelById(channelId));
 
   const notify = (message) => toast.success(t(`${message}`));

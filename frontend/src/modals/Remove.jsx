@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { useRollbar } from '@rollbar/react';
 
 import { useApi } from '../contexts/index.js';
+import { getChannelIdFromModal } from '../slices/channelsSlice.js';
 
 const generateOnSubmit = (handleClose, setLoading, channelId, notify, api, rollbar) => (e) => {
   setLoading(true);
@@ -27,7 +28,7 @@ const Remove = ({ handleClose }) => {
   const { t } = useTranslation();
   const api = useApi();
   const rollbar = useRollbar();
-  const channelId = useSelector((state) => state.modal.extra?.channelId);
+  const channelId = useSelector(getChannelIdFromModal);
 
   const [loading, setLoading] = useState(false);
 
