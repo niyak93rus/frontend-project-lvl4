@@ -34,16 +34,16 @@ const SignupForm = () => {
     },
     validationSchema: Yup.object({
       username: Yup.string()
-        .min(3, t('errors.username.length'))
-        .max(20, t('errors.username.length'))
-        .required(t('errors.username.required')),
+        .min(3, 'errors.username.length')
+        .max(20, 'errors.username.length')
+        .required('errors.username.required'),
       password: Yup.string()
-        .min(6, t('errors.password.length'))
-        .max(20, t('errors.password.length'))
-        .required(t('errors.password.required')),
+        .min(6, 'errors.password.length')
+        .max(20, 'errors.password.length')
+        .required('errors.password.required'),
       passwordConfirmation: Yup.string()
-        .required(t('errors.passwordConfirmation.required'))
-        .oneOf([Yup.ref('password'), null], t('errors.passwordConfirmation.oneOf')),
+        .required('errors.passwordConfirmation.required')
+        .oneOf([Yup.ref('password'), null], 'errors.passwordConfirmation.oneOf'),
     }),
     onSubmit: async (values) => {
       setRegistrationFailed(false);
@@ -100,7 +100,7 @@ const SignupForm = () => {
                 ref={inputRef}
                 isInvalid={(f.touched.username && f.errors.username) || registrationFailed}
               />
-              {f.touched.username && f.errors.username && <div className="invalid-tooltip">{f.errors.username}</div>}
+              {f.touched.username && f.errors.username && <div className="invalid-tooltip">{t(f.errors.username)}</div>}
             </FloatingLabel>
           </Form.Group>
 
@@ -120,7 +120,7 @@ const SignupForm = () => {
                 name="password"
                 isInvalid={(f.touched.password && f.errors.password) || registrationFailed}
               />
-              {f.touched.password && f.errors.password && <div className="invalid-tooltip d-block">{f.errors.password}</div>}
+              {f.touched.password && f.errors.password && <div className="invalid-tooltip d-block">{t(f.errors.password)}</div>}
             </FloatingLabel>
           </Form.Group>
 
@@ -143,7 +143,7 @@ const SignupForm = () => {
               {f.touched.passwordConfirmation && f.errors.passwordConfirmation
                 && (
                   <div className="invalid-tooltip d-block">
-                    {f.errors.passwordConfirmation}
+                    {t(f.errors.passwordConfirmation)}
                   </div>
                 )}
               {registrationFailed && <div className="invalid-feedback d-block">{signupError}</div>}

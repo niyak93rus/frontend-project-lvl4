@@ -34,13 +34,13 @@ const LoginForm = () => {
     },
     validationSchema: Yup.object({
       username: Yup.string()
-        .min(2, t('errors.username.length'))
-        .max(20, t('errors.username.length'))
-        .required(t('errors.username.required')),
+        .min(2, 'errors.username.length')
+        .max(20, 'errors.username.length')
+        .required('errors.username.required'),
       password: Yup.string()
-        .min(2, t('errors.password.length'))
-        .max(20, t('errors.password.length'))
-        .required(t('errors.password.required')),
+        .min(2, 'errors.password.length')
+        .max(20, 'errors.password.length')
+        .required('errors.password.required'),
     }),
     onSubmit: async (values) => {
       setAuthFailed(false);
@@ -86,12 +86,11 @@ const LoginForm = () => {
                 name="username"
                 autoComplete="username"
                 isInvalid={(f.touched.username && f.errors.username) || authFailed}
-                required
                 ref={inputRef}
                 placeholder={t('loginPlaceholder')}
               />
               {f.touched.username && f.errors.username && (
-                <span className="text-danger">{f.errors.username}</span>
+                <span className="text-danger">{t(f.errors.username)}</span>
               )}
             </FloatingLabel>
           </Form.Group>
@@ -106,10 +105,11 @@ const LoginForm = () => {
                 onChange={f.handleChange}
                 isInvalid={(f.touched.password && f.errors.password) || authFailed}
               />
-
+              {f.touched.password && f.errors.password && (
+                <span className="text-danger">{t(f.errors.password)}</span>
+              )}
               <FormControl.Feedback type="invalid" tooltip>{t('errors.other.authFailed')}</FormControl.Feedback>
             </FloatingLabel>
-            {authFailed && <Form.Control.Feedback type="invalid" tooltip>{t('errors.other.authFailed')}</Form.Control.Feedback>}
           </Form.Group>
           <Button variant="primary" type="submit" disabled={f.isSubmitting}>
             {t('logIn')}
