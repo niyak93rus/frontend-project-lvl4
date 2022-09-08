@@ -23,12 +23,6 @@ const SignupForm = () => {
   const notify = (message) => toast.error(t(`${message}`));
 
   useEffect(() => {
-    if (auth.user) {
-      navigate('/');
-    }
-  });
-
-  useEffect(() => {
     inputRef.current.focus();
   }, []);
 

@@ -28,6 +28,22 @@ const MainRoute = ({ children }) => {
   );
 };
 
+const SignUpRoute = ({ children }) => {
+  const auth = useAuth();
+
+  return (
+    auth.user ? <Navigate to="/" /> : children
+  );
+};
+
+const LoginRoute = ({ children }) => {
+  const auth = useAuth();
+
+  return (
+    auth.user ? <Navigate to="/" /> : children
+  );
+};
+
 const App = () => (
   <AuthProvider>
     <Router>
@@ -47,8 +63,8 @@ const App = () => (
                 </MainRoute>
               )}
             />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/login" element={<LoginRoute><LoginPage /></LoginRoute>} />
+            <Route path="/signup" element={<SignUpRoute><SignupPage /></SignUpRoute>} />
             <Route path="*" element={<NoMatchPage />} />
 
           </Routes>
