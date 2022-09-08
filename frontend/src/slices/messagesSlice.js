@@ -20,7 +20,6 @@ const messagesSlice = createSlice({
         const { messages } = action.payload;
         if (!messages) return;
         messagesAdapter.setAll(state, messages);
-        state.loading = 'idle';
         state.error = null;
       })
       .addCase(channelActions.removeChannel, (state, { payload }) => {

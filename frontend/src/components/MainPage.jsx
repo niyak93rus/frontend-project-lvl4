@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
 
 import { useTranslation } from 'react-i18next';
@@ -14,22 +14,21 @@ import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
 import Modal from './Modal.jsx';
 
-const MainPage = () => {
+const mapState = (state) => state.channels;
+
+const MainPage = ({ loading }) => {
   const dispatch = useDispatch();
   const [appError, setAppError] = useState('');
-  const [fetching, setFetching] = useState(true);
   const { t } = useTranslation();
   const rollbar = useRollbar();
   const auth = useAuth();
   const notify = useCallback((message) => toast.error(t(`${message}`)), [t]);
 
   useEffect(() => {
-    const didMount = true;
     const headers = auth.getAuthHeader();
 
     try {
       dispatch(fetchChannels(headers));
-      if (didMount) setFetching(false);
     } catch (err) {
       console.error(err.message);
       if (err.name === 'AxiosError') {
@@ -46,7 +45,7 @@ const MainPage = () => {
     }
   }, [auth, dispatch, rollbar, t, notify]);
 
-  return fetching
+  return loading
     ? (
       <div className="h-100 d-flex justify-content-center align-items-center" style={{ minHeight: '600px' }}>
         <Spinner animation="border" role="status" variant="primary">
@@ -68,4 +67,4 @@ const MainPage = () => {
     );
 };
 
-export default MainPage;
+export default connect(mapState)(MainPage);
