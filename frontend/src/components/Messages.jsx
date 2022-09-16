@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { animateScroll } from 'react-scroll';
-import { nanoid } from '@reduxjs/toolkit';
 import { useTranslation } from 'react-i18next';
 
 import { getChannels, getCurrentChannelId } from '../slices/channelsSlice.js';
@@ -41,7 +40,7 @@ const Messages = () => {
               {messages
                 .filter((message) => Number(message.channelId) === Number(currentChannelId))
                 .map((message) => (
-                  <li key={nanoid()} className="list-group-item border-0">
+                  <li key={message.id} className="list-group-item border-0">
                     <Message key={message.id} message={message} />
                   </li>
                 ))}
